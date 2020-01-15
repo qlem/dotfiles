@@ -1,6 +1,6 @@
 # Archlinux Installation Tips
 
-## Partioning for dual boot Windows UEFI 
+## Dual boot partitioning - Windows UEFI 
 ```
 mkdir /mnt/boot & mkdir /mnt/boot/efi
 mount esp_partition /mnt/boot/efi
@@ -25,7 +25,7 @@ useradd -m -g users -G wheel -s /bin/bash username
 passwd username
 pacman -S sudo
 ```
-Add to `/etc/sudoers`
+Edit `/etc/sudoers`
 ```
 username ALL=(ALL) ALL
 ```
@@ -61,8 +61,8 @@ sudo systemctl enable fstrim.timer
 ```
 
 ## Theme
-theme [Adapta](https://github.com/adapta-project/adapta-gtk-theme)  
-icon theme [Flat Remix](https://github.com/daniruiz/flat-remix)
+- theme [Adapta](https://github.com/adapta-project/adapta-gtk-theme)  
+- icon theme [Flat Remix](https://github.com/daniruiz/flat-remix)
 ```
 pacman -S plank
 ```
