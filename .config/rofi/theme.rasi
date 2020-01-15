@@ -1,0 +1,58 @@
+* {
+    background-color: #212121;
+    text-color: #9E9E9E;
+    font: "Inconsolata 13";
+    border: 0px;
+}
+window {
+    anchor: north;
+    location: north;
+    padding: 30px;
+    y-offset: 400px;
+    width: 700px;
+    children: [ mode-switcher, inputbox, message, listview ];
+}
+mode-switcher {
+    padding: 10px 0 20px 0;
+}
+button selected {
+    text-color: #357EDD;
+}
+inputbox {
+    expand: false;
+    orientation: horizontal;
+    border: 1px solid;
+    border-color: #ffffff;
+    margin: 0 0 20px 0;
+    children: [ textbox-prompt, entry ];
+}
+textbox-prompt {
+    expand: false;
+    padding: 10px;
+    str: " > ";
+    border: 0 1px 0 0;
+    border-color: #ffffff;
+}
+entry {
+    padding: 10px 20px;
+}
+listview {
+    fixed-height: true;
+    scrollbar: true;
+    cycle: true;
+    lines: 5;
+}
+element {
+    padding: 10px 20px;
+    highlight: bold;
+}
+element selected {
+    text-color: #357EDD;
+    highlight: bold;
+}
+scrollbar {
+    handle-width: 10px;
+    handle-color: #ffffff;
+    border: 1px solid;
+    border-color: #ffffff;
+}
