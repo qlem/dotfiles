@@ -12,7 +12,7 @@ configuration {
     drun-display-format: "{name}";
     window-format: "{c} - {t}";
     ssh-client: "ssh";
-    terminal: "terminator";
+    terminal: "alacritty";
     run-shell-command: "{terminal} -e {cmd}";
     ssh-command: "{terminal} -e {ssh-client} {host}";
     /* location: 0; */

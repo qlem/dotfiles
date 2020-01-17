@@ -2,6 +2,7 @@
 
 cp ~/.bashrc .
 cp ~/.fehbg .
+cp ~/.tmux.conf .
 cp ~/.vimrc .
 cp ~/.xinitrc .
 cp ~/.Xresources .
