@@ -13,13 +13,16 @@ general {
 
 order += "battery all"
 order += "volume master"
+# order += "cpu_usage"
+# order += "cpu_temperature 0"
 order += "tztime local"
 
 battery all {
     format = "%status %percentage"
     status_chr = "⚡"
-    status_bat = "⛱"
-    status_full = "☀"
+    status_bat = "bat"
+    status_full = "full"
+    status_unk = "?"
     integer_battery_capacity = true
     low_threshold = 20
     threshold_type = "percentage"
@@ -33,4 +36,16 @@ volume master {
     format = "♪ %volume"
     format_muted = "♪ muted"
     device = "pulse"
+}
+
+cpu_temperature 0 {
+    format = "cpu %degrees°C"
+    path = "/sys/class/hwmon/hwmon6/temp1_input"
+    max_threshold = 70
+}
+
+cpu_usage {
+    format = "cpu %usage"
+    max_threshold = 90
+    degraded_threshold = 50
 }
