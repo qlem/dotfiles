@@ -6,6 +6,7 @@ cp ~/.tmux.conf .
 cp ~/.vimrc .
 cp ~/.xinitrc .
 cp ~/.Xresources .
+cp ~/bin/dp.sh script/
 
 [[ ! -d ".config" ]] && mkdir .config
 
