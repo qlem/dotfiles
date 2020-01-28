@@ -5,7 +5,7 @@ dp=DP-2
 hdmi=HDMI-1
 
 if [[ -n $(xrandr | grep "$dp2 connected") ]]; then
-    xrandr --output "$edp" --primary --auto --output "$dp" --right-of "$edp" --auto
+    xrandr --output "$edp" --primary --auto --output "$dp" --right-of "$edp" --auto 
 elif [[ -n $(xrandr | grep "$hdmi connected") ]]; then
     xrandr --output "$edp" --primary --auto --output "$hdmi" --right-of "$edp" --auto
 else 

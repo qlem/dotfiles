@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-scale '/home/qlem/Images/landscape03.jpg' '/home/qlem/Images/planet.jpg' 
+feh --no-fehbg --bg-scale '/home/qlem/Pictures/landscape03.jpg' '/home/qlem/Pictures/planet.jpg' 
