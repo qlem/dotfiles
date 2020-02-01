@@ -12,8 +12,7 @@ if status is-interactive
         if test -z "$id"
             tmux new-session -s "main"
             if test $status -ne 0
-                set -xU TMUX_COUNT (math $TMUX_COUNT + 1) 
-                tmux new-session -s "$TMUX_COUNT"
+                tmux new-session
             end
         else
             tmux attach-session -t "$id"

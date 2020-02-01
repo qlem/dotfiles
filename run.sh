@@ -6,9 +6,27 @@ cp ~/.tmux.conf .
 cp ~/.vimrc .
 cp ~/.xinitrc .
 cp ~/.Xresources .
-cp ~/bin/dp.sh script/
 
 [[ ! -d ".config" ]] && mkdir .config
+
+skip() {
+    local excluded=('milcheck' 'qlbox.sh')
+    for i in "${excluded[@]}"; do
+        if [[ "$file" = "$i" ]]; then
+            return 1
+        fi
+    done
+    return 0
+}
+
+files=$(ls ~/bin)
+[[ ! -d "bin" ]] && mkdir bin
+for file in $files; do
+    skip
+    if [[ "$?" -eq 0 ]]; then
+        cp ~/bin/$file bin/
+    fi
+done
 
 [[ ! -d ".config/alacritty" ]] && mkdir .config/alacritty
 cp ~/.config/alacritty/alacritty.yml .config/alacritty/
