@@ -56,7 +56,7 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 # screenshot
-bindsym $mod+Print exec $HOME/bin/screenshot.sh &
+bindsym $mod+Print exec --no-startup-id $HOME/bin/screenshot.sh &
 
 # handle session actions
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
