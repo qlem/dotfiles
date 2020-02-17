@@ -53,3 +53,6 @@ cp ~/.config/rofi/*.rasi .config/rofi/
 
 [[ ! -d ".config/terminator" ]] && mkdir .config/terminator
 cp ~/.config/terminator/config .config/terminator/
+
+[[ ! -d "xorg" ]] && mkdir xorg
+cp /etc/X11/xorg.conf.d/*.conf xorg/
