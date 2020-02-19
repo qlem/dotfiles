@@ -24,7 +24,7 @@ font pango:DejaVu Sans Mono 11
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork
 
 # start picon
 exec --no-startup-id picom --config $HOME/.config/picom/picom.conf -b
@@ -61,7 +61,7 @@ bindsym $mod+Print exec --no-startup-id $HOME/bin/screenshot.sh &
 # handle session actions
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3lock && sleep 1, mode "default"
+    bindsym l exec --no-startup-id $HOME/bin/lock.sh && sleep 1, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id systemctl suspend, mode "default"
     bindsym h exec --no-startup-id systemctl hibernate, mode "default"
