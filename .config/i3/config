@@ -26,11 +26,11 @@ font pango:DejaVu Sans Mono 11
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork &
 
-# start picon
+# picom
 exec --no-startup-id picom --config $HOME/.config/picom/picom.conf -b
 
-# set wallpaper(s)
-exec --no-startup-id $HOME/.fehbg &
+# wallpapers
+exec --no-startup-id feh --no-fehbg --bg-scale $HOME/Pictures/landscape03.jpg $HOME/Pictures/planet.jpg' &
 
 # jetbrains toolbox
 exec --no-startup-id $HOME/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox --minimize
@@ -38,11 +38,10 @@ exec --no-startup-id $HOME/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox 
 # redshift
 exec --no-startup-id redshift-gtk
 
-# system tray applet for PulseAudio
+# PulseAudio
 exec --no-startup-id pasystray
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
+# NetworkManager
 exec --no-startup-id nm-applet
 
 # hide borders on workspaces with only one window visible
