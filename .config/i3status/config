@@ -19,22 +19,28 @@ order += "tztime local"
 
 battery all {
     format = "%status %percentage"
-    status_chr = "⚡"
-    status_bat = "bat"
-    status_full = "full"
-    status_unk = "?"
+    # status_chr = "⚡"
+    # status_bat = "bat"
+    # status_full = "full"
+    # status_unk = "?"
+    status_chr = ""
+    status_bat = ""
+    status_full = ""
+    status_unk = ""
     integer_battery_capacity = true
     low_threshold = 20
     threshold_type = "percentage"
 }
 
 tztime local {
-    format = "%H:%M %d/%m/%y"
+    format = " %H:%M %d/%m/%y"
 }
 
 volume master {
-    format = "♪ %volume"
-    format_muted = "♪ muted"
+    # format = "♪ %volume"
+    # format_muted = "♪ muted"
+    format = " %volume"
+    format_muted = ""
     device = "pulse"
 }
 
