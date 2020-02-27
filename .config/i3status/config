@@ -8,7 +8,7 @@
 
 general {
     colors = true
-    interval = 5
+    interval = 1
 }
 
 order += "cpu_usage"
@@ -18,7 +18,7 @@ order += "battery all"
 order += "tztime local"
 
 # some icons
-#                       
+#         
 
 cpu_usage {
     format = " %usage"
