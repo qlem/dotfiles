@@ -24,7 +24,8 @@ sed -i -r 's/^(.*) .*$/\1/' $pkg
 # list installed packages except packages from base and base-devel
 diff $pkg $base > $diff
 sed -i -r '/^(<|>).*$/!d;s/^(< |> )(.*)$/\2/' $diff
-cat $diff
+sort -o $diff $diff
 count=$(wc -l $diff | awk '{print $1}')
+cat $diff
 echo "-- $count installed packages"
 rm -r $tmp
