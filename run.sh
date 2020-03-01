@@ -6,26 +6,10 @@ cp ~/.vimrc .
 cp ~/.xinitrc .
 cp ~/.Xresources .
 
-[[ ! -d ".config" ]] && mkdir .config
-
-skip() {
-    local excluded=('milcheck' 'qlbox.sh')
-    for i in "${excluded[@]}"; do
-        if [[ "$file" = "$i" ]]; then
-            return 1
-        fi
-    done
-    return 0
-}
-
-files=$(ls ~/bin)
 [[ ! -d "bin" ]] && mkdir bin
-for file in $files; do
-    skip
-    if [[ "$?" -eq 0 ]]; then
-        cp ~/bin/$file bin/
-    fi
-done
+cp ~/bin/* bin/
+
+[[ ! -d ".config" ]] && mkdir .config
 
 [[ ! -d ".config/alacritty" ]] && mkdir .config/alacritty
 cp ~/.config/alacritty/alacritty.yml .config/alacritty/

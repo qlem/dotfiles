@@ -14,12 +14,11 @@ export LC_ALL=C
 pacman -Si base | grep 'Depends On' | cut -d: -f2 | awk '{$1=$1};1' | tr ' ' '\n' > $base
 
 # base-devel group
-pacman -Sg base-devel | awk '{print $2}' >> $base
+pacman -Sgq base-devel >> $base
 sort -u -o $base $base
 
 # installed packages
-pacman -Qe > $pkg
-sed -i -r 's/^(.*) .*$/\1/' $pkg
+pacman -Qeq > $pkg
 
 # list installed packages except packages from base and base-devel
 diff $pkg $base > $diff
