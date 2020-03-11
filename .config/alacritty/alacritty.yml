@@ -44,13 +44,20 @@ font:
         x: 0
         y: 0
 draw_bold_text_with_bright_colors: true
+# Base16 Tomorrow Night Eighties 256
+# https://github.com/chriskempson/base16
 colors:
     primary:
         background: '0x2d2d2d'
         foreground: '0xcccccc'
+        # dim_foreground: '0x9a9a9a'
+        # bright_foreground: '0xffffff'
     cursor:
         text: '0x2d2d2d'
         cursor: '0xcccccc'
+    # selection:
+        # text: '0xeaeaea'
+        # background: '0x404040'
     normal:
         black:   '0x2d2d2d'
         red:     '0xf2777a'
@@ -69,43 +76,6 @@ colors:
         magenta: '0xcc99cc'
         cyan:    '0x66cccc'
         white:   '0xffffff'
-    indexed_colors:
-        - { index: 16, color: '0xf99157' }
-        - { index: 17, color: '0xa3685a' }
-        - { index: 18, color: '0x393939' }
-        - { index: 19, color: '0x515151' }
-        - { index: 20, color: '0xb4b7b4' }
-        - { index: 21, color: '0xe0e0e0' }
-# colors:
-    # primary:
-        # background: '0x000000'
-        # foreground: '0xeaeaea'
-        # dim_foreground: '0x9a9a9a'
-        # bright_foreground: '0xffffff'
-    # cursor:
-        # text: '0x000000'
-        # cursor: '0xffffff'
-    # selection:
-        # text: '0xeaeaea'
-        # background: '0x404040'
-    # normal:
-        # black:   '0x000000'
-        # red:     '0xd54e53'
-        # green:   '0xb9ca4a'
-        # yellow:  '0xe6c547'
-        # blue:    '0x7aa6da'
-        # magenta: '0xc397d8'
-        # cyan:    '0x70c0ba'
-        # white:   '0xeaeaea'
-    # bright:
-        # black:   '0x666666'
-        # red:     '0xff3334'
-        # green:   '0x9ec400'
-        # yellow:  '0xe7c547'
-        # blue:    '0x7aa6da'
-        # magenta: '0xb77ee0'
-        # cyan:    '0x54ced6'
-        # white:   '0xffffff'
     # dim:
         # black:   '0x000000'
         # red:     '0x8c3336'
@@ -115,7 +85,13 @@ colors:
         # magenta: '0x80638e'
         # cyan:    '0x497e7a'
         # white:   '0x9a9a9a'
-    # indexed_colors: []
+    indexed_colors:
+        - { index: 16, color: '0xf99157' }
+        - { index: 17, color: '0xa3685a' }
+        - { index: 18, color: '0x393939' }
+        - { index: 19, color: '0x515151' }
+        - { index: 20, color: '0xb4b7b4' }
+        - { index: 21, color: '0xe0e0e0' }
 visual_bell:
     animation: EaseOutExpo
     duration: 0
