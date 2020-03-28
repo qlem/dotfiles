@@ -42,8 +42,14 @@ set splitright
 filetype plugin on
 syntax on
 
-" access to man pages into vim
+" open man pages into vim
 runtime ftplugin/man.vim
+
+" remove line numbers from man pages
+augroup stuff
+autocmd!
+autocmd FileType man set nonumber
+augroup END
 
 " colorscheme config
 colorscheme darcula
@@ -55,15 +61,6 @@ set laststatus=2
 let g:lightline = {
     \ 'colorscheme': 'darculaOriginal',
     \ }
-
-" autocmd block
-augroup stuff
-autocmd!
-" run checktime to refresh the buffer and retrieve any external changes
-autocmd CursorHold * checktime %
-" remove line numbers from man pages
-autocmd FileType man set nonumber
-augroup END
 
 " NERDCommenter
 let g:NERDSpaceDelims=1
@@ -98,7 +95,7 @@ let mapleader = ","
 nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :edit .<CR>
 
-" window mapping
+" windows mapping
 nnoremap <Leader>ws :new<CR>
 nnoremap <Leader>wv :vnew<CR>
 nnoremap <Leader>w<Up> :resize +4<CR>
@@ -107,11 +104,11 @@ nnoremap <Leader>w<Right> :vertical :resize +4<CR>
 nnoremap <Leader>w<Left> :vertical :resize -4<CR>
 
 " tabs mapping
-nmap <Leader>t :tabnew<CR>
-nmap <Leader>tn :tabn<CR>
-nmap <Leader>tp :tabp<CR>
-nmap <Leader>t<Left> :tabm -<CR>
-nmap <Leader>t<Right> :tabm +<CR>
+nnoremap <Leader>t :tabnew<CR>
+nnoremap <Leader>tn :tabn<CR>
+nnoremap <Leader>tp :tabp<CR>
+nnoremap <Leader>t<Left> :tabm -<CR>
+nnoremap <Leader>t<Right> :tabm +<CR>
 
 " ALE mapping
 nmap <Leader>l <Plug>(ale_toggle)
