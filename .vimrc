@@ -11,7 +11,7 @@ call plug#end()
 " some defaults
 set termguicolors
 set number
-set cursorline 
+set cursorline
 set showcmd
 set shortmess=a
 set wildmenu
@@ -95,6 +95,10 @@ let mapleader = ","
 nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :edit .<CR>
 
+" trailing whitespace
+nnoremap <Leader>bs :/\s\+$<CR>
+nnoremap <Leader>bc :%s/\s\+$//g<CR>
+
 " windows mapping
 nnoremap <Leader>ws :new<CR>
 nnoremap <Leader>wv :vnew<CR>
@@ -127,7 +131,7 @@ imap <Leader><C-Space> <Plug>(ale_complete)
 " Git Gutter mapping
 nnoremap <Leader>g :GitGutterBufferToggle<CR>
 nnoremap <Leader>G :GitGutterToggle<CR>
-nmap <Leader>gp <Plug>GitGutterPreviewHunk     
+nmap <Leader>gp <Plug>GitGutterPreviewHunk
 nmap <Leader>gs <Plug>GitGutterStageHunk
 nmap <Leader>gu <Plug>GitGutterUndoHunk
 nmap <Leader>gj <Plug>GitGutterPrevHunk
