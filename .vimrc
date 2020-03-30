@@ -130,23 +130,23 @@ nnoremap <Leader>t<Left> :tabm -<CR>
 nnoremap <Leader>t<Right> :tabm +<CR>
 
 " ALE mappings
-nnoremap <Leader>a <Plug>(ale_toggle_buffer)
-nnoremap <Leader>A <Plug>(ale_toggle)
-nnoremap <Leader>ar <Plug>(ale_find_references)
-nnoremap <Leader>ad <Plug>(ale_go_to_definition)
-nnoremap <Leader>at <Plug>(ale_go_to_type_definition)
-nnoremap <Leader>ap <Plug>(ale_previous_wrap)
-nnoremap <Leader>an <Plug>(ale_next_wrap)
-nnoremap <Leader>ai <Plug>(ale_hover)
-nnoremap <Leader>am <Plug>(ale_detail)
-nnoremap <Leader>af <Plug>(ale_fix)
-" inoremap <Plug>(ale_complete)
+nmap <Leader>a <Plug>(ale_toggle_buffer)
+nmap <Leader>A <Plug>(ale_toggle)
+nmap <Leader>ar <Plug>(ale_find_references)
+nmap <Leader>ad <Plug>(ale_go_to_definition)
+nmap <Leader>at <Plug>(ale_go_to_type_definition)
+nmap <Leader>ap <Plug>(ale_previous_wrap)
+nmap <Leader>an <Plug>(ale_next_wrap)
+nmap <Leader>ai <Plug>(ale_hover)
+nmap <Leader>am <Plug>(ale_detail)
+nmap <Leader>af <Plug>(ale_fix)
+" imap <Plug>(ale_complete)
 
 " GitGutter mappings
 nnoremap <Leader>g :GitGutterBufferToggle<CR>
 nnoremap <Leader>G :GitGutterToggle<CR>
-nnoremap <Leader>gi <Plug>(GitGutterPreviewHunk)
-nnoremap <Leader>gs <Plug>(GitGutterStageHunk)
-nnoremap <Leader>gu <Plug>(GitGutterUndoHunk)
-nnoremap <Leader>gp <Plug>(GitGutterPrevHunk)
-nnoremap <Leader>gn <Plug>(GitGutterNextHunk)
+nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
+nmap <Leader>gs <Plug>(GitGutterStageHunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)
+nmap <Leader>gn <Plug>(GitGutterNextHunk)
