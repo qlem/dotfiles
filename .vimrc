@@ -1,105 +1,120 @@
-" vim-plug
+" plugins
 call plug#begin('~/.vim/plugged')
-Plug 'doums/darcula'
-Plug 'itchyny/lightline.vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'pangloss/vim-javascript'
 Plug 'w0rp/ale'
+Plug 'doums/darcula'
+Plug 'doums/gitBranch'
+Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'pangloss/vim-javascript'
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
-" some defaults
+" global settings
+set nocompatible
 set termguicolors
+set background=dark
 set number
 set cursorline
+set laststatus=2
+set ruler
 set showcmd
+set noshowmode
 set shortmess=a
-set wildmenu
 set ttimeout
 set ttimeoutlen=100
+set updatetime=100
+set splitbelow
+set splitright
+set wildmenu
+set backspace=indent,eol,start
 
-" tab config
+" colorscheme settings
+colorscheme darcula
+
+" bracket settings
+set showmatch
+set matchtime=3
+
+" tab settings
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set smarttab
 
-" search config
+" search settings
 set ignorecase
 set smartcase
 set hlsearch
 set incsearch
 
-" bracket config
-set showmatch
-set matchtime=3
-
-" allows window splitting below and right
-set splitbelow
-set splitright
-
-" enables syntax highlighting
+" enable filetype detection
 filetype plugin on
+" enable filetype indenting
+filetype indent on
+" enable syntax highlighting
 syntax on
 
 " open man pages into vim
 runtime ftplugin/man.vim
 
-" remove line numbers from man pages
-augroup stuff
+" some auto commands
+augroup vimrc
 autocmd!
+" remove line numbers in man pages
 autocmd FileType man set nonumber
 augroup END
 
-" colorscheme config
-colorscheme darcula
-set background=dark
+" GitGutter settings
+let g:gitgutter_map_keys=0
 
-" lightline config
-set noshowmode
-set laststatus=2
-let g:lightline = {
-    \ 'colorscheme': 'darculaOriginal',
-    \ }
+" netrw settings
+let g:netrw_banner=0
+let g:netrw_winsize=30
 
-" NERDCommenter
+" NERDCommenter settings
 let g:NERDSpaceDelims=1
 let g:NERDCompactSexyComs=1
 let g:NERDCommentEmptyLines=1
 let g:NERDTrimTrailingWhitespace=1
-" let g:NERDDefaultAlign='left'
-" let g:NERDToggleCheckAllLines=1
 
-" ALE
+" ALE settings
 let g:ale_linters_explicit=1
 let g:ale_echo_msg_error_str='E'
 let g:ale_echo_msg_warning_str='W'
 let g:ale_echo_msg_info_str='I'
 let g:ale_echo_msg_format='[%linter%][%severity%] %code: %%s'
 let g:ale_linters = {
-    \ 'javascript': ['eslint', 'standard'],
-    \ 'typescript': ['eslint', 'tslint']
+    \ 'javascript': ['eslint']
     \ }
 let g:ale_fixers = {
-    \ 'javascript': ['eslint', 'standard'],
-    \ 'typescript': ['eslint', 'tslint']
+    \ 'javascript': ['eslint']
     \ }
-" let g:ale_sign_column_always=1
 
-" Git Gutter config
-set updatetime=100
-let g:gitgutter_map_keys=0
+" lightline settings
+let g:lightline = {
+    \ 'colorscheme': 'darculaOriginal',
+    \ 'component_function': {
+    \   'gitbranch': 'gitBranch#Get'
+    \ },
+    \ 'active': {
+    \   'right': [
+    \     ['lineinfo'],
+    \     ['percent'],
+    \     ['gitbranch','fileformat', 'fileencoding', 'filetype']
+    \   ]
+    \ }
+    \ }
 
-" general mapping
-let mapleader = ","
+" global mappings
+let mapleader=","
 nnoremap <Leader>h :noh<CR>
-nnoremap <Leader>e :edit .<CR>
+nnoremap <Leader>e :Lex .<CR>
 
-" trailing whitespace
+" trailing space mappings
 nnoremap <Leader>bs :/\s\+$<CR>
 nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
-" windows mapping
+" windows mappings
 nnoremap <Leader>ws :new<CR>
 nnoremap <Leader>wv :vnew<CR>
 nnoremap <Leader>w<Up> :resize +4<CR>
@@ -107,36 +122,31 @@ nnoremap <Leader>w<Down> :resize -4<CR>
 nnoremap <Leader>w<Right> :vertical :resize +4<CR>
 nnoremap <Leader>w<Left> :vertical :resize -4<CR>
 
-" tabs mapping
+" tab pages mappings
 nnoremap <Leader>t :tabnew<CR>
 nnoremap <Leader>tn :tabn<CR>
 nnoremap <Leader>tp :tabp<CR>
 nnoremap <Leader>t<Left> :tabm -<CR>
 nnoremap <Leader>t<Right> :tabm +<CR>
 
-" ALE mapping
-nmap <Leader>l <Plug>(ale_toggle)
-nmap <Leader>L <Plug>(ale_toggle_buffer)
-nmap <Leader>r <Plug>(ale_find_references)
-nmap <Leader>d <Plug>(ale_go_to_definition_in_split)
-nmap <Leader>j <Plug>(ale_previous_wrap)
-nmap <Leader>k <Plug>(ale_next_wrap)
-nmap <Leader>i <Plug>(ale_hover)
-nmap <Leader>m <Plug>(ale_detail)
-imap <Leader><C-Space> <Plug>(ale_complete)
-" nmap <Plug>(ale_fix)
-" nmap <Plug>(ale_documentation)
-" nmap <Plug>(ale_go_to_type_definition_in_split)
+" ALE mappings
+nnoremap <Leader>a <Plug>(ale_toggle_buffer)
+nnoremap <Leader>A <Plug>(ale_toggle)
+nnoremap <Leader>ar <Plug>(ale_find_references)
+nnoremap <Leader>ad <Plug>(ale_go_to_definition)
+nnoremap <Leader>at <Plug>(ale_go_to_type_definition)
+nnoremap <Leader>ap <Plug>(ale_previous_wrap)
+nnoremap <Leader>an <Plug>(ale_next_wrap)
+nnoremap <Leader>ai <Plug>(ale_hover)
+nnoremap <Leader>am <Plug>(ale_detail)
+nnoremap <Leader>af <Plug>(ale_fix)
+" inoremap <Plug>(ale_complete)
 
-" Git Gutter mapping
+" GitGutter mappings
 nnoremap <Leader>g :GitGutterBufferToggle<CR>
 nnoremap <Leader>G :GitGutterToggle<CR>
-nmap <Leader>gp <Plug>GitGutterPreviewHunk
-nmap <Leader>gs <Plug>GitGutterStageHunk
-nmap <Leader>gu <Plug>GitGutterUndoHunk
-nmap <Leader>gj <Plug>GitGutterPrevHunk
-nmap <Leader>gk <Plug>GitGutterNextHunk
-omap <Leader>gi <Plug>GitGutterTextObjectInnerPending
-omap <Leader>go <Plug>GitGutterTextObjectOuterPending
-xmap <Leader>gi <Plug>GitGutterTextObjectInnerVisual
-xmap <Leader>go <Plug>GitGutterTextObjectOuterVisual
+nnoremap <Leader>gi <Plug>(GitGutterPreviewHunk)
+nnoremap <Leader>gs <Plug>(GitGutterStageHunk)
+nnoremap <Leader>gu <Plug>(GitGutterUndoHunk)
+nnoremap <Leader>gp <Plug>(GitGutterPrevHunk)
+nnoremap <Leader>gn <Plug>(GitGutterNextHunk)
