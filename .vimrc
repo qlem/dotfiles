@@ -11,8 +11,6 @@ call plug#end()
 
 " global settings
 set nocompatible
-set termguicolors
-set background=dark
 set number
 set cursorline
 set laststatus=2
@@ -26,9 +24,13 @@ set updatetime=100
 set splitbelow
 set splitright
 set wildmenu
+set display=lastline
 set backspace=indent,eol,start
+set cindent
 
-" colorscheme settings
+" colors settings
+set termguicolors
+set background=dark
 colorscheme darcula
 
 " bracket settings
@@ -47,10 +49,8 @@ set smartcase
 set hlsearch
 set incsearch
 
-" enable filetype detection
-filetype plugin on
-" enable filetype indenting
-filetype indent on
+" enable filetype detection / plugin / indent
+filetype plugin indent on
 " enable syntax highlighting
 syntax on
 
@@ -95,14 +95,22 @@ let g:lightline = {
     \ 'colorscheme': 'darculaOriginal',
     \ 'component_function': {
     \   'gitbranch': 'gitBranch#Get'
-    \ },
-    \ 'active': {
-    \   'right': [
-    \     ['lineinfo'],
-    \     ['percent'],
-    \     ['gitbranch','fileformat', 'fileencoding', 'filetype']
-    \   ]
     \ }
+    \ }
+let g:lightline.active = {
+    \ 'right': [
+    \   ['lineinfo'],
+    \   ['percent'],
+    \   ['gitbranch','fileformat', 'fileencoding', 'filetype']
+    \ ]
+    \ }
+let g:lightline.tabline = {
+    \ 'left': [ ['tabs'] ],
+    \ 'right': []
+    \ }
+let g:lightline.tab = {
+    \ 'active': ['filename', 'modified'],
+    \ 'inactive': ['filename', 'modified']
     \ }
 
 " global mappings
@@ -111,7 +119,7 @@ nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :Lex .<CR>
 
 " trailing space mappings
-nnoremap <Leader>bs :/\s\+$<CR>
+nnoremap <Leader>bs /\s\+$<CR>
 nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
 " windows mappings
