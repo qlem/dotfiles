@@ -2,7 +2,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'w0rp/ale'
 Plug 'doums/darcula'
-Plug 'doums/gitBranch'
+Plug 'doums/gitbranch'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
@@ -27,6 +27,7 @@ set wildmenu
 set display=lastline
 set backspace=indent,eol,start
 set cindent
+set hidden
 
 " colors settings
 set termguicolors
