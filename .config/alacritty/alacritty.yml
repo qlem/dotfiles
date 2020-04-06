@@ -30,10 +30,10 @@ font:
         style: Bold
     italic:
         family: Inconsolata
-        style: Italic
+        style: Regular
     bold_italic:
         family: Inconsolata
-        style: Bold Italic
+        style: Bold
     size: 13.5
     offset:
         x: 0

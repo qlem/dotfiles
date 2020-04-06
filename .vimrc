@@ -1,8 +1,11 @@
-" plugins
+" enable ALE completion
+let g:ale_completion_enabled=1
+
+" load plugins
 call plug#begin('~/.vim/plugged')
-Plug 'w0rp/ale'
 Plug 'doums/darcula'
-Plug 'doums/gitbranch'
+Plug 'doums/gitBranch'
+Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
@@ -28,8 +31,9 @@ set display=lastline
 set backspace=indent,eol,start
 set cindent
 set hidden
+set fillchars=vert:│
 
-" colors settings
+" color settings
 set termguicolors
 set background=dark
 colorscheme darcula
@@ -50,6 +54,12 @@ set smartcase
 set hlsearch
 set incsearch
 
+" completion menu settings
+set completeopt=menuone,popup,noinsert,noselect
+set completepopup=height:5,width:40,highlight:Pmenu,border:off
+set pumwidth=15
+set pumheight=10
+
 " enable filetype detection / plugin / indent
 filetype plugin indent on
 " enable syntax highlighting
@@ -63,6 +73,10 @@ augroup vimrc
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
+" set specific indent width to specific filetypes
+autocmd FileType vim setlocal shiftwidth=2 tabstop=2
+autocmd FileType json setlocal shiftwidth=2 tabstop=2
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 augroup END
 
 " GitGutter settings
@@ -80,16 +94,21 @@ let g:NERDTrimTrailingWhitespace=1
 
 " ALE settings
 let g:ale_linters_explicit=1
+let g:ale_completion_max_suggestions=50
+let g:ale_list_window_size=10
 let g:ale_echo_msg_error_str='E'
 let g:ale_echo_msg_warning_str='W'
 let g:ale_echo_msg_info_str='I'
 let g:ale_echo_msg_format='[%linter%][%severity%] %code: %%s'
 let g:ale_linters = {
+    \ 'c': ['gcc', 'clangd'],
     \ 'javascript': ['eslint']
     \ }
 let g:ale_fixers = {
+    \ 'c': ['clangtidy'],
     \ 'javascript': ['eslint']
     \ }
+let g:ale_c_gcc_options='-std=c11 -W -Wextra -Wall -Werror'
 
 " lightline settings
 let g:lightline = {
@@ -123,7 +142,7 @@ nnoremap <Leader>e :Lex .<CR>
 nnoremap <Leader>bs /\s\+$<CR>
 nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
-" windows mappings
+" window mappings
 nnoremap <Leader>ws :new<CR>
 nnoremap <Leader>wv :vnew<CR>
 nnoremap <Leader>w<Up> :resize +4<CR>
@@ -131,7 +150,7 @@ nnoremap <Leader>w<Down> :resize -4<CR>
 nnoremap <Leader>w<Right> :vertical :resize +4<CR>
 nnoremap <Leader>w<Left> :vertical :resize -4<CR>
 
-" tab pages mappings
+" tab page mappings
 nnoremap <Leader>t :tabnew<CR>
 nnoremap <Leader>tn :tabn<CR>
 nnoremap <Leader>tp :tabp<CR>
