@@ -10,8 +10,13 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofor
 # font settings
 font pango:DejaVu Sans Mono, Icons 11
 
-# Use Mouse+$mod to drag floating windows to their wanted position
+# click and press $mod to drag floating windows
 floating_modifier $mod
+
+# force some windows to be opened in floating mode
+for_window [class="(?i)JetBrains Toolbox"] floating enable
+for_window [class="(?i)pavucontrol"] floating enable
+for_window [class="(?i)nm-connection-editor"] floating enable
 
 # -- STARTUP APPLICATIONS --
 exec --no-startup-id $HOME/bin/wallpaper.sh &
@@ -114,7 +119,7 @@ bindsym $mod+Shift+Right move right
 
 # resize window / container
 mode "resize" {
-    # press j k l m to shrink / grow window or container width / height
+    # press j k l m to shrink / grow the width / height
     bindsym j resize shrink width 10 px or 10 ppt
     bindsym k resize grow height 10 px or 10 ppt
     bindsym l resize shrink height 10 px or 10 ppt
@@ -175,7 +180,7 @@ bindsym $mod+w mode "$mv_workspace"
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
-# restart i3 inplace - keep the current session layout 
+# restart i3 inplace - keep the current session layout
 bindsym $mod+Shift+r restart
 
 # exit i3 - log out

@@ -1,136 +1,135 @@
 env:
-    TERM: xterm-256color
+  TERM: xterm-256color
 window:
-    dimensions:
-        columns: 0
-        lines: 0
-    position:
-        x: 0
-        y: 0
-    padding:
-        x: 0
-        y: 0
-    dynamic_padding: false
-    decorations: full
-    startup_mode: Maximized
-    title: Alacritty
-    class:
-        instance: Alacritty
-        general: Alacritty
-    gtk_theme_variant: None
+  dimensions:
+    columns: 0
+    lines: 0
+  position:
+    x: 0
+    y: 0
+  padding:
+    x: 0
+    y: 0
+  dynamic_padding: false
+  decorations: full
+  startup_mode: Maximized
+  title: Alacritty
+  class:
+    instance: Alacritty
+    general: Alacritty
+  gtk_theme_variant: None
 scrolling:
-    history: 10000
-    multiplier: 3
+  history: 10000
+  multiplier: 3
 font:
-    normal:
-        family: Inconsolata
-        style: Regular
-    bold:
-        family: Inconsolata
-        style: Bold
-    italic:
-        family: Inconsolata
-        style: Regular
-    bold_italic:
-        family: Inconsolata
-        style: Bold
-    size: 13.5
-    offset:
-        x: 0
-        y: 0
-    glyph_offset:
-        x: 0
-        y: 0
+  normal:
+    family: Inconsolata
+    style: Regular
+  bold:
+    family: Inconsolata
+    style: Bold
+  italic:
+    family: Inconsolata
+    style: Regular
+  bold_italic:
+    family: Inconsolata
+    style: Bold
+  size: 13.5
+  offset:
+    x: 0
+    y: 0
+  glyph_offset:
+    x: 0
+    y: 0
 draw_bold_text_with_bright_colors: true
 # Base16 Tomorrow Night Eighties 256
 # https://github.com/chriskempson/base16
 colors:
-    primary:
-        background: '0x2d2d2d'
-        foreground: '0xcccccc'
-        # dim_foreground: '0x9a9a9a'
-        # bright_foreground: '0xffffff'
-    cursor:
-        text: '0x2d2d2d'
-        cursor: '0xcccccc'
-    # selection:
-        # text: '0xeaeaea'
-        # background: '0x404040'
-    normal:
-        black:   '0x2d2d2d'
-        red:     '0xf2777a'
-        green:   '0x99cc99'
-        yellow:  '0xffcc66'
-        blue:    '0x6699cc'
-        magenta: '0xcc99cc'
-        cyan:    '0x66cccc'
-        white:   '0xcccccc'
-    bright:
-        black:   '0x999999'
-        red:     '0xf2777a'
-        green:   '0x99cc99'
-        yellow:  '0xffcc66'
-        blue:    '0x6699cc'
-        magenta: '0xcc99cc'
-        cyan:    '0x66cccc'
-        white:   '0xffffff'
-    # dim:
-        # black:   '0x000000'
-        # red:     '0x8c3336'
-        # green:   '0x7a8530'
-        # yellow:  '0x97822e'
-        # blue:    '0x506d8f'
-        # magenta: '0x80638e'
-        # cyan:    '0x497e7a'
-        # white:   '0x9a9a9a'
-    indexed_colors:
-        - { index: 16, color: '0xf99157' }
-        - { index: 17, color: '0xa3685a' }
-        - { index: 18, color: '0x393939' }
-        - { index: 19, color: '0x515151' }
-        - { index: 20, color: '0xb4b7b4' }
-        - { index: 21, color: '0xe0e0e0' }
+  primary:
+    background: '0x2d2d2d'
+    foreground: '0xcccccc'
+    # dim_foreground: '0x9a9a9a'
+    # bright_foreground: '0xffffff'
+  cursor:
+    text: '0x2d2d2d'
+    cursor: '0xcccccc'
+  # selection:
+    # text: '0xeaeaea'
+    # background: '0x404040'
+  normal:
+    black:   '0x2d2d2d'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xcccccc'
+  bright:
+    black:   '0x999999'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xffffff'
+  # dim:
+    # black:   '0x000000'
+    # red:     '0x8c3336'
+    # green:   '0x7a8530'
+    # yellow:  '0x97822e'
+    # blue:    '0x506d8f'
+    # magenta: '0x80638e'
+    # cyan:    '0x497e7a'
+    # white:   '0x9a9a9a'
+  indexed_colors:
+    - { index: 16, color: '0xf99157' }
+    - { index: 17, color: '0xa3685a' }
+    - { index: 18, color: '0x393939' }
+    - { index: 19, color: '0x515151' }
+    - { index: 20, color: '0xb4b7b4' }
+    - { index: 21, color: '0xe0e0e0' }
 visual_bell:
-    animation: EaseOutExpo
-    duration: 0
-    color: '0xffffff'
+  animation: EaseOutExpo
+  duration: 0
+  color: '0xffffff'
 background_opacity: 1.0
 selection:
-    semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
-    save_to_clipboard: false
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+  save_to_clipboard: false
 dynamic_title: true
 cursor:
-    style: Block
-    unfocused_hollow: true
+  style: Block
+  unfocused_hollow: true
 live_config_reload: true
 # shell:
-    # user login shell
+  # user login shell
 working_directory: None
 alt_send_esc: true
 debug:
-    render_timer: false
-    persistent_logging: false
-    log_level: Warn
-    print_events: false
-    ref_test: false
+  render_timer: false
+  persistent_logging: false
+  log_level: Warn
+  print_events: false
 mouse:
-    double_click: { threshold: 300 }
-    triple_click: { threshold: 300 }
-    hide_when_typing: false
-    url:
-        launcher:
-            program: xdg-open
-            args: []
-        modifiers: None
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+  hide_when_typing: false
+  url:
+    launcher:
+      program: xdg-open
+      args: []
+    modifiers: None
 # mouse_bindings:
-    # - { mouse: Left, action: Copy }
-    # - { mouse: Right, action: Paste }
+  # - { mouse: Left, action: Copy }
+  # - { mouse: Right, action: Paste }
 key_bindings:
-    - { key: V,        mods: Control|Shift, action: Paste            }
-    - { key: C,        mods: Control|Shift, action: Copy             }
-    - { key: Insert,   mods: Shift,         action: PasteSelection   }
-    - { key: Key0,     mods: Control,       action: ResetFontSize    }
-    - { key: Equals,   mods: Control,       action: IncreaseFontSize }
-    - { key: Add,      mods: Control,       action: IncreaseFontSize }
-    - { key: Subtract, mods: Control,       action: DecreaseFontSize }
-    - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - { key: V,        mods: Control|Shift, action: Paste            }
+  - { key: C,        mods: Control|Shift, action: Copy             }
+  - { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control,       action: ResetFontSize    }
+  - { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Add,      mods: Control,       action: IncreaseFontSize }
+  - { key: Subtract, mods: Control,       action: DecreaseFontSize }
+  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
