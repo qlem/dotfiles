@@ -27,6 +27,7 @@ cp ~/.config/i3/config .config/i3/
 
 [[ ! -d ".config/i3status" ]] && mkdir .config/i3status
 cp ~/.config/i3status/config .config/i3status/
+cp ~/.config/i3status/wrapper.py .config/i3status/
 
 [[ ! -d ".config/picom" ]] && mkdir .config/picom
 cp ~/.config/picom/picom.conf .config/picom/

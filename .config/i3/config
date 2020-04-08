@@ -197,7 +197,7 @@ client.urgent            #900000 #900000 #ffffff #303030   #303030
 
 # -- BAR --
 bar {
-    status_command i3status
+    status_command i3status | $HOME/.config/i3status/wrapper.py
     tray_output primary
     tray_padding 4
     separator_symbol " "

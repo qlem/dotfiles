@@ -156,7 +156,7 @@ let g:ale_completion_symbols = {
   \ 'keyword': '[kwd]',
   \ 'snippet': '[spt]',
   \ 'color': '[clr]',
-  \ 'file': '[fl]',
+  \ 'file': '[fle]',
   \ 'reference': '[ref]',
   \ 'folder': '[fol]',
   \ 'enum member': '[emm]',
@@ -193,50 +193,52 @@ let g:lightline.tab = {
 
 " global mappings
 let mapleader=","
-nnoremap <leader>h :noh<cr>
-nnoremap <leader>e :lex .<cr>
+nnoremap <Leader>h :noh<cr>
+nnoremap <Leader>e :lex .<cr>
 
 " trailing space mappings
-nnoremap <leader>bs /\s\+$<cr>
-nnoremap <leader>bc :%s/\s\+$//g<cr>
+nnoremap <Leader>bs /\s\+$<cr>
+nnoremap <Leader>bc :%s/\s\+$//g<cr>
 
 " open / close location list window
-nnoremap <leader>lo :lopen<cr>
-nnoremap <leader>lc :lclose<cr>
+nnoremap <Leader>lo :lopen<cr>
+nnoremap <Leader>lc :lclose<cr>
 
 " window mappings
-nnoremap <leader>ws :new<cr>
-nnoremap <leader>wv :vnew<cr>
-nnoremap <leader>w<up> :resize +4<cr>
-nnoremap <leader>w<down> :resize -4<cr>
-nnoremap <leader>w<right> :vertical :resize +4<cr>
-nnoremap <leader>w<left> :vertical :resize -4<cr>
+nnoremap <Leader>ws :new<cr>
+nnoremap <Leader>wv :vnew<cr>
+nnoremap <Leader>w<up> :resize +4<cr>
+nnoremap <Leader>w<down> :resize -4<cr>
+nnoremap <Leader>w<right> :vertical resize +4<cr>
+nnoremap <Leader>w<left> :vertical resize -4<cr>
 
 " tab page mappings
-nnoremap <leader>t :tabnew<cr>
-nnoremap <leader>tn :tabn<cr>
-nnoremap <leader>tp :tabp<cr>
-nnoremap <leader>t<left> :tabm -<cr>
-nnoremap <leader>t<right> :tabm +<cr>
+nnoremap <Leader>t :tabnew<cr>
+nnoremap <Leader>tn :tabn<cr>
+nnoremap <Leader>tp :tabp<cr>
+nnoremap <Leader>t<left> :tabm -<cr>
+nnoremap <Leader>t<right> :tabm +<cr>
 
 " ale mappings
-nmap <leader>a <plug>(ale_toggle_buffer)
-nmap <leader>a <plug>(ale_toggle)
-nmap <leader>ar <plug>(ale_find_references)
-nmap <leader>ad <plug>(ale_go_to_definition)
-nmap <leader>at <plug>(ale_go_to_type_definition)
-nmap <leader>ap <plug>(ale_previous_wrap)
-nmap <leader>an <plug>(ale_next_wrap)
-nmap <leader>ai <plug>(ale_hover)
-nmap <leader>am <plug>(ale_detail)
-nmap <leader>af <plug>(ale_fix)
-" imap <plug>(ale_complete)
+nmap <Leader>a <Plug>(ale_toggle_buffer)
+nmap <Leader>A <Plug>(ale_toggle)
+nmap <Leader>ar <Plug>(ale_find_references)
+nmap <Leader>ad <Plug>(ale_go_to_definition)
+nmap <Leader>at <Plug>(ale_go_to_type_definition)
+nmap <Leader>ao <Plug>(ale_documentation)
+nmap <Leader>an <plug>(ale_rename)
+nmap <Leader>ai <Plug>(ale_hover)
+nmap <Leader>am <Plug>(ale_detail)
+nmap <Leader>ak <Plug>(ale_previous_wrap)
+nmap <Leader>aj <Plug>(ale_next_wrap)
+nmap <Leader>af <Plug>(ale_fix)
+" imap <Plug>(ale_complete)
 
-" gitgutter mappings
-nnoremap <leader>g :gitgutterbuffertoggle<cr>
-nnoremap <leader>g :gitguttertoggle<cr>
-nmap <leader>gi <plug>(gitgutterpreviewhunk)
-nmap <leader>gs <plug>(gitgutterstagehunk)
-nmap <leader>gu <plug>(gitgutterundohunk)
-nmap <leader>gp <plug>(gitgutterprevhunk)
-nmap <Leader>gn <Plug>(GitGutterNextHunk)
+" GitGutter mappings
+nnoremap <Leader>g :GitGutterBufferToggle<cr>
+nnoremap <Leader>G :GitGutterToggle<cr>
+nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
+nmap <Leader>gs <Plug>(GitGutterStageHunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+nmap <Leader>gk <Plug>(GitGutterPrevHunk)
+nmap <Leader>gj <Plug>(GitGutterNextHunk)
