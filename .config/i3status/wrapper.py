@@ -3,7 +3,7 @@
 import sys
 import json
 
-def get_file_content(path):
+def get_value(path):
     try:
         f = open(path)
         raw = f.readlines()[0].strip()
@@ -14,8 +14,8 @@ def get_file_content(path):
         return -1
 
 def get_backlight():
-    curr = get_file_content('/sys/class/backlight/intel_backlight/brightness')
-    maxb = get_file_content('/sys/class/backlight/intel_backlight/max_brightness')
+    curr = get_value('/sys/class/backlight/intel_backlight/brightness')
+    maxb = get_value('/sys/class/backlight/intel_backlight/max_brightness')
     if curr < 0 or maxb <= 0:
         return ' err'
     val = curr * 100 / maxb

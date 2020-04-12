@@ -219,7 +219,7 @@ nnoremap <Leader>tp :tabp<cr>
 nnoremap <Leader>t<left> :tabm -<cr>
 nnoremap <Leader>t<right> :tabm +<cr>
 
-" ale mappings
+" ALE mappings
 nmap <Leader>a <Plug>(ale_toggle_buffer)
 nmap <Leader>A <Plug>(ale_toggle)
 nmap <Leader>ar <Plug>(ale_find_references)
