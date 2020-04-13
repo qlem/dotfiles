@@ -93,6 +93,12 @@ bindsym $mod+space focus mode_toggle
 # kill focused window
 bindsym $mod+x kill
 
+# make focused window a scratchpad window
+bindsym $mod+Shift+i move scratchpad
+
+# toggle show / hide scratchpad windows
+bindsym $mod+i scratchpad show
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
