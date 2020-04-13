@@ -5,7 +5,7 @@ default_border normal 0
 default_floating_border normal 1
 
 # lock session on ACPI events
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork &
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork
 
 # font settings
 font pango:DejaVu Sans Mono, Icons 11
@@ -165,7 +165,7 @@ bindsym $mod+Shift+5 move container to workspace $ws5
 bindsym $mod+Shift+6 move container to workspace $ws6
 bindsym $mod+Shift+7 move container to workspace $ws7
 
-# move current workspace to a different screen
+# move current workspace to different screen
 set $mv_workspace Move workspace to screen (l) left, (r) right, (u) up, (d) down, (p) primary
 mode "$mv_workspace" {
     bindsym l move workspace to output left, mode "default"
