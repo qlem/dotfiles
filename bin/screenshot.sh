@@ -1,6 +1,5 @@
 #!/bin/bash
 
-CLIENT_ID='a5dd3225fc52739'
 HEADER="Authorization: Client-ID $CLIENT_ID"
 URL='https://api.imgur.com/3/image'
 
