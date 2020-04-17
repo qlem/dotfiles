@@ -7,7 +7,7 @@ cp ~/.xinitrc .
 cp ~/.Xresources .
 
 [[ ! -d "bin" ]] && mkdir bin
-cp ~/bin/* bin/
+cp ~/bin/*.sh bin/
 
 [[ ! -d ".config" ]] && mkdir .config
 

@@ -10,17 +10,17 @@ diff=$tmp/diff.txt
 export LANG=C
 export LC_ALL=C
 
-# base package
+# get pkg from base
 pacman -Si base | grep 'Depends On' | cut -d: -f2 | awk '{$1=$1};1' | tr ' ' '\n' > $base
 
-# base-devel group
+# get pkg from base-devel group
 pacman -Sgq base-devel >> $base
 sort -u -o $base $base
 
-# installed packages
+# get all installed pkg
 pacman -Qeq > $pkg
 
-# list installed packages except packages from base and base-devel
+# list installed pkg except pkg from base and base-devel
 diff $pkg $base > $diff
 sed -i -r '/^(<|>).*$/!d;s/^(< |> )(.*)$/\2/' $diff
 sort -o $diff $diff

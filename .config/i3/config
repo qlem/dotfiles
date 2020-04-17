@@ -5,7 +5,7 @@ default_border normal 0
 default_floating_border normal 1
 
 # lock session on ACPI events
-exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $HOME/bin/lock.sh --nofork &
 
 # font settings
 font pango:DejaVu Sans Mono, Icons 11
@@ -31,7 +31,6 @@ exec --no-startup-id nm-applet
 # -- KEY BINDINGS  --
 bindsym $mod+exclam exec rofi -show drun
 bindsym $mod+Return exec --no-startup-id alacritty
-bindsym $mod+Print exec --no-startup-id $HOME/bin/screenshot.sh &
 
 # brightness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
@@ -44,8 +43,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # handle session actions
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
-mode "$mode_system" {
+set $system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$system" {
     bindsym l exec --no-startup-id $HOME/bin/lock.sh, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id systemctl suspend, mode "default"
@@ -54,19 +53,28 @@ mode "$mode_system" {
     bindsym Shift+s exec --no-startup-id systemctl poweroff, mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+Delete mode "$mode_system"
+bindsym $mod+Delete mode "$system"
 
 # manage external displays
-set $mode_display Ext. screen (y) DP on, (u) DP off, (i) HDMI on, (o) HDMI off
+set $display Ext. screen (y) DP on, (u) DP off, (i) HDMI on, (o) HDMI off
 set $set_wallpaper $HOME/bin/wallpaper.sh &
-mode "$mode_display" {
+mode "$display" {
     bindsym y exec --no-startup-id xrandr --output DP-2 --auto --right-of eDP-1 && $set_wallpaper, mode "default"
     bindsym u exec --no-startup-id xrandr --output DP-2 --off, mode "default"
     bindsym i exec --no-startup-id xrandr --output HDMI-1 --auto --right-of eDP-1 && $set_wallpaper, mode "default"
     bindsym o exec --no-startup-id xrandr --output HDMI-1 --off, mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+n mode "$mode_display"
+bindsym $mod+n mode "$display"
+
+# screen capture
+set $capture Screen capture with upload to Imgur (y) yes, (n) no
+mode "$capture" {
+    bindsym y exec --no-startup-id $HOME/bin/screenshot.sh --upload, mode "default"
+    bindsym n exec --no-startup-id $HOME/bin/screenshot.sh, mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Print mode "$capture"
 
 # change container layout - stacked / tabbed / toggle split
 bindsym $mod+s layout stacking
