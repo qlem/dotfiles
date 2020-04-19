@@ -22,6 +22,9 @@ cp ~/.config/conky/conky.conf .config/conky/
 cp ~/.config/fish/config.fish .config/fish/
 cp ~/.config/fish/functions/* .config/fish/functions/
 
+[[ ! -d ".config/spectrwm" ]] && mkdir .config/spectrwm
+cp ~/.config/spectrwm/spectrwm.conf .config/spectrwm/
+
 [[ ! -d ".config/i3" ]] && mkdir .config/i3
 cp ~/.config/i3/config .config/i3/
 
@@ -34,6 +37,9 @@ cp ~/.config/picom/picom.conf .config/picom/
 
 [[ ! -d ".config/rofi" ]] && mkdir .config/rofi
 cp ~/.config/rofi/*.rasi .config/rofi/
+
+[[ ! -d ".config/redshift" ]] && mkdir .config/redshift
+cp ~/.config/redshift/redshift.conf .config/redshift/
 
 [[ ! -d ".config/terminator" ]] && mkdir .config/terminator
 cp ~/.config/terminator/config .config/terminator/

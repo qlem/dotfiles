@@ -24,7 +24,7 @@ exec --no-startup-id picom --config $HOME/.config/picom/picom.conf -b
 
 # -- SYSTEM TRAY APPLICATIONS --
 exec --no-startup-id $HOME/.local/share/JetBrains/Toolbox/bin/jetbrains-toolbox --minimize
-exec --no-startup-id redshift-gtk
+exec --no-startup-id redshift-gtk -c /home/qlem/.config/redshift/redshift.conf
 exec --no-startup-id pasystray
 exec --no-startup-id nm-applet
 
