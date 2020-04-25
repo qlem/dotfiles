@@ -14,7 +14,7 @@ def get_value(path):
         return -1
 
 def get_backlight():
-    curr = get_value('/sys/class/backlight/intel_backlight/brightness')
+    curr = get_value('/sys/class/backlight/intel_backlight/actual_brightness')
     maxb = get_value('/sys/class/backlight/intel_backlight/max_brightness')
     if curr < 0 or maxb <= 0:
         return ' err'

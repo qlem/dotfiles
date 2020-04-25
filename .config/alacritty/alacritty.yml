@@ -121,9 +121,9 @@ mouse:
       program: xdg-open
       args: []
     modifiers: None
-# mouse_bindings:
-  # - { mouse: Left, action: Copy }
-  # - { mouse: Right, action: Paste }
+mouse_bindings:
+  - { mouse: Left, action: Copy }
+  - { mouse: Right, action: Paste }
 key_bindings:
   - { key: V,        mods: Control|Shift, action: Paste            }
   - { key: C,        mods: Control|Shift, action: Copy             }

@@ -127,6 +127,7 @@ let g:ale_c_clangd_options='--clang-tidy --clang-tidy-checks='
   \ . '-clang-analyser-osx*,'
   \ . 'bugprone-*,'
   \ . 'readability-*,'
+  \ . '-readability-magic-numbers,'
   \ . 'cert-*-c'
 let g:ale_c_clangtidy_checks=[
   \ '-*',
@@ -137,35 +138,36 @@ let g:ale_c_clangtidy_checks=[
   \ '-clang-analyser-osx*',
   \ 'bugprone-*',
   \ 'readability-*',
+  \ '-readability-magic-numbers',
   \ 'cert-*-c"'
   \ ]
 let g:ale_completion_symbols = {
-  \ 'text': '[txt]',
-  \ 'method': '[mth]',
-  \ 'function': '[fct]',
-  \ 'constructor': '[ctr]',
-  \ 'field': '[fld]',
-  \ 'variable': '[var]',
-  \ 'class': '[cls]',
-  \ 'interface': '[itf]',
-  \ 'module': '[mdl]',
-  \ 'property': '[ppt]',
-  \ 'unit': '[unt]',
-  \ 'value': '[val]',
-  \ 'enum': '[enm]',
-  \ 'keyword': '[kwd]',
-  \ 'snippet': '[spt]',
-  \ 'color': '[clr]',
-  \ 'file': '[fle]',
-  \ 'reference': '[ref]',
-  \ 'folder': '[fol]',
-  \ 'enum member': '[emm]',
-  \ 'constant': '[cst]',
-  \ 'struct': '[stc]',
-  \ 'event': '[evt]',
-  \ 'operator': '[opt]',
-  \ 'type_parameter': '[tpm]',
-  \ '<default>': '[dfl]'
+  \ 'text': '[TXT]',
+  \ 'method': '[MTH]',
+  \ 'function': '[FCT]',
+  \ 'constructor': '[CTR]',
+  \ 'field': '[FLD]',
+  \ 'variable': '[VAR]',
+  \ 'class': '[CLS]',
+  \ 'interface': '[ITF]',
+  \ 'module': '[MDL]',
+  \ 'property': '[PPT]',
+  \ 'unit': '[UNT]',
+  \ 'value': '[VAL]',
+  \ 'enum': '[ENM]',
+  \ 'keyword': '[KWD]',
+  \ 'snippet': '[SPT]',
+  \ 'color': '[CLR]',
+  \ 'file': '[FLE]',
+  \ 'reference': '[REF]',
+  \ 'folder': '[FOL]',
+  \ 'enum member': '[EMM]',
+  \ 'constant': '[CST]',
+  \ 'struct': '[STC]',
+  \ 'event': '[EVT]',
+  \ 'operator': '[OPT]',
+  \ 'type_parameter': '[TPM]',
+  \ '<default>': '[DFL]'
   \ }
 
 " lightline settings
