@@ -8,9 +8,9 @@ limit=150
 sink=$(pacmd stat | awk -F": " '/^Default sink name: /{print $2}')
 volume=$(pactl list sinks | grep "Name: $sink" -A 7 | awk '/Volume: /{print $5}' | sed -r 's/%//g')
 
-if [[ $1 == --volume-up  ]] && (( volume + inc <= limit )); then
+if [[ $1 == --volume-up ]] && (( volume + inc <= limit )); then
     pactl set-sink-volume @DEFAULT_SINK@ "+$inc%"
-elif [[ $1 == --volume-down  ]]; then
+elif [[ $1 == --volume-down ]]; then
     pactl set-sink-volume @DEFAULT_SINK@ "-$inc%"
 elif [[ $1 == --mute ]]; then
     pactl set-sink-mute @DEFAULT_SINK@ toggle
