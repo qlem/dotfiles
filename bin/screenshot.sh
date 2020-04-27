@@ -1,42 +1,42 @@
 #!/bin/bash
 
+# This script requiers the following binaries: dmenu - shotgun - slop - xclip - curl - jq
+
 CLIENT_ID='a5dd3225fc52739'
 HEADER="Authorization: Client-ID $CLIENT_ID"
 URL='https://api.imgur.com/3/image'
-PREFIX_ERR='Screen capture error'
-
-if ! shotgun -v &>/dev/null || ! slop -v &>/dev/null || ! xclip -version &>/dev/null || ! jq -V &>/dev/null; then
-    >&2 printf "%s: Script requires following binaries: dmenu - curl - shotgun - slop - xclip - jq\n" "$PREFIX_ERR"
-    exit 1
-fi
+PRERR='Screen capture error'
 
 upload() {
     local res
+    local error
     local success
     if ! res=$(curl -Ss -L -X POST "$URL" -H "$HEADER" -F "image=@$file"); then
-        >&2 printf "%s: Upload failed\n" "$PREFIX_ERR"
+        >&2 printf "%s: Upload failed\n" "$PRERR"
         exit 1
     fi
     success=$(echo "$res" | jq -r .success)
-    if [[ $success != true ]]; then
-        error=$(echo "$res" | jq -r .data.error)
-        >&2 printf "%s: Upload failed: %s\n" "$PREFIX_ERR" "$error"
-        exit 1
-    else
+    if [[ $success == true ]]; then
         echo "$res" | jq -r .data.link | xclip -selection clipboard
+    else
+        error=$(echo "$res" | jq -r .data.error)
+        >&2 printf "%s: Upload failed: %s\n" "$PRERR" "$error"
+        exit 1
     fi
 }
 
 capture() {
+    local slop
+    local area
     if [[ $sel == "$item1" ]]; then
         shotgun -f png "$file" >/dev/null 2>&1
     elif [[ $sel == "$item2" ]]; then
         slop=$(slop -f "-i %i -g %g")
-        if [[ -n $slop ]]; then
-            read -ra sel <<< "$slop"
-            shotgun -f png "$file" "${sel[@]}" >/dev/null 2>&1
-        else
+        if [[ -z $slop ]]; then
             exit 0
+        else
+            read -ra area <<< "$slop"
+            shotgun -f png "$file" "${area[@]}" >/dev/null 2>&1
         fi
     else
       exit 0
