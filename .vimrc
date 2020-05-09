@@ -38,6 +38,9 @@ set previewheight=5
 set termguicolors
 set background=dark
 colorscheme darcula
+" override highlight of the max text width column
+hi clear ColorColumn
+hi ColorColumn ctermfg=11 ctermbg=236
 
 " bracket settings
 set showmatch
@@ -74,13 +77,16 @@ augroup vimrc
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
-" set specific indent width to specific filetypes
+" set indent width for specific filetypes
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2
 autocmd FileType json setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+" enable max text width column in c files
+autocmd FileType c setlocal textwidth=80 colorcolumn=+1
 augroup END
 
 " GitGutter settings
+let g:gitgutter_enabled=1
 let g:gitgutter_map_keys=0
 
 " netrw settings
@@ -174,14 +180,14 @@ let g:ale_completion_symbols = {
 let g:lightline = {
   \ 'colorscheme': 'darculaOriginal',
   \ 'component_function': {
-  \   'gitbranch': 'gitBranch#get'
+  \   'gitBranch': 'gitBranch#Get'
   \ }
   \ }
 let g:lightline.active = {
   \ 'right': [
   \   ['lineinfo'],
   \   ['percent'],
-  \   ['gitbranch','fileformat', 'fileencoding', 'filetype']
+  \   ['gitBranch','fileformat', 'fileencoding', 'filetype']
   \ ]
   \ }
 let g:lightline.tabline = {
