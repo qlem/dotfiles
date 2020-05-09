@@ -1,23 +1,5 @@
 env:
   TERM: xterm-256color
-window:
-  dimensions:
-    columns: 0
-    lines: 0
-  position:
-    x: 0
-    y: 0
-  padding:
-    x: 0
-    y: 0
-  dynamic_padding: false
-  decorations: full
-  startup_mode: Maximized
-  title: Alacritty
-  class:
-    instance: Alacritty
-    general: Alacritty
-  gtk_theme_variant: None
 scrolling:
   history: 10000
   multiplier: 3
@@ -35,12 +17,6 @@ font:
     family: Inconsolata
     style: Bold
   size: 13.0
-  offset:
-    x: 0
-    y: 0
-  glyph_offset:
-    x: 0
-    y: 0
 draw_bold_text_with_bright_colors: true
 # Base16 Tomorrow Night Eighties 256
 # https://github.com/chriskempson/base16
@@ -90,28 +66,12 @@ colors:
     - { index: 19, color: '0x515151' }
     - { index: 20, color: '0xb4b7b4' }
     - { index: 21, color: '0xe0e0e0' }
-visual_bell:
-  animation: EaseOutExpo
-  duration: 0
-  color: '0xffffff'
 background_opacity: 1.0
-selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
-  save_to_clipboard: false
 dynamic_title: true
 cursor:
   style: Block
   unfocused_hollow: true
 live_config_reload: true
-# shell:
-  # user login shell
-working_directory: None
-alt_send_esc: true
-debug:
-  render_timer: false
-  persistent_logging: false
-  log_level: Warn
-  print_events: false
 mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }

@@ -8,7 +8,7 @@ item2='DP [off]'
 item3='HDMI [on]'
 item4='HDMI [off]'
 
-sel=$(echo -e "$item1\n$item2\n$item3\n$item4" | dmenu -p 'Ext. screen' -i "$@")
+sel=$(echo -e "$item1\n$item2\n$item3\n$item4" | dmenu -p 'Ext. screens' -i "$@")
 if [[ $sel == "$item1" ]]; then
     xrandr --output $dp --auto --right-of $primary && wallpaper.sh
 elif [[ $sel == "$item2" ]]; then
