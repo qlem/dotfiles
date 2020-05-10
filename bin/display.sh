@@ -3,10 +3,10 @@
 dp=DP-2
 hdmi=HDMI-1
 primary=eDP-1
-item1='DP [on]'
-item2='DP [off]'
-item3='HDMI [on]'
-item4='HDMI [off]'
+item1='dp [on]'
+item2='dp [off]'
+item3='hdmi [on]'
+item4='hdmi [off]'
 
 sel=$(echo -e "$item1\n$item2\n$item3\n$item4" | dmenu -p 'Ext. screens' -i "$@")
 if [[ $sel == "$item1" ]]; then
