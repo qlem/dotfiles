@@ -1,8 +1,6 @@
-" enable ALE completion
-let g:ale_completion_enabled=0
-
 " load plugins
 call plug#begin('~/.vim/plugged')
+Plug 'doums/coBra'
 Plug 'doums/darcula'
 Plug 'doums/gitBranch'
 Plug 'itchyny/lightline.vim'
@@ -110,6 +108,8 @@ hi! link GitGutterDelete GitDeleteStripe
 
 " YouCompleteMe settings
 let g:ycm_auto_hover=''
+let g:ycm_max_num_candidates = 50
+let g:ycm_max_num_identifier_candidates=20
 let g:ycm_max_diagnostics_to_display=50
 let g:ycm_disable_for_files_larger_than_kb=1000
 let g:ycm_warning_symbol='--'
@@ -157,84 +157,6 @@ let g:lightline.tabline = {
 let g:lightline.tab = {
   \ 'active': ['filename', 'modified'],
   \ 'inactive': ['filename', 'modified']
-  \ }
-
-" ALE settings
-let g:ale_enabled=0
-let g:ale_linters_explicit=1
-let g:ale_hover_to_preview=1
-let g:airline#extensions#ale#enabled=0
-" let g:ale_sign_column_always=1
-let g:ale_sign_error='>>'
-let g:ale_sign_warning='--'
-let g:ale_sign_info='~~'
-let g:ale_echo_msg_error_str='Err'
-let g:ale_echo_msg_warning_str='Warn'
-let g:ale_echo_msg_info_str='Info'
-let g:ale_echo_msg_log_str='Log'
-let g:ale_echo_msg_format='[%linter%][%severity%] %code: %%s'
-let g:ale_lsp_show_message_format='[%linter%][%severity%] %%s'
-let g:ale_lsp_show_message_severity='information'
-let g:ale_warn_about_trailing_blank_lines=0
-let g:ale_warn_about_trailing_whitespace=0
-let g:ale_linters = {
-  \ 'c': ['clangd', 'clangtidy',],
-  \ 'javascript': ['eslint']
-  \ }
-let g:ale_fixers = {
-  \ 'c': ['clangtidy'],
-  \ 'javascript': ['eslint']
-  \ }
-let g:ale_c_clangd_options='--clang-tidy --clang-tidy-checks='
-  \ . '-*,'
-  \ . 'clang-diagnostic-*,'
-  \ . 'clang-analyzer-*,'
-  \ . '-clang-analyser-cplusplus*,'
-  \ . '-clang-analyser-optin*,'
-  \ . '-clang-analyser-osx*,'
-  \ . 'bugprone-*,'
-  \ . 'readability-*,'
-  \ . '-readability-magic-numbers,'
-  \ . 'cert-*-c'
-let g:ale_c_clangtidy_checks=[
-  \ '-*',
-  \ 'clang-diagnostic-*',
-  \ 'clang-analyzer-*',
-  \ '-clang-analyser-cplusplus*',
-  \ '-clang-analyser-optin*',
-  \ '-clang-analyser-osx*',
-  \ 'bugprone-*',
-  \ 'readability-*',
-  \ '-readability-magic-numbers',
-  \ 'cert-*-c"'
-  \ ]
-let g:ale_completion_symbols = {
-  \ 'text': '[TXT]',
-  \ 'method': '[MTH]',
-  \ 'function': '[FCT]',
-  \ 'constructor': '[CTR]',
-  \ 'field': '[FLD]',
-  \ 'variable': '[VAR]',
-  \ 'class': '[CLS]',
-  \ 'interface': '[ITF]',
-  \ 'module': '[MDL]',
-  \ 'property': '[PPT]',
-  \ 'unit': '[UNT]',
-  \ 'value': '[VAL]',
-  \ 'enum': '[ENM]',
-  \ 'keyword': '[KWD]',
-  \ 'snippet': '[SPT]',
-  \ 'color': '[CLR]',
-  \ 'file': '[FLE]',
-  \ 'reference': '[REF]',
-  \ 'folder': '[FOL]',
-  \ 'enum member': '[EMM]',
-  \ 'constant': '[CST]',
-  \ 'struct': '[STC]',
-  \ 'event': '[EVT]',
-  \ 'operator': '[OPT]',
-  \ 'type_parameter': '[TPM]',
-  \ '<default>': '[DFL]'
   \ }
 
 " global key bindings
@@ -289,18 +211,3 @@ nnoremap <Leader>ai :YcmCompleter GetDoc<CR>
 nnoremap <Leader>af :YcmCompleter FixIt<CR>
 nnoremap <Leader>an :YcmCompleter RefactorRename 
 nmap <Leader>d <Plug>(YCMHover)
-
-" ALE key bindings
-" nmap <Leader>ae <Plug>(ale_toggle_buffer)
-" nmap <Leader>aE <Plug>(ale_toggle)
-" nmap <Leader>ar <Plug>(ale_find_references)
-" nmap <Leader>ad <Plug>(ale_go_to_definition)
-" nmap <Leader>at <Plug>(ale_go_to_type_definition)
-" nmap <Leader>ao <Plug>(ale_documentation)
-" nmap <Leader>an <plug>(ale_rename)
-" nmap <Leader>ai <Plug>(ale_hover)
-" nmap <Leader>am <Plug>(ale_detail)
-" nmap <Leader>ak <Plug>(ale_previous_wrap)
-" nmap <Leader>aj <Plug>(ale_next_wrap)
-" nmap <Leader>af <Plug>(ale_fix)
-" imap <Plug>(ale_complete)
