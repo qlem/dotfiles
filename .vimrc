@@ -265,6 +265,15 @@ nnoremap <Leader>tp :tabp<CR>
 nnoremap <Leader>t<left> :tabm -<CR>
 nnoremap <Leader>t<right> :tabm +<CR>
 
+" GitGutter key bindings
+nnoremap <Leader>ge :GitGutterBufferToggle<cr>
+nnoremap <Leader>gE :GitGutterToggle<cr>
+nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
+nmap <Leader>gs <Plug>(GitGutterStageHunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)
+nmap <Leader>gn <Plug>(GitGutterNextHunk)
+
 " YouCompleteMe key bindings
 nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
 nnoremap <Leader>al :YcmDiags<CR>
