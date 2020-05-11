@@ -5,7 +5,6 @@ let g:ale_completion_enabled=0
 call plug#begin('~/.vim/plugged')
 Plug 'doums/darcula'
 Plug 'doums/gitBranch'
-Plug 'dense-analysis/ale'
 Plug 'itchyny/lightline.vim'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
@@ -39,10 +38,6 @@ set previewheight=5
 set termguicolors
 set background=dark
 colorscheme darcula
-
-" override highlight of the max text width column
-hi clear ColorColumn
-hi ColorColumn ctermfg=11 ctermbg=236
 
 " bracket settings
 set showmatch
@@ -79,11 +74,11 @@ augroup vimrc
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
-" set indent width for specific filetypes
+" use specific indent width for specific filetypes
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2
 autocmd FileType json setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
-" enable max text width column in c files
+" enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
 " use C/C++ syntax highlighting in the YCM doc. popup
 autocmd FileType c,cpp let b:ycm_hover = {
@@ -92,9 +87,8 @@ autocmd FileType c,cpp let b:ycm_hover = {
   \ }
 augroup END
 
-" GitGutter settings
-let g:gitgutter_enabled=1
-let g:gitgutter_map_keys=0
+" max text width column highlighting
+hi! ColorColumn ctermbg=236 guibg=NONE
 
 " netrw settings
 let g:netrw_banner=0
@@ -106,13 +100,22 @@ let g:NERDCompactSexyComs=1
 let g:NERDCommentEmptyLines=1
 let g:NERDTrimTrailingWhitespace=1
 
+" GitGutter settings
+let g:gitgutter_enabled=1
+let g:gitgutter_map_keys=0
+let g:gitgutter_sign_removed = '▶'
+hi! link GitGutterAdd GitAddStripe
+hi! link GitGutterChange GitChangeStripe
+hi! link GitGutterDelete GitDeleteStripe
+
 " YouCompleteMe settings
 let g:ycm_auto_hover=''
 let g:ycm_max_diagnostics_to_display=50
 let g:ycm_disable_for_files_larger_than_kb=1000
+let g:ycm_warning_symbol='--'
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
-let g:ycm_key_list_stop_completion=['<cr>']
+let g:ycm_key_list_stop_completion=['<CR>']
 let g:ycm_key_detailed_diagnostics=''
 let g:ycm_clangd_binary_path='/usr/bin/clangd'
 let g:ycm_clangd_uses_ycmd_caching=1
@@ -128,6 +131,33 @@ let g:ycm_clangd_args = ['--clang-tidy', '--clang-tidy-checks='
   \ . '-readability-magic-numbers,'
   \ . 'cert-*-c'
   \ ]
+hi! link YcmErrorSection Error
+hi! link YcmWarningSection CodeWarning
+hi! link YcmErrorSign ErrorSign
+hi! link YcmWarningSign WarningSign
+
+" lightline settings
+let g:lightline = {
+  \ 'colorscheme': 'darculaOriginal',
+  \ 'component_function': {
+  \   'gitBranch': 'gitBranch#Get'
+  \ }
+  \ }
+let g:lightline.active = {
+  \ 'right': [
+  \   ['lineinfo'],
+  \   ['percent'],
+  \   ['gitBranch','fileformat', 'fileencoding', 'filetype']
+  \ ]
+  \ }
+let g:lightline.tabline = {
+  \ 'left': [ ['tabs'] ],
+  \ 'right': []
+  \ }
+let g:lightline.tab = {
+  \ 'active': ['filename', 'modified'],
+  \ 'inactive': ['filename', 'modified']
+  \ }
 
 " ALE settings
 let g:ale_enabled=0
@@ -207,75 +237,53 @@ let g:ale_completion_symbols = {
   \ '<default>': '[DFL]'
   \ }
 
-" lightline settings
-let g:lightline = {
-  \ 'colorscheme': 'darculaOriginal',
-  \ 'component_function': {
-  \   'gitBranch': 'gitBranch#Get'
-  \ }
-  \ }
-let g:lightline.active = {
-  \ 'right': [
-  \   ['lineinfo'],
-  \   ['percent'],
-  \   ['gitBranch','fileformat', 'fileencoding', 'filetype']
-  \ ]
-  \ }
-let g:lightline.tabline = {
-  \ 'left': [ ['tabs'] ],
-  \ 'right': []
-  \ }
-let g:lightline.tab = {
-  \ 'active': ['filename', 'modified'],
-  \ 'inactive': ['filename', 'modified']
-  \ }
-
 " global key bindings
 let mapleader=","
-nnoremap <Leader>h :noh<cr>
-nnoremap <Leader>e :lex .<cr>
+nnoremap <Leader>h :noh<CR>
+nnoremap <Leader>e :lex .<CR>
 
 " trailing space key bindings
-nnoremap <Leader>bs /\s\+$<cr>
-nnoremap <Leader>bc :%s/\s\+$//g<cr>
+nnoremap <Leader>bs /\s\+$<CR>
+nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
 " open / close location list window
-nnoremap <Leader>lo :lopen<cr>
-nnoremap <Leader>lc :lclose<cr>
+nnoremap <Leader>lo :lopen<CR>
+nnoremap <Leader>lc :lclose<CR>
 
 " window key bindings
-nnoremap <Leader>ws :new<cr>
-nnoremap <Leader>wv :vnew<cr>
-nnoremap <Leader>w<up> :resize +4<cr>
-nnoremap <Leader>w<down> :resize -4<cr>
-nnoremap <Leader>w<right> :vertical resize +4<cr>
-nnoremap <Leader>w<left> :vertical resize -4<cr>
+nnoremap <Leader>ws :new<CR>
+nnoremap <Leader>wv :vnew<CR>
+nnoremap <Leader>w<up> :resize +4<CR>
+nnoremap <Leader>w<down> :resize -4<CR>
+nnoremap <Leader>w<right> :vertical resize +4<CR>
+nnoremap <Leader>w<left> :vertical resize -4<CR>
 
 " tab page key bindings
-nnoremap <Leader>t :tabnew<cr>
-nnoremap <Leader>tn :tabn<cr>
-nnoremap <Leader>tp :tabp<cr>
-nnoremap <Leader>t<left> :tabm -<cr>
-nnoremap <Leader>t<right> :tabm +<cr>
+nnoremap <Leader>tc :tabnew<CR>
+nnoremap <Leader>tn :tabn<CR>
+nnoremap <Leader>tp :tabp<CR>
+nnoremap <Leader>t<left> :tabm -<CR>
+nnoremap <Leader>t<right> :tabm +<CR>
 
 " YouCompleteMe key bindings
-nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<cr>
-nnoremap <Leader>al :YcmDiags<cr>
-nnoremap <Leader>am :YcmShowDetailedDiagnostic<cr>
-nnoremap <Leader>ag :YcmCompleter GoTo<cr>
-nnoremap <Leader>ah :YcmCompleter GoToInclude<cr>
-nnoremap <Leader>ad :YcmCompleter GoToDeclaration<cr>
-nnoremap <Leader>aD  :YcmCompleter GoToDefinition<cr>
-nnoremap <Leader>ar :YcmCompleter GoToReferences<cr>
-nnoremap <Leader>at :YcmCompleter GetType<cr>
-nnoremap <Leader>ap :YcmCompleter GetParent<cr>
-nnoremap <Leader>ai :YcmCompleter GetDoc<cr>
-nnoremap <Leader>af :YcmCompleter FixIt<cr>
-nmap <Leader>d <plug>(YCMHover)
+nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
+nnoremap <Leader>al :YcmDiags<CR>
+nnoremap <Leader>am :YcmShowDetailedDiagnostic<CR>
+nnoremap <Leader>ag :YcmCompleter GoTo<CR>
+nnoremap <Leader>ah :YcmCompleter GoToInclude<CR>
+nnoremap <Leader>ad :YcmCompleter GoToDeclaration<CR>
+nnoremap <Leader>aD :YcmCompleter GoToDefinition<CR>
+nnoremap <Leader>ar :YcmCompleter GoToReferences<CR>
+nnoremap <Leader>at :YcmCompleter GetType<CR>
+nnoremap <Leader>ap :YcmCompleter GetParent<CR>
+nnoremap <Leader>ai :YcmCompleter GetDoc<CR>
+nnoremap <Leader>af :YcmCompleter FixIt<CR>
+nnoremap <Leader>an :YcmCompleter RefactorRename 
+nmap <Leader>d <Plug>(YCMHover)
 
 " ALE key bindings
-" nmap <Leader>a <Plug>(ale_toggle_buffer)
-" nmap <Leader>A <Plug>(ale_toggle)
+" nmap <Leader>ae <Plug>(ale_toggle_buffer)
+" nmap <Leader>aE <Plug>(ale_toggle)
 " nmap <Leader>ar <Plug>(ale_find_references)
 " nmap <Leader>ad <Plug>(ale_go_to_definition)
 " nmap <Leader>at <Plug>(ale_go_to_type_definition)
@@ -287,12 +295,3 @@ nmap <Leader>d <plug>(YCMHover)
 " nmap <Leader>aj <Plug>(ale_next_wrap)
 " nmap <Leader>af <Plug>(ale_fix)
 " imap <Plug>(ale_complete)
-
-" GitGutter key bindings
-nnoremap <Leader>g :GitGutterBufferToggle<cr>
-nnoremap <Leader>G :GitGutterToggle<cr>
-nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
-nmap <Leader>gs <Plug>(GitGutterStageHunk)
-nmap <Leader>gu <Plug>(GitGutterUndoHunk)
-nmap <Leader>gk <Plug>(GitGutterPrevHunk)
-nmap <Leader>gj <Plug>(GitGutterNextHunk)
