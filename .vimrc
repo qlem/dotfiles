@@ -59,7 +59,7 @@ set completepopup=height:5,width:40,highlight:Pmenu,border:off
 set pumwidth=15
 set pumheight=10
 
-" enable filetype detection / plugin / indent
+" enable filetype detection/plugin/indent
 filetype plugin indent on
 " enable syntax highlighting
 syntax on
