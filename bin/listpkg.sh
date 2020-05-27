@@ -12,17 +12,15 @@ mkdir $tmp
 bold='\033[1m'
 reset='\033[0m'
 
-# get pkg from base
+# get list of packages from base and base-devel
 pacman -Si base | grep 'Depends On' | cut -d: -f2 | awk '{$1=$1};1' | tr ' ' '\n' > $base
-
-# get pkg from base-devel group
 pacman -Sgq base-devel >> $base
 sort -u -o $base $base
 
-# get all installed pkg
+# get list of all installed packages
 pacman -Qeq > $pkg
 
-# list installed pkg except pkg from base and base-devel
+# print list of installed packages except packages from base and base-devel
 diff $pkg $base > $diff
 sed -i -r '/^(<|>).*$|^---$/!d;s/^(< |> )(.*)$/\2/' $diff
 echo -e "${bold}Installed packages:${reset}"
@@ -33,6 +31,8 @@ while read line; do
         echo "$line"
     fi
 done < "$diff"
+
+# print number of installed papackages
 count=$(wc -l $diff | awk '{print $1}')
 echo -e "\n${bold}-- $((count - 1)) installed packages${reset}"
 rm -r $tmp
