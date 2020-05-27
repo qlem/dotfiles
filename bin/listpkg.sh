@@ -4,11 +4,10 @@ export LANG=C
 export LC_ALL=C
 
 tmp=/tmp/listpkg
-mkdir $tmp
-
 base=$tmp/base.txt
 pkg=$tmp/pkg.txt
 diff=$tmp/diff.txt
+mkdir $tmp
 
 bold='\033[1m'
 reset='\033[0m'
