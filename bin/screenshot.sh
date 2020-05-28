@@ -17,7 +17,7 @@ upload() {
     fi
     success=$(echo "$res" | jq -r .success)
     if [[ $success == true ]]; then
-        echo "$res" | jq -r .data.link | xclip -selection clipboard
+        echo "$res" | jq -r .data.link | xclip -r -selection clipboard
     else
         error=$(echo "$res" | jq -r .data.error)
         >&2 printf "%s: Upload failed: %s\n" "$PRERR" "$error"
@@ -39,7 +39,7 @@ capture() {
             shotgun -f png "$file" "${area[@]}" >/dev/null 2>&1
         fi
     else
-      exit 0
+        exit 0
     fi
 }
 
