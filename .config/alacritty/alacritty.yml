@@ -67,7 +67,8 @@ colors:
     - { index: 20, color: '0xb4b7b4' }
     - { index: 21, color: '0xe0e0e0' }
 background_opacity: 1.0
-dynamic_title: true
+window:
+  dynamic_title: true
 cursor:
   style: Block
   unfocused_hollow: true

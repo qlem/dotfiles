@@ -38,6 +38,9 @@ cp ~/.config/picom/picom.conf .config/picom/
 [[ ! -d ".config/rofi" ]] && mkdir .config/rofi
 cp ~/.config/rofi/*.rasi .config/rofi/
 
+[[ ! -d ".config/qlstatus" ]] && mkdir .config/qlstatus
+cp ~/.config/qlstatus/qlstatus.conf .config/qlstatus/
+
 [[ ! -d ".config/redshift" ]] && mkdir .config/redshift
 cp ~/.config/redshift/redshift.conf .config/redshift/
 

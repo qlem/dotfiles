@@ -159,12 +159,12 @@ let g:lightline.tab = {
   \ 'inactive': ['filename', 'modified']
   \ }
 
-" global key bindings
+" global keybinds
 let mapleader=","
 nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :lex .<CR>
 
-" trailing space key bindings
+" trailing space keybinds
 nnoremap <Leader>bs /\s\+$<CR>
 nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
@@ -172,7 +172,7 @@ nnoremap <Leader>bc :%s/\s\+$//g<CR>
 nnoremap <Leader>lo :lopen<CR>
 nnoremap <Leader>lc :lclose<CR>
 
-" window key bindings
+" window keybinds
 nnoremap <Leader>ws :new<CR>
 nnoremap <Leader>wv :vnew<CR>
 nnoremap <Leader>w<up> :resize +4<CR>
@@ -180,14 +180,14 @@ nnoremap <Leader>w<down> :resize -4<CR>
 nnoremap <Leader>w<right> :vertical resize +4<CR>
 nnoremap <Leader>w<left> :vertical resize -4<CR>
 
-" tab page key bindings
+" tab page keybinds
 nnoremap <Leader>tc :tabnew<CR>
 nnoremap <Leader>tn :tabn<CR>
 nnoremap <Leader>tp :tabp<CR>
 nnoremap <Leader>t<left> :tabm -<CR>
 nnoremap <Leader>t<right> :tabm +<CR>
 
-" GitGutter key bindings
+" GitGutter keybinds
 nnoremap <Leader>ge :GitGutterBufferToggle<cr>
 nnoremap <Leader>gE :GitGutterToggle<cr>
 nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
@@ -196,7 +196,7 @@ nmap <Leader>gu <Plug>(GitGutterUndoHunk)
 nmap <Leader>gp <Plug>(GitGutterPrevHunk)
 nmap <Leader>gn <Plug>(GitGutterNextHunk)
 
-" YouCompleteMe key bindings
+" YouCompleteMe keybinds
 nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
 nnoremap <Leader>al :YcmDiags<CR>
 nnoremap <Leader>am :YcmShowDetailedDiagnostic<CR>
