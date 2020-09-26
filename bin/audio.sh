@@ -16,13 +16,13 @@ volume=$(pactl list sinks | grep "Name: $sink" -A 7 | tail -n 1 | awk '{print $5
 case "$1" in
     '--volume-up')
         if (( volume + inc <= limit )) && pactl set-sink-volume "$sink" "+$inc%"; then
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume increased to $((volume + inc))%"
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume UP to $((volume + inc))%"
         fi
         ;;
 
     '--volume-down')
         if (( volume - inc >= 0 )) && pactl set-sink-volume "$sink" "-$inc%"; then
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume decreased to $((volume - inc))%"
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume DOWN to $((volume - inc))%"
         fi
         ;;
 

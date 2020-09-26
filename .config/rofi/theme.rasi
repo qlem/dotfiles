@@ -22,6 +22,7 @@ inputbox {
     expand: false;
     orientation: horizontal;
     border: 1px solid;
+    /* border-radius: 25px; */
     border-color: #ffffff;
     margin: 0 0 20px 0;
     children: [ textbox-prompt, entry ];
@@ -35,16 +36,22 @@ textbox-prompt {
 }
 entry {
     padding: 10px 20px;
+    placeholder: "Search";
+    placeholder-color: #545454;
 }
 listview {
     fixed-height: true;
-    scrollbar: true;
+    scrollbar: false;
     cycle: true;
     lines: 5;
 }
 element {
     padding: 10px 20px;
     highlight: bold;
+}
+element-icon {
+    size: 32px;
+    margin: 0px 15px 0px 0px;
 }
 element selected {
     text-color: #357EDD;
