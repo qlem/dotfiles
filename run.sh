@@ -47,5 +47,8 @@ cp ~/.config/redshift/redshift.conf .config/redshift/
 [[ ! -d ".config/terminator" ]] && mkdir .config/terminator
 cp ~/.config/terminator/config .config/terminator/
 
+[[ ! -d ".config/dunst" ]] && mkdir .config/dunst
+cp ~/.config/dunst/dunstrc .config/dunst/
+
 [[ ! -d "xorg" ]] && mkdir xorg
 cp /etc/X11/xorg.conf.d/*.conf xorg/
