@@ -1,7 +1,8 @@
 * {
     background-color: #212121;
     text-color: #9E9E9E;
-    font: "Inconsolata 13";
+    /* font: "Inconsolata 13"; */
+    font: "SourceCodePro Regular 12";
     border: 0px;
 }
 window {
