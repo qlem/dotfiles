@@ -10,7 +10,8 @@ icon_up='notification-audio-volume-high'
 icon_down='notification-audio-volume-medium'
 icon_mute='notification-audio-volume-muted'
 icon_unmute='notification-audio-volume-high'
-sink=$(pactl list sinks short | grep 'RUNNING' | awk '{print $2}')
+# sink=$(pactl list sinks short | grep 'RUNNING' | awk '{print $2}')
+sink='alsa_output.pci-0000_00_1f.3.analog-stereo'
 volume=$(pactl list sinks | grep "Name: $sink" -A 7 | tail -n 1 | awk '{print $5}' | sed -E 's/%//g')
 
 case "$1" in

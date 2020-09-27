@@ -17,7 +17,7 @@ mode-switcher {
     padding: 10px 0 20px 0;
 }
 button selected {
-    text-color: #357EDD;
+    text-color: #ddcf35;
 }
 inputbox {
     expand: false;
