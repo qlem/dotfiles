@@ -10,20 +10,21 @@ icon_up='notification-audio-volume-high'
 icon_down='notification-audio-volume-medium'
 icon_mute='notification-audio-volume-muted'
 icon_unmute='notification-audio-volume-high'
-# sink=$(pactl list sinks short | grep 'RUNNING' | awk '{print $2}')
 sink='alsa_output.pci-0000_00_1f.3.analog-stereo'
+# sink=$(pactl list sinks short | grep 'RUNNING' | awk '{print $2}')
 volume=$(pactl list sinks | grep "Name: $sink" -A 7 | tail -n 1 | awk '{print $5}' | sed -E 's/%//g')
 
 case "$1" in
     '--volume-up')
         if (( volume + inc <= limit )) && pactl set-sink-volume "$sink" "+$inc%"; then
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume UP to $((volume + inc))%"
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume UP to $(( volume + inc ))%"
         fi
         ;;
 
     '--volume-down')
-        if (( volume - inc >= 0 )) && pactl set-sink-volume "$sink" "-$inc%"; then
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume DOWN to $((volume - inc))%"
+        if (( volume > 0 )) && pactl set-sink-volume "$sink" "-$inc%"; then
+            (( volume - inc < 0 )) && volume=0 || volume=$(( volume - inc ))
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume DOWN to $volume%"
         fi
         ;;
 
