@@ -25,6 +25,9 @@ cp ~/.config/fish/functions/* .config/fish/functions/
 [[ ! -d ".config/spectrwm" ]] && mkdir .config/spectrwm
 cp ~/.config/spectrwm/spectrwm.conf .config/spectrwm/
 
+[[ ! -d ".config/dwm" ]] && mkdir .config/dwm
+cp ~/.config/dwm/config.h .config/dwm/
+
 [[ ! -d ".config/i3" ]] && mkdir .config/i3
 cp ~/.config/i3/config .config/i3/
 

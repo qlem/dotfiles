@@ -46,4 +46,6 @@ export SSH_AUTH_SOCK
 setxkbmap -layout fr -model pc
 
 # start spectrwm
-exec spectrwm
+# exec spectrwm
+
+exec ~/bin/dwm
