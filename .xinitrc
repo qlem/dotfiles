@@ -48,4 +48,5 @@ setxkbmap -layout fr -model pc
 # start spectrwm
 # exec spectrwm
 
+# start dwm
 exec ~/bin/dwm

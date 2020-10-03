@@ -9,6 +9,7 @@
 // bottomstack (only bstack function): https://dwm.suckless.org/patches/bottomstack/
 // useless gap: https://dwm.suckless.org/patches/uselessgap/
 // movestack (installed manually): https://dwm.suckless.org/patches/movestack/
+// statusallmons: https://dwm.suckless.org/patches/statusallmons/
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
