@@ -28,6 +28,7 @@ cp ~/.config/spectrwm/spectrwm.conf .config/spectrwm/
 [[ ! -d "dwm" ]] && mkdir dwm
 cp ~/projects/dwm-6.2/config.h dwm/
 cp ~/projects/dwm-6.2/config.mk dwm/
+cp ~/projects/dwm-6.2/dwm.patch dwm/
 
 [[ ! -d ".config/i3" ]] && mkdir .config/i3
 cp ~/.config/i3/config .config/i3/

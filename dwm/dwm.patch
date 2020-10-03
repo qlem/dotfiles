@@ -1,0 +1,306 @@
+--- dwm.c.orig	2020-10-03 14:22:24.176328907 +0200
++++ dwm.c	2020-10-02 23:36:19.145091466 +0200
+@@ -52,8 +52,8 @@
+ #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
+ #define LENGTH(X)               (sizeof X / sizeof X[0])
+ #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
+-#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
+-#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
++#define WIDTH(X)                ((X)->w + 2 * (X)->bw + gappx)
++#define HEIGHT(X)               ((X)->h + 2 * (X)->bw + gappx)
+ #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
+ #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+ 
+@@ -147,6 +147,7 @@
+ static void arrange(Monitor *m);
+ static void arrangemon(Monitor *m);
+ static void attach(Client *c);
++static void attachbottom(Client *c);
+ static void attachstack(Client *c);
+ static void buttonpress(XEvent *e);
+ static void checkotherwm(void);
+@@ -234,6 +235,11 @@
+ static int xerrorstart(Display *dpy, XErrorEvent *ee);
+ static void zoom(const Arg *arg);
+ 
++static void autostart_exec(void);
++static void focusmaster(const Arg *arg);
++static void bstack(Monitor *m);
++static void movestack(const Arg *arg);
++
+ /* variables */
+ static const char broken[] = "broken";
+ static char stext[256];
+@@ -274,6 +280,34 @@
+ /* compile-time check if all tags fit into an unsigned int bit array. */
+ struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
+ 
++/* dwm will keep pid's of processes from autostart array and kill them at quit */
++static pid_t *autostart_pids;
++static size_t autostart_len;
++
++/* execute command from autostart array */
++static void
++autostart_exec() {
++	const char *const *p;
++	size_t i = 0;
++
++	/* count entries */
++	for (p = autostart; *p; autostart_len++, p++)
++		while (*++p);
++
++	autostart_pids = malloc(autostart_len * sizeof(pid_t));
++	for (p = autostart; *p; i++, p++) {
++		if ((autostart_pids[i] = fork()) == 0) {
++			setsid();
++			execvp(*p, (char *const *)p);
++			fprintf(stderr, "dwm: execvp %s\n", *p);
++			perror(" failed");
++			_exit(EXIT_FAILURE);
++		}
++		/* skip arguments */
++		while (*++p);
++	}
++}
++
+ /* function implementations */
+ void
+ applyrules(Client *c)
+@@ -407,6 +441,18 @@
+ }
+ 
+ void
++attachbottom(Client *c)
++{
++	Client *below = c->mon->clients;
++	for (; below && below->next; below = below->next);
++	c->next = NULL;
++	if (below)
++		below->next = c;
++	else
++		c->mon->clients = c;
++}
++
++void
+ attachstack(Client *c)
+ {
+ 	c->snext = c->mon->stack;
+@@ -1062,7 +1108,7 @@
+ 		c->isfloating = c->oldstate = trans != None || c->isfixed;
+ 	if (c->isfloating)
+ 		XRaiseWindow(dpy, c->win);
+-	attach(c);
++	attachbottom(c);
+ 	attachstack(c);
+ 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
+ 		(unsigned char *) &(c->win), 1);
+@@ -1248,6 +1294,16 @@
+ void
+ quit(const Arg *arg)
+ {
++	size_t i;
++
++	/* kill child processes */
++	for (i = 0; i < autostart_len; i++) {
++		if (0 < autostart_pids[i]) {
++			kill(autostart_pids[i], SIGTERM);
++			waitpid(autostart_pids[i], NULL, 0);
++		}
++	}
++
+ 	running = 0;
+ }
+ 
+@@ -1276,12 +1332,36 @@
+ resizeclient(Client *c, int x, int y, int w, int h)
+ {
+ 	XWindowChanges wc;
++	unsigned int n;
++	unsigned int gapoffset;
++	unsigned int gapincr;
++	Client *nbc;
+ 
+-	c->oldx = c->x; c->x = wc.x = x;
+-	c->oldy = c->y; c->y = wc.y = y;
+-	c->oldw = c->w; c->w = wc.width = w;
+-	c->oldh = c->h; c->h = wc.height = h;
+ 	wc.border_width = c->bw;
++
++	/* Get number of clients for the client's monitor */
++	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
++
++	/* Do nothing if layout is floating */
++	if (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL) {
++		gapincr = gapoffset = 0;
++	} else {
++		/* Remove border and gap if layout is monocle or only one client */
++		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
++			gapoffset = 0;
++			gapincr = -2 * borderpx;
++			wc.border_width = 0;
++		} else {
++			gapoffset = gappx;
++			gapincr = 2 * gappx;
++		}
++	}
++
++	c->oldx = c->x; c->x = wc.x = x + gapoffset;
++	c->oldy = c->y; c->y = wc.y = y + gapoffset;
++	c->oldw = c->w; c->w = wc.width = w - gapincr;
++	c->oldh = c->h; c->h = wc.height = h - gapincr;
++
+ 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+ 	configure(c);
+ 	XSync(dpy, False);
+@@ -1417,7 +1497,7 @@
+ 	detachstack(c);
+ 	c->mon = m;
+ 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
+-	attach(c);
++	attachbottom(c);
+ 	attachstack(c);
+ 	focus(NULL);
+ 	arrange(NULL);
+@@ -1631,9 +1711,25 @@
+ void
+ sigchld(int unused)
+ {
++	pid_t pid;
++
+ 	if (signal(SIGCHLD, sigchld) == SIG_ERR)
+ 		die("can't install SIGCHLD handler:");
+-	while (0 < waitpid(-1, NULL, WNOHANG));
++	while (0 < (pid = waitpid(-1, NULL, WNOHANG))) {
++		pid_t *p, *lim;
++
++		if (!(p = autostart_pids))
++			continue;
++		lim = &p[autostart_len];
++
++		for (; p < lim; p++) {
++			if (*p == pid) {
++				*p = -1;
++				break;
++			}
++		}
++
++	}
+ }
+ 
+ void
+@@ -1897,7 +1993,7 @@
+ 					m->clients = c->next;
+ 					detachstack(c);
+ 					c->mon = mons;
+-					attach(c);
++					attachbottom(c);
+ 					attachstack(c);
+ 				}
+ 				if (m == selmon)
+@@ -2136,6 +2232,7 @@
+ 	if (!(dpy = XOpenDisplay(NULL)))
+ 		die("dwm: cannot open display");
+ 	checkotherwm();
++	autostart_exec();
+ 	setup();
+ #ifdef __OpenBSD__
+ 	if (pledge("stdio rpath proc exec", NULL) == -1)
+@@ -2147,3 +2244,98 @@
+ 	XCloseDisplay(dpy);
+ 	return EXIT_SUCCESS;
+ }
++
++void
++movestack(const Arg *arg) {
++    Client *c = NULL, *p = NULL, *pc = NULL, *i;
++
++    if(arg->i > 0) {
++        /* find the client after selmon->sel */
++        for(c = selmon->sel->next; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++        if(!c)
++            for(c = selmon->clients; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++
++    }
++    else {
++        /* find the client before selmon->sel */
++        for(i = selmon->clients; i != selmon->sel; i = i->next)
++            if(ISVISIBLE(i) && !i->isfloating)
++                c = i;
++        if(!c)
++            for(; i; i = i->next)
++                if(ISVISIBLE(i) && !i->isfloating)
++                    c = i;
++    }
++    /* find the client before selmon->sel and c */
++    for(i = selmon->clients; i && (!p || !pc); i = i->next) {
++        if(i->next == selmon->sel)
++            p = i;
++        if(i->next == c)
++            pc = i;
++    }
++
++    /* swap c and selmon->sel selmon->clients in the selmon->clients list */
++    if(c && c != selmon->sel) {
++        Client *temp = selmon->sel->next==c?selmon->sel:selmon->sel->next;
++        selmon->sel->next = c->next==selmon->sel?c:c->next;
++        c->next = temp;
++
++        if(p && p != c)
++            p->next = c;
++        if(pc && pc != selmon->sel)
++            pc->next = selmon->sel;
++
++        if(selmon->sel == selmon->clients)
++            selmon->clients = c;
++        else if(c == selmon->clients)
++            selmon->clients = selmon->sel;
++
++        arrange(selmon);
++    }
++}
++
++static void
++bstack(Monitor *m) {
++	int w, h, mh, mx, tx, ty, tw;
++	unsigned int i, n;
++	Client *c;
++
++	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	if (n == 0)
++		return;
++	if (n > m->nmaster) {
++		mh = m->nmaster ? m->mfact * m->wh : 0;
++		tw = m->ww / (n - m->nmaster);
++		ty = m->wy + mh;
++	} else {
++		mh = m->wh;
++		tw = m->ww;
++		ty = m->wy;
++	}
++	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
++		if (i < m->nmaster) {
++			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
++			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
++			mx += WIDTH(c);
++		} else {
++			h = m->wh - mh;
++			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
++			if (tw != m->ww)
++				tx += WIDTH(c);
++		}
++	}
++}
++
++void
++focusmaster(const Arg *arg)
++{
++	Client *c;
++
++	if (selmon->nmaster < 1)
++		return;
++
++	c = nexttiled(selmon->clients);
++
++	if (c)
++		focus(c);
++}
