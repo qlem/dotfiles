@@ -1,5 +1,5 @@
---- dwm.c.orig	2020-10-03 14:22:24.176328907 +0200
-+++ dwm.c	2020-10-02 23:36:19.145091466 +0200
+--- dwm.c.orig	2020-10-03 18:09:36.757625745 +0200
++++ dwm.c	2020-10-03 17:07:02.093242818 +0200
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])
@@ -85,6 +85,15 @@
  attachstack(Client *c)
  {
  	c->snext = c->mon->stack;
+@@ -702,7 +748,7 @@
+ 	Client *c;
+ 
+ 	/* draw status first so it can be overdrawn by tags later */
+-	if (m == selmon) { /* status is only drawn on selected monitor */
++	if (m == selmon || 1) { /* status is only drawn on selected monitor */
+ 		drw_setscheme(drw, scheme[SchemeNorm]);
+ 		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+ 		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
 @@ -1062,7 +1108,7 @@
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
@@ -197,7 +206,20 @@
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -2136,6 +2232,7 @@
+@@ -1987,9 +2083,11 @@
+ void
+ updatestatus(void)
+ {
++	Monitor* m;
+ 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+ 		strcpy(stext, "dwm-"VERSION);
+-	drawbar(selmon);
++	for(m = mons; m; m = m->next)
++		drawbar(m);
+ }
+ 
+ void
+@@ -2136,6 +2234,7 @@
  	if (!(dpy = XOpenDisplay(NULL)))
  		die("dwm: cannot open display");
  	checkotherwm();
@@ -205,7 +227,7 @@
  	setup();
  #ifdef __OpenBSD__
  	if (pledge("stdio rpath proc exec", NULL) == -1)
-@@ -2147,3 +2244,98 @@
+@@ -2147,3 +2246,98 @@
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
