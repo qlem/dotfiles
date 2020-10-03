@@ -65,21 +65,13 @@ static const char *const autostart[] = {
     NULL /* terminate */
 };
 
-/* key definitions */
-#define MODKEY Mod4Mask
-#define TAGKEYS(KEY,TAG) \
-    {MODKEY,                       KEY,      view,           {.ui = 1 << TAG}}, \
-    {MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG}}, \
-    {MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG}}, \
-    {MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG}},
-
 /* -- PROGRAMS -- */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) {.v = (const char*[]){"/bin/sh", "-c", cmd, NULL}}
 
 /* default */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static char       dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {"dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* global */
@@ -88,31 +80,46 @@ static const char *term[] = {"alacritty", NULL};
 static const char *menu[] = {"rofi", "-show", "drun", NULL};
 
 /* brightness */
-static const char *bcklight_up[] = {"light", "-A", "5", NULL};
+static const char *bcklight_up[]   = {"light", "-A", "5", NULL};
 static const char *bcklight_down[] = {"light", "-U", "5", NULL};
 
 /* audio */
-static const char *pa_vlm_up[] = {"audio.sh", "--volume-up", NULL};
+static const char *pa_vlm_up[]   = {"audio.sh", "--volume-up", NULL};
 static const char *pa_vlm_down[] = {"audio.sh", "--volume-down", NULL};
-static const char *pa_mute[] = {"audio.sh", "--mute", NULL};
+static const char *pa_mute[]     = {"audio.sh", "--mute", NULL};
 static const char *pa_mic_mute[] = {"audio.sh", "--source-mute", NULL};
 static const char *pavucontrol[] = {"pavucontrol", "-t", "3", NULL};
 
 /* session */
-static const char *sys_suspend[] = {"systemctl", "suspend", NULL};
+static const char *sys_suspend[]   = {"systemctl", "suspend", NULL};
 static const char *sys_hibernate[] = {"systemctl", "hibernate", NULL};
-static const char *sys_reboot[] = {"systemctl", "reboot", NULL};
-static const char *sys_off[] = {"systemctl", "poweroff", NULL};
-static const char *session[] = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
+static const char *sys_reboot[]    = {"systemctl", "reboot", NULL};
+static const char *sys_off[]       = {"systemctl", "poweroff", NULL};
+static const char *session[]       = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* screen capture */
-static const char *screenshot[] = {"screenshot.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
+static const char *screenshot[]    = {"screenshot.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 static const char *screenshot_up[] = {"screenshot.sh", "--upload", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* external screens */
 static const char *display[] = {"display.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* -- BINDINGS -- */
+
+// MODKEY                       + TAG N = switch view to tag n
+// MODKEY|ControlMask           + TAG N = toggle selection of tag n
+// MODKEY|ShiftMask             + TAG N = move current window to tag n
+// MODKEY|ControlMask|ShiftMask + TAG N = toggle current window to tag n
+
+/* key definitions */
+#define MODKEY Mod4Mask
+#define TAGKEYS(KEY,TAG) \
+    {MODKEY,                       KEY,      view,           {.ui = 1 << TAG}}, \
+    {MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG}}, \
+    {MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG}}, \
+    {MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG}},
+
+/* binds */
 static Key keys[] = {
     /* modifier                     key        function        argument */
 
@@ -194,7 +201,7 @@ static Key keys[] = {
     {MODKEY|ShiftMask,             XK_v,      view,           {.ui = ~0}},
     {MODKEY|ShiftMask,             XK_g,      tag,            {.ui = ~0}},
 
-    // switch to tag n
+    // see -- key definitions --
     TAGKEYS(                       XK_ampersand,              0)
     TAGKEYS(                       XK_eacute,                 1)
     TAGKEYS(                       XK_quotedbl,               2)
