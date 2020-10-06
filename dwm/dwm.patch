@@ -1,5 +1,5 @@
 --- dwm.c.orig	2020-10-03 18:09:36.757625745 +0200
-+++ dwm.c	2020-10-03 17:07:02.093242818 +0200
++++ dwm.c	2020-10-03 18:22:03.682656901 +0200
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])
@@ -94,6 +94,15 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
+@@ -1030,7 +1076,7 @@
+ 	c->h = c->oldh = wa->height;
+ 	c->oldbw = wa->border_width;
+ 
+-	updatetitle(c);
++	/* updatetitle(c); */
+ 	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
+ 		c->mon = t->mon;
+ 		c->tags = t->tags;
 @@ -1062,7 +1108,7 @@
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
@@ -103,6 +112,15 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
+@@ -1236,7 +1282,7 @@
+ 			break;
+ 		}
+ 		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
+-			updatetitle(c);
++			/* updatetitle(c); */
+ 			if (c == c->mon->sel)
+ 				drawbar(c->mon);
+ 		}
 @@ -1248,6 +1294,16 @@
  void
  quit(const Arg *arg)
