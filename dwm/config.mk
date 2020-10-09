@@ -4,7 +4,6 @@ VERSION = 6.2
 # Customize below to fit your system
 
 # paths
-DESTDIR=./build
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
 

@@ -93,10 +93,10 @@ static const char *pa_mic_mute[] = {"audio.sh", "--source-mute", NULL};
 static const char *pavucontrol[] = {"pavucontrol", "-t", "3", NULL};
 
 /* session */
-static const char *sys_suspend[]   = {"systemctl", "suspend", NULL};
-static const char *sys_hibernate[] = {"systemctl", "hibernate", NULL};
-static const char *sys_reboot[]    = {"systemctl", "reboot", NULL};
-static const char *sys_off[]       = {"systemctl", "poweroff", NULL};
+// static const char *sys_suspend[]   = {"systemctl", "suspend", NULL};
+// static const char *sys_hibernate[] = {"systemctl", "hibernate", NULL};
+// static const char *sys_reboot[]    = {"systemctl", "reboot", NULL};
+// static const char *sys_off[]       = {"systemctl", "poweroff", NULL};
 static const char *session[]       = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* screen capture */
@@ -136,12 +136,8 @@ static Key keys[] = {
 
     // session actions
     {MODKEY,                       XK_Delete, spawn,          {.v = session}},
-    {MODKEY|ShiftMask,             XK_l,      spawn,          {.v = lock}},
-    {MODKEY|ShiftMask,             XK_q,      quit,           {0}},
-    {MODKEY|ShiftMask,             XK_s,      spawn,          {.v = sys_suspend}},
-    {MODKEY|ShiftMask,             XK_h,      spawn,          {.v = sys_hibernate}},
-    {MODKEY|ShiftMask,             XK_r,      spawn,          {.v = sys_reboot}},
-    {MODKEY|ShiftMask,             XK_Delete, spawn,          {.v = sys_off}},
+    {MODKEY|ControlMask,           XK_l,      spawn,          {.v = lock}},
+    // {MODKEY|ShiftMask,             XK_q,      quit,           {0}},
 
     // backlight controls
     {0,                            XF86XK_MonBrightnessUp,   spawn, {.v = bcklight_up}},
