@@ -10,6 +10,7 @@
 // useless gap: https://dwm.suckless.org/patches/uselessgap/
 // movestack (installed manually): https://dwm.suckless.org/patches/movestack/
 // statusallmons: https://dwm.suckless.org/patches/statusallmons/
+// notitle: https://dwm.suckless.org/patches/notitle/
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -27,7 +28,7 @@ static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
-    [SchemeSel]  = {col_gray3, col_gray1, col_gray2},
+    [SchemeSel]  = {col_gray4, col_cyan,  col_cyan},
 };
 
 /* tagging */
@@ -220,7 +221,6 @@ static Button buttons[] = {
     /* click                event mask      button          function        argument */
     {ClkLtSymbol,          0,              Button1,        setlayout,      {0}},
     {ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]}},
-    {ClkWinTitle,          0,              Button2,        zoom,           {0}},
     {ClkStatusText,        0,              Button2,        spawn,          {.v = term}},
     {ClkClientWin,         MODKEY,         Button1,        movemouse,      {0}},
     {ClkClientWin,         MODKEY,         Button2,        togglefloating, {0}},

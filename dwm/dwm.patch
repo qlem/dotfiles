@@ -1,5 +1,5 @@
---- dwm.c.orig	2020-10-03 18:09:36.757625745 +0200
-+++ dwm.c	2020-10-03 18:22:03.682656901 +0200
+--- dwm.c.orig	2020-10-09 21:06:24.404708992 +0200
++++ dwm.c	2020-10-09 20:57:29.388497286 +0200
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])
@@ -11,6 +11,17 @@
  #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
  #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
  
+@@ -64,8 +64,8 @@
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
++enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClientWin,
++       ClkRootWin, ClkLast }; /* clicks */
+ 
+ typedef union {
+ 	int i;
 @@ -147,6 +147,7 @@
  static void arrange(Monitor *m);
  static void arrangemon(Monitor *m);
@@ -85,7 +96,19 @@
  attachstack(Client *c)
  {
  	c->snext = c->mon->stack;
-@@ -702,7 +748,7 @@
+@@ -439,10 +485,8 @@
+ 			arg.ui = 1 << i;
+ 		} else if (ev->x < x + blw)
+ 			click = ClkLtSymbol;
+-		else if (ev->x > selmon->ww - TEXTW(stext))
+-			click = ClkStatusText;
+ 		else
+-			click = ClkWinTitle;
++			click = ClkStatusText;
+ 	} else if ((c = wintoclient(ev->window))) {
+ 		focus(c);
+ 		restack(selmon);
+@@ -702,7 +746,7 @@
  	Client *c;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -94,16 +117,32 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-@@ -1030,7 +1076,7 @@
+@@ -729,15 +773,8 @@
+ 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
+ 
+ 	if ((w = m->ww - sw - x) > bh) {
+-		if (m->sel) {
+-			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+-			if (m->sel->isfloating)
+-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+-		} else {
+ 			drw_setscheme(drw, scheme[SchemeNorm]);
+ 			drw_rect(drw, x, 0, w, bh, 1, 1);
+-		}
+ 	}
+ 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
+ }
+@@ -1030,7 +1067,7 @@
  	c->h = c->oldh = wa->height;
  	c->oldbw = wa->border_width;
  
 -	updatetitle(c);
-+	/* updatetitle(c); */
++    updatetitle(c);
  	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
  		c->mon = t->mon;
  		c->tags = t->tags;
-@@ -1062,7 +1108,7 @@
+@@ -1062,7 +1099,7 @@
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -112,16 +151,21 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1236,7 +1282,7 @@
+@@ -1235,11 +1272,8 @@
+ 			drawbars();
  			break;
  		}
- 		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
+-		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
 -			updatetitle(c);
-+			/* updatetitle(c); */
- 			if (c == c->mon->sel)
- 				drawbar(c->mon);
- 		}
-@@ -1248,6 +1294,16 @@
+-			if (c == c->mon->sel)
+-				drawbar(c->mon);
+-		}
++		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName])
++            updatetitle(c);
+ 		if (ev->atom == netatom[NetWMWindowType])
+ 			updatewindowtype(c);
+ 	}
+@@ -1248,6 +1282,16 @@
  void
  quit(const Arg *arg)
  {
@@ -138,7 +182,7 @@
  	running = 0;
  }
  
-@@ -1276,12 +1332,36 @@
+@@ -1276,12 +1320,36 @@
  resizeclient(Client *c, int x, int y, int w, int h)
  {
  	XWindowChanges wc;
@@ -179,7 +223,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1417,7 +1497,7 @@
+@@ -1417,7 +1485,7 @@
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -188,7 +232,7 @@
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1631,9 +1711,25 @@
+@@ -1631,9 +1699,25 @@
  void
  sigchld(int unused)
  {
@@ -215,7 +259,7 @@
  }
  
  void
-@@ -1897,7 +1993,7 @@
+@@ -1897,7 +1981,7 @@
  					m->clients = c->next;
  					detachstack(c);
  					c->mon = mons;
@@ -224,7 +268,7 @@
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -1987,9 +2083,11 @@
+@@ -1987,9 +2071,11 @@
  void
  updatestatus(void)
  {
@@ -237,7 +281,7 @@
  }
  
  void
-@@ -2136,6 +2234,7 @@
+@@ -2136,6 +2222,7 @@
  	if (!(dpy = XOpenDisplay(NULL)))
  		die("dwm: cannot open display");
  	checkotherwm();
@@ -245,7 +289,7 @@
  	setup();
  #ifdef __OpenBSD__
  	if (pledge("stdio rpath proc exec", NULL) == -1)
-@@ -2147,3 +2246,98 @@
+@@ -2147,3 +2234,98 @@
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
