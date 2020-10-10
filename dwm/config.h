@@ -54,8 +54,7 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    {"Gimp",     NULL,       NULL,       0,            1,           -1},
-    {"Firefox",  NULL,       NULL,       1 << 8,       0,           -1},
+    {"jetbrains-toolbox", "JetBrains Toolbox", "JetBrains Toolbox", 0, 1, -1},
 };
 
 /* autostart */
@@ -137,7 +136,7 @@ static Key keys[] = {
     // session actions
     {MODKEY,                       XK_Delete, spawn,          {.v = session}},
     {MODKEY|ControlMask,           XK_l,      spawn,          {.v = lock}},
-    // {MODKEY|ShiftMask,             XK_q,      quit,           {0}},
+    {MODKEY|ControlMask,           XK_q,      quit,           {0}},
 
     // backlight controls
     {0,                            XF86XK_MonBrightnessUp,   spawn, {.v = bcklight_up}},
