@@ -96,7 +96,7 @@ static const char *pavucontrol[] = {"pavucontrol", "-t", "3", NULL};
 // static const char *sys_hibernate[] = {"systemctl", "hibernate", NULL};
 // static const char *sys_reboot[]    = {"systemctl", "reboot", NULL};
 // static const char *sys_off[]       = {"systemctl", "poweroff", NULL};
-static const char *session[]       = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
+static const char *session[] = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* screen capture */
 static const char *screenshot[]    = {"screenshot.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
