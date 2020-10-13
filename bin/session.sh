@@ -11,7 +11,7 @@ sel=$(echo -e "$item1\n$item2\n$item3\n$item4\n$item5\n$item6" | dmenu -p 'Sessi
 if [[ $sel == "$item1" ]]; then
     lock.sh
 elif [[ $sel == "$item2" ]]; then
-    pkill -SIGTERM dwm
+    pkill --exact -SIGTERM dwm
 elif [[ $sel == "$item3" ]]; then
     systemctl suspend
 elif [[ $sel == "$item4" ]]; then

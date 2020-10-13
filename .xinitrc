@@ -45,9 +45,6 @@ export SSH_AUTH_SOCK
 # set keyboard layout
 setxkbmap -layout fr -model pc
 
-# start spectrwm
-# exec spectrwm
-
 # start dwm
 (qlstatus | dwm-setstatus) &
 exec dwm
