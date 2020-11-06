@@ -52,7 +52,7 @@ if [[ $1 == --upload ]]; then
     upload
 else
     printf -v date '%(%FT%T%z)T' -1
-    file="$HOME/screenshot_$date.png"
+    file="$HOME/Pictures/screenshot_$date.png"
     sel=$(echo -e "$item1\n$item2" | dmenu -p 'Screen capture' -i "$@")
     capture
 fi

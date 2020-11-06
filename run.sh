@@ -58,3 +58,8 @@ cp ~/.config/dunst/dunstrc .config/dunst/
 
 [[ ! -d "xorg" ]] && mkdir xorg
 cp /etc/X11/xorg.conf.d/*.conf xorg/
+
+# custom hhkb keyboard layout
+[[ ! -d ".local/share/xkb" ]] && mkdir -p .local/share/xkb
+cp ~/.local/share/xkb/hhkb-custom-layout.xkb .local/share/xkb/
+cp /etc/udev/rules.d/99-keyboard.rules .
