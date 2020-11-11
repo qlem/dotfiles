@@ -1,5 +1,5 @@
---- dwm.c.orig	2020-11-11 17:06:04.573013183 +0100
-+++ dwm.c	2020-11-11 17:05:03.980418058 +0100
+--- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
++++ dwm.c	2020-11-11 17:24:10.786563254 +0100
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])
@@ -178,11 +178,15 @@
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1633,7 +1661,7 @@
+@@ -1631,9 +1659,9 @@
+ void
+ sigchld(int unused)
  {
- 	if (signal(SIGCHLD, sigchld) == SIG_ERR)
- 		die("can't install SIGCHLD handler:");
+-	if (signal(SIGCHLD, sigchld) == SIG_ERR)
+-		die("can't install SIGCHLD handler:");
 -	while (0 < waitpid(-1, NULL, WNOHANG));
++    if (signal(SIGCHLD, sigchld) == SIG_ERR)
++        die("can't install SIGCHLD handler:");
 +    while (0 < waitpid(-1, NULL, WNOHANG));
  }
  
