@@ -1,5 +1,5 @@
 --- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
-+++ dwm.c	2020-11-11 17:24:10.786563254 +0100
++++ dwm.c	2020-11-11 17:33:45.808376946 +0100
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])

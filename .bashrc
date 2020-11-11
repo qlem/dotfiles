@@ -17,7 +17,7 @@ export NNN_BMS="r:/;h:$HOME;p:$HOME/projects"
 export NNN_PLUG='i:-_head --lines=30 $nnn'
 export NNN_COLORS="4625"
 
-# Fixing Java applications in dwm
+# Fix Java applications in dwm
 export AWT_TOOLKIT="MToolkit"
 wmname LG3D
 
