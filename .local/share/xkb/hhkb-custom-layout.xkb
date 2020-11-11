@@ -1,5 +1,5 @@
 xkb_keymap {
-xkb_keycodes "hhk" {
+xkb_keycodes "hhkb_custom" {
     minimum = 8;
     maximum = 255;
     <ESC> = 9;
@@ -59,6 +59,7 @@ xkb_keycodes "hhk" {
     <KPMU> = 63;
     <LALT> = 64;
     <SPCE> = 65;
+    <CAPS> = 66;
     <FK01> = 67;
     <FK02> = 68;
     <FK03> = 69;
@@ -99,10 +100,10 @@ xkb_keycodes "hhk" {
     <LWIN> = 133;
     <RWIN> = 134;
     <STOP> = 136;
-    indicator 1 = "";
+    indicator 1 = "Caps Lock";
 };
 
-xkb_types "hhk" {
+xkb_types "hhkb_custom" {
 
     virtual_modifiers Alt,NumLock,LevelThree;
 
@@ -116,24 +117,10 @@ xkb_types "hhk" {
         level_name[Level1]= "Base";
         level_name[Level2]= "Shift";
     };
-    type "THREE_LEVEL" {
-        modifiers= Shift+LevelThree;
-        map[Shift]= Level2;
-        map[LevelThree]= Level3;
-        map[Shift+LevelThree]= Level3;
-        level_name[Level1]= "Base";
-        level_name[Level2]= "Shift";
-        level_name[Level3]= "Level3";
-    };
-    type "CTRL+ALT" {
-        modifiers= Control+Alt;
-        map[Control+Alt]= Level2;
-        level_name[Level1]= "Base";
-        level_name[Level2]= "Ctrl+Alt";
-    };
     type "ALPHABETIC" {
-        modifiers= Shift;
+        modifiers= Shift+Lock;
         map[Shift]= Level2;
+        map[Lock]= Level2;
         level_name[Level1]= "Base";
         level_name[Level2]= "Caps";
     };
@@ -143,6 +130,38 @@ xkb_types "hhk" {
         map[NumLock]= Level2;
         level_name[Level1]= "Base";
         level_name[Level2]= "Number";
+    };
+    type "THREE_LEVEL" {
+        modifiers= Shift+LevelThree;
+        map[Shift]= Level2;
+        map[LevelThree]= Level3;
+        map[Shift+LevelThree]= Level3;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Shift";
+        level_name[Level3]= "Level3";
+    };
+    type "THREE_LEVEL_CUSTOM" {
+        modifiers= Shift+Lock+LevelThree;
+        map[Shift]= Level2;
+        map[Lock]= Level2;
+        map[LevelThree]= Level3;
+        map[Lock+LevelThree]= Level3;
+        preserve[Lock+LevelThree]= Lock;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Shift";
+        level_name[Level3]= "Level3";
+    };
+    type "SHIFT+ALT" {
+        modifiers= Shift+Alt;
+        map[Shift+Alt]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Shift+Alt";
+    };
+    type "CTRL+ALT" {
+        modifiers= Control+Alt;
+        map[Control+Alt]= Level2;
+        level_name[Level1]= "Base";
+        level_name[Level2]= "Ctrl+Alt";
     };
     type "CONTROL_LEVEL" {
         modifiers= Control;
@@ -158,7 +177,7 @@ xkb_types "hhk" {
     };
 };
 
-xkb_compatibility "hhk" {
+xkb_compatibility "hhkb_custom" {
 
     virtual_modifiers Alt,Super,AltGr,LevelThree;
 
@@ -211,6 +230,9 @@ xkb_compatibility "hhk" {
     interpret ISO_Level3_Shift+AnyOfOrNone(all) {
         action= SetMods(modifiers=LevelThree,clearLocks);
     };
+    interpret Caps_Lock+AnyOfOrNone(all) {
+        action= LockMods(modifiers=Lock);
+    };
     interpret XF86Switch_VT_1+AnyOfOrNone(all) {
         repeat= True;
         action= SwitchScreen(screen=1,!same);
@@ -262,9 +284,14 @@ xkb_compatibility "hhk" {
     group 2 = AltGr;
     group 3 = AltGr;
     group 4 = AltGr;
+    indicator "Caps Lock" {
+        !allowExplicit;
+        whichModState= locked;
+        modifiers= Lock;
+    };
 };
 
-xkb_symbols "hhk" {
+xkb_symbols "hhkb_custom" {
 
     name[group1]="Azerty FR";
 
@@ -290,19 +317,19 @@ xkb_symbols "hhk" {
     key <BKSP> {[ BackSpace ]};
     key <TAB> {[ Tab, ISO_Left_Tab ]};
     key <AD01> {
-        type= "THREE_LEVEL",
+        type= "THREE_LEVEL_CUSTOM",
         [ a, A, agrave ]
     };
     key <AD02> {[ z, Z ]};
     key <AD03> {
-        type= "THREE_LEVEL",
+        type= "THREE_LEVEL_CUSTOM",
         [ e, E, EuroSign ]
     };
     key <AD04> {[ r, R ]};
     key <AD05> {[ t, T ]};
     key <AD06> {[ y, Y ]};
     key <AD07> {
-        type= "THREE_LEVEL",
+        type= "THREE_LEVEL_CUSTOM",
         [ u, U, ugrave ]
     };
     key <AD08> {[ i, I ]};
@@ -329,7 +356,7 @@ xkb_symbols "hhk" {
     key <AB01> {[ w, W ]};
     key <AB02> {[ x, X ]};
     key <AB03> {
-        type= "THREE_LEVEL",
+        type= "THREE_LEVEL_CUSTOM",
         [ c, C, ccedilla ]
     };
     key <AB04> {[ v, V ]};
@@ -342,6 +369,7 @@ xkb_symbols "hhk" {
     key <RTSH> {[ Shift_R ]};
     key <LALT> {[ Alt_L ]};
     key <SPCE> {[ space ]};
+    key <CAPS> {[ Caps_Lock ]};
     key <FK01> {
         type= "CTRL+ALT",
         [ F1, XF86Switch_VT_1 ]
@@ -429,6 +457,7 @@ xkb_symbols "hhk" {
     modifier_map Shift { <LFSH> };
     modifier_map Shift { <RTSH> };
     modifier_map Mod1 { <LALT> };
+    modifier_map Lock { <CAPS> };
     modifier_map Mod5 { <LVL3> };
     modifier_map Mod4 { <LWIN> };
     modifier_map Mod4 { <RWIN> };

@@ -3,7 +3,6 @@
 #include <X11/XF86keysym.h>
 
 /* -- PATCHES -- */
-// cool autostart: https://dwm.suckless.org/patches/cool_autostart/
 // attachbottom: https://dwm.suckless.org/patches/attachbottom/
 // focusmaster: https://dwm.suckless.org/patches/focusmaster/
 // bottomstack (only bstack function): https://dwm.suckless.org/patches/bottomstack/
@@ -57,15 +56,6 @@ static const Rule rules[] = {
     {"jetbrains-toolbox", "JetBrains Toolbox", "JetBrains Toolbox", 0, 1, -1},
 };
 
-/* autostart */
-static const char *const autostart[] = {
-    "wallpaper.sh", NULL,
-    "picom", "--config", "/home/qlem/.config/picom/picom.conf", "-b", NULL,
-    "redshift", "-c", "/home/qlem/.config/redshift/redshift.conf", NULL,
-    "dunst", NULL,
-    NULL /* terminate */
-};
-
 /* -- PROGRAMS -- */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -92,10 +82,6 @@ static const char *pa_mic_mute[] = {"audio.sh", "--source-mute", NULL};
 static const char *pavucontrol[] = {"pavucontrol", "-t", "3", NULL};
 
 /* session */
-// static const char *sys_suspend[]   = {"systemctl", "suspend", NULL};
-// static const char *sys_hibernate[] = {"systemctl", "hibernate", NULL};
-// static const char *sys_reboot[]    = {"systemctl", "reboot", NULL};
-// static const char *sys_off[]       = {"systemctl", "poweroff", NULL};
 static const char *session[] = {"session.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
 /* screen capture */
@@ -128,7 +114,7 @@ static Key keys[] = {
     {MODKEY,                       XK_Return, spawn,          {.v = term}},
 
     // open application launcher
-    {MODKEY,                       XK_exclam, spawn,          {.v = menu}},
+    {MODKEY,                       XK_slash,  spawn,          {.v = menu}},
 
     // manage external screens
     {MODKEY,                       XK_n,      spawn,          {.v = display}},
@@ -139,19 +125,19 @@ static Key keys[] = {
     {MODKEY|ControlMask,           XK_q,      quit,           {0}},
 
     // backlight controls
-    {0,                            XF86XK_MonBrightnessUp,   spawn, {.v = bcklight_up}},
-    {0,                            XF86XK_MonBrightnessDown, spawn, {.v = bcklight_down}},
+    {0,                            XF86XK_MonBrightnessUp,    spawn, {.v = bcklight_up}},
+    {0,                            XF86XK_MonBrightnessDown,  spawn, {.v = bcklight_down}},
 
     // volume controls
-    {0,                            XF86XK_AudioRaiseVolume,  spawn, {.v = pa_vlm_up}},
-    {0,                            XF86XK_AudioLowerVolume,  spawn, {.v = pa_vlm_down}},
-    {0,                            XF86XK_AudioMute,         spawn, {.v = pa_mute}},
-    {0,                            XF86XK_AudioMicMute,      spawn, {.v = pa_mic_mute}},
-    {MODKEY,                       XK_p,                     spawn, {.v = pavucontrol}},
+    {0,                            XF86XK_AudioRaiseVolume,   spawn, {.v = pa_vlm_up}},
+    {0,                            XF86XK_AudioLowerVolume,   spawn, {.v = pa_vlm_down}},
+    {0,                            XF86XK_AudioMute,          spawn, {.v = pa_mute}},
+    {0,                            XF86XK_AudioMicMute,       spawn, {.v = pa_mic_mute}},
+    {MODKEY,                       XK_p,                      spawn, {.v = pavucontrol}},
 
     // screen capture
-    {MODKEY,                       XK_Print,  spawn,         {.v = screenshot}},
-    {MODKEY|ShiftMask,             XK_Print,  spawn,         {.v = screenshot_up}},
+    {MODKEY,                       XK_Print,  spawn,          {.v = screenshot}},
+    {MODKEY|ShiftMask,             XK_Print,  spawn,          {.v = screenshot_up}},
 
     // bar toggle
     {MODKEY,                       XK_b,      togglebar,      {0}},
@@ -199,15 +185,15 @@ static Key keys[] = {
     {MODKEY|ShiftMask,             XK_g,      tag,            {.ui = ~0}},
 
     // see -- key definitions --
-    TAGKEYS(                       XK_ampersand,              0)
+    TAGKEYS(                       XK_exclam,                 0)
     TAGKEYS(                       XK_eacute,                 1)
-    TAGKEYS(                       XK_quotedbl,               2)
-    TAGKEYS(                       XK_apostrophe,             3)
-    TAGKEYS(                       XK_parenleft,              4)
-    TAGKEYS(                       XK_minus,                  5)
+    TAGKEYS(                       XK_numbersign,             2)
+    TAGKEYS(                       XK_dollar,                 3)
+    TAGKEYS(                       XK_percent,                4)
+    TAGKEYS(                       XK_dead_circumflex,        5)
     TAGKEYS(                       XK_egrave,                 6)
-    TAGKEYS(                       XK_underscore,             7)
-    TAGKEYS(                       XK_ccedilla,               8)
+    TAGKEYS(                       XK_asterisk,               7)
+    TAGKEYS(                       XK_parenleft,              8)
 };
 
 /* button definitions */

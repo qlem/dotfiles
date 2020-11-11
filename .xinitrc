@@ -46,5 +46,9 @@ export SSH_AUTH_SOCK
 setxkbmap -layout fr -model pc
 
 # start dwm
+wallpaper.sh &
+picom --config $HOME/.config/picom/picom.conf &
+redshift -c $HOME/.config/redshift/redshift.conf &
+dunst &
 (qlstatus | dwm-setstatus) &
 exec dwm
