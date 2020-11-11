@@ -11,6 +11,9 @@
 // statusallmons: https://dwm.suckless.org/patches/statusallmons/
 // notitle: https://dwm.suckless.org/patches/notitle/
 
+/* -- Compile dwm-setstatus --  */
+// gcc dwm-setstatus.c -lX11 -o dwm-setstatus
+
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int gappx     = 12;

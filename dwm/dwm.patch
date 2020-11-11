@@ -1,5 +1,5 @@
---- dwm.c.orig	2020-10-09 21:06:24.404708992 +0200
-+++ dwm.c	2020-10-09 20:57:29.388497286 +0200
+--- dwm.c.orig	2020-11-11 17:06:04.573013183 +0100
++++ dwm.c	2020-11-11 17:05:03.980418058 +0100
 @@ -52,8 +52,8 @@
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
  #define LENGTH(X)               (sizeof X / sizeof X[0])
@@ -30,54 +30,17 @@
  static void attachstack(Client *c);
  static void buttonpress(XEvent *e);
  static void checkotherwm(void);
-@@ -234,6 +235,11 @@
+@@ -233,6 +234,9 @@
+ static int xerrordummy(Display *dpy, XErrorEvent *ee);
  static int xerrorstart(Display *dpy, XErrorEvent *ee);
  static void zoom(const Arg *arg);
- 
-+static void autostart_exec(void);
 +static void focusmaster(const Arg *arg);
 +static void bstack(Monitor *m);
 +static void movestack(const Arg *arg);
-+
+ 
  /* variables */
  static const char broken[] = "broken";
- static char stext[256];
-@@ -274,6 +280,34 @@
- /* compile-time check if all tags fit into an unsigned int bit array. */
- struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
- 
-+/* dwm will keep pid's of processes from autostart array and kill them at quit */
-+static pid_t *autostart_pids;
-+static size_t autostart_len;
-+
-+/* execute command from autostart array */
-+static void
-+autostart_exec() {
-+	const char *const *p;
-+	size_t i = 0;
-+
-+	/* count entries */
-+	for (p = autostart; *p; autostart_len++, p++)
-+		while (*++p);
-+
-+	autostart_pids = malloc(autostart_len * sizeof(pid_t));
-+	for (p = autostart; *p; i++, p++) {
-+		if ((autostart_pids[i] = fork()) == 0) {
-+			setsid();
-+			execvp(*p, (char *const *)p);
-+			fprintf(stderr, "dwm: execvp %s\n", *p);
-+			perror(" failed");
-+			_exit(EXIT_FAILURE);
-+		}
-+		/* skip arguments */
-+		while (*++p);
-+	}
-+}
-+
- /* function implementations */
- void
- applyrules(Client *c)
-@@ -407,6 +441,18 @@
+@@ -407,6 +411,18 @@
  }
  
  void
@@ -96,7 +59,7 @@
  attachstack(Client *c)
  {
  	c->snext = c->mon->stack;
-@@ -439,10 +485,8 @@
+@@ -439,10 +455,8 @@
  			arg.ui = 1 << i;
  		} else if (ev->x < x + blw)
  			click = ClkLtSymbol;
@@ -108,7 +71,7 @@
  	} else if ((c = wintoclient(ev->window))) {
  		focus(c);
  		restack(selmon);
-@@ -702,7 +746,7 @@
+@@ -702,7 +716,7 @@
  	Client *c;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -117,7 +80,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-@@ -729,15 +773,8 @@
+@@ -729,15 +743,8 @@
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
  
  	if ((w = m->ww - sw - x) > bh) {
@@ -133,7 +96,7 @@
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
  }
-@@ -1030,7 +1067,7 @@
+@@ -1030,7 +1037,7 @@
  	c->h = c->oldh = wa->height;
  	c->oldbw = wa->border_width;
  
@@ -142,7 +105,7 @@
  	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
  		c->mon = t->mon;
  		c->tags = t->tags;
-@@ -1062,7 +1099,7 @@
+@@ -1062,7 +1069,7 @@
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -151,7 +114,7 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1235,11 +1272,8 @@
+@@ -1235,11 +1242,8 @@
  			drawbars();
  			break;
  		}
@@ -165,24 +128,7 @@
  		if (ev->atom == netatom[NetWMWindowType])
  			updatewindowtype(c);
  	}
-@@ -1248,6 +1282,16 @@
- void
- quit(const Arg *arg)
- {
-+	size_t i;
-+
-+	/* kill child processes */
-+	for (i = 0; i < autostart_len; i++) {
-+		if (0 < autostart_pids[i]) {
-+			kill(autostart_pids[i], SIGTERM);
-+			waitpid(autostart_pids[i], NULL, 0);
-+		}
-+	}
-+
- 	running = 0;
- }
- 
-@@ -1276,12 +1320,36 @@
+@@ -1276,12 +1280,36 @@
  resizeclient(Client *c, int x, int y, int w, int h)
  {
  	XWindowChanges wc;
@@ -223,7 +169,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1417,7 +1485,7 @@
+@@ -1417,7 +1445,7 @@
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -232,34 +178,16 @@
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1631,9 +1699,25 @@
- void
- sigchld(int unused)
+@@ -1633,7 +1661,7 @@
  {
-+	pid_t pid;
-+
  	if (signal(SIGCHLD, sigchld) == SIG_ERR)
  		die("can't install SIGCHLD handler:");
 -	while (0 < waitpid(-1, NULL, WNOHANG));
-+	while (0 < (pid = waitpid(-1, NULL, WNOHANG))) {
-+		pid_t *p, *lim;
-+
-+		if (!(p = autostart_pids))
-+			continue;
-+		lim = &p[autostart_len];
-+
-+		for (; p < lim; p++) {
-+			if (*p == pid) {
-+				*p = -1;
-+				break;
-+			}
-+		}
-+
-+	}
++    while (0 < waitpid(-1, NULL, WNOHANG));
  }
  
  void
-@@ -1897,7 +1981,7 @@
+@@ -1897,7 +1925,7 @@
  					m->clients = c->next;
  					detachstack(c);
  					c->mon = mons;
@@ -268,7 +196,7 @@
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -1987,9 +2071,11 @@
+@@ -1987,9 +2015,11 @@
  void
  updatestatus(void)
  {
@@ -281,15 +209,7 @@
  }
  
  void
-@@ -2136,6 +2222,7 @@
- 	if (!(dpy = XOpenDisplay(NULL)))
- 		die("dwm: cannot open display");
- 	checkotherwm();
-+	autostart_exec();
- 	setup();
- #ifdef __OpenBSD__
- 	if (pledge("stdio rpath proc exec", NULL) == -1)
-@@ -2147,3 +2234,98 @@
+@@ -2147,3 +2177,98 @@
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
