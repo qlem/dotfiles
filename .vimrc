@@ -108,11 +108,12 @@ hi! link GitGutterDelete GitDeleteStripe
 
 " YouCompleteMe settings
 let g:ycm_auto_hover=''
-let g:ycm_max_num_candidates = 50
+let g:ycm_max_num_candidates=50
 let g:ycm_max_num_identifier_candidates=20
 let g:ycm_max_diagnostics_to_display=50
 let g:ycm_disable_for_files_larger_than_kb=1000
 let g:ycm_warning_symbol='--'
+let g:ycm_always_populate_location_list=1
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
 let g:ycm_key_list_stop_completion=['<CR>']
