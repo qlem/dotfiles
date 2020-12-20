@@ -1,5 +1,5 @@
 --- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
-+++ dwm.c	2020-12-20 22:28:05.932287192 +0100
++++ dwm.c	2020-12-20 23:06:47.783312615 +0100
 @@ -64,8 +64,8 @@
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -129,7 +129,28 @@
  		if (ev->atom == netatom[NetWMWindowType])
  			updatewindowtype(c);
  	}
-@@ -1417,7 +1430,7 @@
+@@ -1276,12 +1289,19 @@
+ resizeclient(Client *c, int x, int y, int w, int h)
+ {
+ 	XWindowChanges wc;
++    unsigned int n;
++    Client *nbc;
++
++    for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
++    if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1)
++        wc.border_width = 0;
++    else
++	    wc.border_width = c->bw;
+ 
+ 	c->oldx = c->x; c->x = wc.x = x;
+ 	c->oldy = c->y; c->y = wc.y = y;
+ 	c->oldw = c->w; c->w = wc.width = w;
+ 	c->oldh = c->h; c->h = wc.height = h;
+-	wc.border_width = c->bw;
+ 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+ 	configure(c);
+ 	XSync(dpy, False);
+@@ -1417,7 +1437,7 @@
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -138,7 +159,7 @@
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1675,9 +1688,10 @@
+@@ -1675,9 +1695,10 @@
  {
  	unsigned int i, n, h, mw, my, ty;
  	Client *c;
@@ -150,13 +171,12 @@
  		return;
  
  	if (n > m->nmaster)
-@@ -1685,18 +1699,73 @@
+@@ -1685,18 +1706,72 @@
  	else
  		mw = m->ww;
  	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 -		if (i < m->nmaster) {
 +		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
-+			// todo - remove border from client
 +			resize(c, m->wx, m->wy, mw, m->wh, 0);
 +		} else if (i < m->nmaster) {
  			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
@@ -229,7 +249,7 @@
  togglebar(const Arg *arg)
  {
  	selmon->showbar = !selmon->showbar;
-@@ -1897,7 +1966,7 @@
+@@ -1897,7 +1972,7 @@
  					m->clients = c->next;
  					detachstack(c);
  					c->mon = mons;
@@ -238,7 +258,7 @@
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -1987,9 +2056,12 @@
+@@ -1987,9 +2062,12 @@
  void
  updatestatus(void)
  {
@@ -252,7 +272,7 @@
  }
  
  void
-@@ -2147,3 +2219,155 @@
+@@ -2147,3 +2225,154 @@
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
@@ -328,7 +348,6 @@
 +	}
 +	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 +		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
-+			// todo - remove border from client
 +			resize(c, m->wx, m->wy, m->ww, m->wh, 0);
 +		} else if (i < m->nmaster) {
 +			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
