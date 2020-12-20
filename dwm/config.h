@@ -4,12 +4,11 @@
 
 /* -- PATCHES -- */
 // attachbottom: https://dwm.suckless.org/patches/attachbottom/
-// focusmaster: https://dwm.suckless.org/patches/focusmaster/
 // bottomstack (only bstack function): https://dwm.suckless.org/patches/bottomstack/
-// useless gap: https://dwm.suckless.org/patches/uselessgap/
 // movestack (installed manually): https://dwm.suckless.org/patches/movestack/
-// statusallmons: https://dwm.suckless.org/patches/statusallmons/
 // notitle: https://dwm.suckless.org/patches/notitle/
+// statusallmons: https://dwm.suckless.org/patches/statusallmons/
+// focusmaster: https://dwm.suckless.org/patches/focusmaster/
 
 /* -- Compile dwm-setstatus --  */
 // gcc dwm-setstatus.c -lX11 -o dwm-setstatus

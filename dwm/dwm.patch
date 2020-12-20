@@ -1,16 +1,5 @@
 --- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
-+++ dwm.c	2020-11-11 17:33:45.808376946 +0100
-@@ -52,8 +52,8 @@
- #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
- #define LENGTH(X)               (sizeof X / sizeof X[0])
- #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
--#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
--#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-+#define WIDTH(X)                ((X)->w + 2 * (X)->bw + gappx)
-+#define HEIGHT(X)               ((X)->h + 2 * (X)->bw + gappx)
- #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
- #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
- 
++++ dwm.c	2020-12-20 22:28:05.932287192 +0100
 @@ -64,8 +64,8 @@
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -22,7 +11,18 @@
  
  typedef union {
  	int i;
-@@ -147,6 +147,7 @@
+@@ -141,12 +141,18 @@
+ 	int monitor;
+ } Rule;
+ 
++typedef struct {
++	unsigned int top, bottom, left, right;
++	unsigned int minc, tinc;
++} Gap;
++
+ /* function declarations */
+ static void applyrules(Client *c);
+ static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
  static void arrange(Monitor *m);
  static void arrangemon(Monitor *m);
  static void attach(Client *c);
@@ -30,17 +30,28 @@
  static void attachstack(Client *c);
  static void buttonpress(XEvent *e);
  static void checkotherwm(void);
-@@ -233,6 +234,9 @@
+@@ -209,6 +215,8 @@
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
+ static void tile(Monitor *);
++static void tilemastergaps(Gap *gap, int nmaster, int nstack, unsigned int i);
++static void tilestackgaps(Gap *gap, int nmaster, int nstack, unsigned int i);
+ static void togglebar(const Arg *arg);
+ static void togglefloating(const Arg *arg);
+ static void toggletag(const Arg *arg);
+@@ -233,6 +241,11 @@
  static int xerrordummy(Display *dpy, XErrorEvent *ee);
  static int xerrorstart(Display *dpy, XErrorEvent *ee);
  static void zoom(const Arg *arg);
 +static void focusmaster(const Arg *arg);
 +static void bstack(Monitor *m);
++static void bstackmastergaps(Gap *gap, int nmaster, int nstack, unsigned int i);
++static void bstackstackgaps(Gap *gap, int nmaster, int nstack, unsigned int i);
 +static void movestack(const Arg *arg);
  
  /* variables */
  static const char broken[] = "broken";
-@@ -407,6 +411,18 @@
+@@ -407,6 +420,18 @@
  }
  
  void
@@ -59,7 +70,7 @@
  attachstack(Client *c)
  {
  	c->snext = c->mon->stack;
-@@ -439,10 +455,8 @@
+@@ -439,10 +464,8 @@
  			arg.ui = 1 << i;
  		} else if (ev->x < x + blw)
  			click = ClkLtSymbol;
@@ -71,7 +82,7 @@
  	} else if ((c = wintoclient(ev->window))) {
  		focus(c);
  		restack(selmon);
-@@ -702,7 +716,7 @@
+@@ -702,7 +725,7 @@
  	Client *c;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -80,7 +91,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
-@@ -729,15 +743,8 @@
+@@ -729,15 +752,8 @@
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
  
  	if ((w = m->ww - sw - x) > bh) {
@@ -96,16 +107,7 @@
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
  }
-@@ -1030,7 +1037,7 @@
- 	c->h = c->oldh = wa->height;
- 	c->oldbw = wa->border_width;
- 
--	updatetitle(c);
-+    updatetitle(c);
- 	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
- 		c->mon = t->mon;
- 		c->tags = t->tags;
-@@ -1062,7 +1069,7 @@
+@@ -1062,7 +1078,7 @@
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -114,62 +116,20 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1235,11 +1242,8 @@
+@@ -1235,11 +1251,8 @@
  			drawbars();
  			break;
  		}
 -		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
--			updatetitle(c);
++		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName])
+ 			updatetitle(c);
 -			if (c == c->mon->sel)
 -				drawbar(c->mon);
 -		}
-+		if (ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName])
-+            updatetitle(c);
  		if (ev->atom == netatom[NetWMWindowType])
  			updatewindowtype(c);
  	}
-@@ -1276,12 +1280,36 @@
- resizeclient(Client *c, int x, int y, int w, int h)
- {
- 	XWindowChanges wc;
-+	unsigned int n;
-+	unsigned int gapoffset;
-+	unsigned int gapincr;
-+	Client *nbc;
- 
--	c->oldx = c->x; c->x = wc.x = x;
--	c->oldy = c->y; c->y = wc.y = y;
--	c->oldw = c->w; c->w = wc.width = w;
--	c->oldh = c->h; c->h = wc.height = h;
- 	wc.border_width = c->bw;
-+
-+	/* Get number of clients for the client's monitor */
-+	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
-+
-+	/* Do nothing if layout is floating */
-+	if (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL) {
-+		gapincr = gapoffset = 0;
-+	} else {
-+		/* Remove border and gap if layout is monocle or only one client */
-+		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
-+			gapoffset = 0;
-+			gapincr = -2 * borderpx;
-+			wc.border_width = 0;
-+		} else {
-+			gapoffset = gappx;
-+			gapincr = 2 * gappx;
-+		}
-+	}
-+
-+	c->oldx = c->x; c->x = wc.x = x + gapoffset;
-+	c->oldy = c->y; c->y = wc.y = y + gapoffset;
-+	c->oldw = c->w; c->w = wc.width = w - gapincr;
-+	c->oldh = c->h; c->h = wc.height = h - gapincr;
-+
- 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
- 	configure(c);
- 	XSync(dpy, False);
-@@ -1417,7 +1445,7 @@
+@@ -1417,7 +1430,7 @@
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -178,20 +138,98 @@
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1631,9 +1659,9 @@
- void
- sigchld(int unused)
+@@ -1675,9 +1688,10 @@
  {
--	if (signal(SIGCHLD, sigchld) == SIG_ERR)
--		die("can't install SIGCHLD handler:");
--	while (0 < waitpid(-1, NULL, WNOHANG));
-+    if (signal(SIGCHLD, sigchld) == SIG_ERR)
-+        die("can't install SIGCHLD handler:");
-+    while (0 < waitpid(-1, NULL, WNOHANG));
+ 	unsigned int i, n, h, mw, my, ty;
+ 	Client *c;
++	Gap gap;
+ 
+ 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+-	if (n == 0)
++	if (n == 0 || m->nmaster > n)
+ 		return;
+ 
+ 	if (n > m->nmaster)
+@@ -1685,18 +1699,73 @@
+ 	else
+ 		mw = m->ww;
+ 	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+-		if (i < m->nmaster) {
++		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
++			// todo - remove border from client
++			resize(c, m->wx, m->wy, mw, m->wh, 0);
++		} else if (i < m->nmaster) {
+ 			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+-			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
+-			my += HEIGHT(c);
++			tilemastergaps(&gap, m->nmaster, n - m->nmaster, i);
++			resize(c, m->wx + gap.left, m->wy + my + gap.top, mw - (2*c->bw) - gap.left
++				- gap.right, h - (2*c->bw) - gap.top - gap.bottom, 0);
++			my += HEIGHT(c) + gap.minc;
+ 		} else {
+ 			h = (m->wh - ty) / (n - i);
+-			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
+-			ty += HEIGHT(c);
++			tilestackgaps(&gap, m->nmaster, n - m->nmaster, i - m->nmaster);
++			resize(c, m->wx + mw + gap.left, m->wy + ty + gap.top, m->ww - mw - (2*c->bw)
++				- gap.left - gap.right, h - (2*c->bw) - gap.top - gap.bottom, 0);
++			ty += HEIGHT(c) + gap.tinc;
+ 		}
  }
  
  void
-@@ -1897,7 +1925,7 @@
++tilemastergaps(Gap *gap, int nmaster, int nstack, unsigned int i) {
++	if (nmaster == 1) {
++		gap->top = gap->left = gap->bottom = gappx;
++		gap->right = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx * 2;
++	} else if (i == 0) {
++		gap->top = gap->left = gappx;
++		gap->bottom = gappx / 2;
++		gap->right = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx + gappx / 2;
++	} else if (i + 1 < nmaster) {
++		gap->top = gap->bottom = gappx / 2;
++		gap->left = gappx;
++		gap->right = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx;
++	} else {
++		gap->top = gappx / 2;
++		gap->left = gap->bottom = gappx;
++		gap->right = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx + gappx / 2;
++	}
++}
++
++void
++tilestackgaps(Gap *gap, int nmaster, int nstack, unsigned int i) {
++	if (nstack == 1) {
++		gap->top = gap->right = gap->bottom = gappx;
++		gap->left = nmaster ? gappx / 2 : gappx;
++		gap->tinc = gappx * 2;
++	} else if (i == 0) {
++		gap->top = gap->right = gappx;
++		gap->bottom = gappx / 2;
++		gap->left = nmaster ? gappx / 2 : gappx;
++		gap->tinc = gappx + gappx / 2;
++	} else if (i + 1 < nstack) {
++		gap->top = gap->bottom = gappx / 2;
++		gap->left = nmaster ? gappx / 2 : gappx;
++		gap->right = gappx;
++		gap->tinc = gappx;
++	} else {
++		gap->top = gappx / 2;
++		gap->left = nmaster ? gappx / 2 : gappx;
++		gap->right = gap->bottom = gappx;
++		gap->tinc = gappx + gappx / 2;
++	}
++}
++
++void
+ togglebar(const Arg *arg)
+ {
+ 	selmon->showbar = !selmon->showbar;
+@@ -1897,7 +1966,7 @@
  					m->clients = c->next;
  					detachstack(c);
  					c->mon = mons;
@@ -200,11 +238,12 @@
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -1987,9 +2015,11 @@
+@@ -1987,9 +2056,12 @@
  void
  updatestatus(void)
  {
 +	Monitor* m;
++
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);
 -	drawbar(selmon);
@@ -213,58 +252,58 @@
  }
  
  void
-@@ -2147,3 +2177,98 @@
+@@ -2147,3 +2219,155 @@
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
 +
 +void
 +movestack(const Arg *arg) {
-+    Client *c = NULL, *p = NULL, *pc = NULL, *i;
++	Client *c = NULL, *p = NULL, *pc = NULL, *i;
 +
-+    if(arg->i > 0) {
-+        /* find the client after selmon->sel */
-+        for(c = selmon->sel->next; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
-+        if(!c)
-+            for(c = selmon->clients; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++	if(arg->i > 0) {
++		/* find the client after selmon->sel */
++		for(c = selmon->sel->next; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++		if(!c)
++			for(c = selmon->clients; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
 +
-+    }
-+    else {
-+        /* find the client before selmon->sel */
-+        for(i = selmon->clients; i != selmon->sel; i = i->next)
-+            if(ISVISIBLE(i) && !i->isfloating)
-+                c = i;
-+        if(!c)
-+            for(; i; i = i->next)
-+                if(ISVISIBLE(i) && !i->isfloating)
-+                    c = i;
-+    }
-+    /* find the client before selmon->sel and c */
-+    for(i = selmon->clients; i && (!p || !pc); i = i->next) {
-+        if(i->next == selmon->sel)
-+            p = i;
-+        if(i->next == c)
-+            pc = i;
-+    }
++	}
++	else {
++		/* find the client before selmon->sel */
++		for(i = selmon->clients; i != selmon->sel; i = i->next)
++			if(ISVISIBLE(i) && !i->isfloating)
++				c = i;
++		if(!c)
++			for(; i; i = i->next)
++				if(ISVISIBLE(i) && !i->isfloating)
++					c = i;
++	}
++	/* find the client before selmon->sel and c */
++	for(i = selmon->clients; i && (!p || !pc); i = i->next) {
++		if(i->next == selmon->sel)
++			p = i;
++		if(i->next == c)
++			pc = i;
++	}
 +
-+    /* swap c and selmon->sel selmon->clients in the selmon->clients list */
-+    if(c && c != selmon->sel) {
-+        Client *temp = selmon->sel->next==c?selmon->sel:selmon->sel->next;
-+        selmon->sel->next = c->next==selmon->sel?c:c->next;
-+        c->next = temp;
++	/* swap c and selmon->sel selmon->clients in the selmon->clients list */
++	if(c && c != selmon->sel) {
++		Client *temp = selmon->sel->next==c?selmon->sel:selmon->sel->next;
++		selmon->sel->next = c->next==selmon->sel?c:c->next;
++		c->next = temp;
 +
-+        if(p && p != c)
-+            p->next = c;
-+        if(pc && pc != selmon->sel)
-+            pc->next = selmon->sel;
++		if(p && p != c)
++			p->next = c;
++		if(pc && pc != selmon->sel)
++			pc->next = selmon->sel;
 +
-+        if(selmon->sel == selmon->clients)
-+            selmon->clients = c;
-+        else if(c == selmon->clients)
-+            selmon->clients = selmon->sel;
++		if(selmon->sel == selmon->clients)
++			selmon->clients = c;
++		else if(c == selmon->clients)
++			selmon->clients = selmon->sel;
 +
-+        arrange(selmon);
-+    }
++		arrange(selmon);
++	}
 +}
 +
 +static void
@@ -272,10 +311,12 @@
 +	int w, h, mh, mx, tx, ty, tw;
 +	unsigned int i, n;
 +	Client *c;
++	Gap gap;
 +
 +	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-+	if (n == 0)
++	if (n == 0 || m->nmaster > n)
 +		return;
++
 +	if (n > m->nmaster) {
 +		mh = m->nmaster ? m->mfact * m->wh : 0;
 +		tw = m->ww / (n - m->nmaster);
@@ -286,16 +327,71 @@
 +		ty = m->wy;
 +	}
 +	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
-+		if (i < m->nmaster) {
++		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
++			// todo - remove border from client
++			resize(c, m->wx, m->wy, m->ww, m->wh, 0);
++		} else if (i < m->nmaster) {
 +			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
-+			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
-+			mx += WIDTH(c);
++			bstackmastergaps(&gap, m->nmaster, n - m->nmaster, i);
++			resize(c, m->wx + mx + gap.left, m->wy + gap.top, w - (2 * c->bw) - gap.left
++				- gap.right, mh - (2 * c->bw) - gap.top - gap.bottom, 0);
++			mx += WIDTH(c) + gap.minc;
 +		} else {
 +			h = m->wh - mh;
-+			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
-+			if (tw != m->ww)
-+				tx += WIDTH(c);
++			bstackstackgaps(&gap, m->nmaster, n - m->nmaster, i - m->nmaster);
++			resize(c, tx + gap.left, ty + gap.top, tw - (2 * c->bw) - gap.left - gap.right,
++				h - (2 * c->bw) - gap.top - gap.bottom, 0);
++			/* if (tw != m->ww) */
++			tx += WIDTH(c) + gap.tinc;
 +		}
++	}
++}
++
++void
++bstackmastergaps(Gap *gap, int nmaster, int nstack, unsigned int i) {
++	if (nmaster == 1) {
++		gap->top = gap->left = gap->right = gappx;
++		gap->bottom = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx * 2;
++	} else if (i == 0) {
++		gap->top = gap->left = gappx;
++		gap->right = gappx / 2;
++		gap->bottom = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx + gappx / 2;
++	} else if (i + 1 < nmaster) {
++		gap->top = gappx;
++		gap->left = gap->right = gappx / 2;
++		gap->bottom = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx;
++	} else {
++		gap->top = gap->right = gappx;
++		gap->left = gappx / 2;
++		gap->bottom = nstack ? gappx / 2 : gappx;
++		gap->minc = gappx + gappx / 2;
++	}
++}
++
++void
++bstackstackgaps(Gap *gap, int nmaster, int nstack, unsigned int i) {
++	if (nstack == 1) {
++		gap->top = nmaster ? gappx / 2 : gappx;
++		gap->left = gap->right = gap->bottom = gappx;
++		gap->tinc = gappx * 2;
++	} else if (i == 0) {
++		gap->top = nmaster ? gappx / 2 : gappx;
++		gap->left = gap->bottom = gappx;
++		gap->right = gappx / 2;
++		gap->tinc = gappx + gappx / 2;
++	} else if (i + 1 < nstack) {
++		gap->top = nmaster ? gappx / 2 : gappx;
++		gap->left = gap->right = gappx / 2;
++		gap->bottom = gappx;
++		gap->tinc = gappx;
++	} else {
++		gap->top = nmaster ? gappx / 2 : gappx;
++		gap->left = gappx / 2;
++		gap->bottom = gap->right = gappx;
++		gap->tinc = gappx + gappx / 2;
 +	}
 +}
 +
