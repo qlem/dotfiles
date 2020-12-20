@@ -1,5 +1,5 @@
 --- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
-+++ dwm.c	2020-12-20 23:06:47.783312615 +0100
++++ dwm.c	2020-12-20 23:14:14.304503000 +0100
 @@ -64,8 +64,8 @@
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -133,14 +133,14 @@
  resizeclient(Client *c, int x, int y, int w, int h)
  {
  	XWindowChanges wc;
-+    unsigned int n;
-+    Client *nbc;
++	unsigned int n;
++	Client *nbc;
 +
-+    for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
-+    if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1)
-+        wc.border_width = 0;
-+    else
-+	    wc.border_width = c->bw;
++	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
++	if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1)
++		wc.border_width = 0;
++	else
++		wc.border_width = c->bw;
  
  	c->oldx = c->x; c->x = wc.x = x;
  	c->oldy = c->y; c->y = wc.y = y;
