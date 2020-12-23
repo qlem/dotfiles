@@ -5,6 +5,7 @@
 /* -- PATCHES -- */
 // attachbottom: https://dwm.suckless.org/patches/attachbottom/
 // bottomstack (only bstack function): https://dwm.suckless.org/patches/bottomstack/
+// tilegap: https://dwm.suckless.org/patches/tilegap/
 // movestack (installed manually): https://dwm.suckless.org/patches/movestack/
 // notitle: https://dwm.suckless.org/patches/notitle/
 // statusallmons: https://dwm.suckless.org/patches/statusallmons/
