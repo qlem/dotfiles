@@ -1,5 +1,5 @@
 --- dwm.c.orig	2020-11-11 17:20:30.489253255 +0100
-+++ dwm.c	2020-12-22 19:43:45.008491493 +0100
++++ dwm.c	2020-12-28 19:45:23.147136020 +0100
 @@ -64,8 +64,8 @@
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
@@ -286,7 +286,7 @@
 +			mx += WIDTH(c) + gappx;
 +		} else {
 +			h = m->wh - mh;
-+			tw = (m->ww - tx) / (n - i) - gappx;
++			tw = (m->ww + m->wx - tx) / (n - i) - gappx;
 +			resize(c, tx, ty + gappx/ns, tw - (2 * c->bw), h - (2 * c->bw) - gappx*(5-ns)/2, 0);
 +			/* if (tw != m->ww) */
 +			tx += WIDTH(c) + gappx;
