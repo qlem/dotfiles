@@ -7,6 +7,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
 Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
@@ -76,6 +77,7 @@ autocmd FileType man set nonumber
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2
 autocmd FileType json setlocal shiftwidth=2 tabstop=2
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
 " use C/C++ syntax highlighting in the YCM doc. popup
@@ -91,6 +93,9 @@ hi! ColorColumn ctermbg=236 guibg=NONE
 " netrw settings
 let g:netrw_banner=0
 let g:netrw_winsize=30
+
+" typescript-vim settings
+let g:typescript_indent_disable=1
 
 " NERDCommenter settings
 let g:NERDSpaceDelims=1
@@ -172,6 +177,8 @@ nnoremap <Leader>bc :%s/\s\+$//g<CR>
 " open / close location list window
 nnoremap <Leader>lo :lopen<CR>
 nnoremap <Leader>lc :lclose<CR>
+nnoremap <Leader>co :copen<CR>
+nnoremap <Leader>cc :cclose<CR>
 
 " window keybinds
 nnoremap <Leader>ws :new<CR>

@@ -123,7 +123,7 @@ static Key keys[] = {
     {MODKEY,                       XK_n,      spawn,          {.v = display}},
 
     // session actions
-    {MODKEY,                       XK_Delete, spawn,          {.v = session}},
+    {MODKEY,                       XK_grave,  spawn,          {.v = session}},
     {MODKEY|ControlMask,           XK_l,      spawn,          {.v = lock}},
     {MODKEY|ControlMask,           XK_q,      quit,           {0}},
 
