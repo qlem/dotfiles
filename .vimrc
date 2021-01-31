@@ -1,11 +1,12 @@
 " load plugins
 call plug#begin('~/.vim/plugged')
 Plug 'doums/coBra'
+Plug 'doums/barow'
 Plug 'doums/darcula'
 Plug 'doums/gitBranch'
-Plug 'itchyny/lightline.vim'
-Plug 'ycm-core/YouCompleteMe'
 Plug 'dense-analysis/ale'
+" Plug 'itchyny/lightline.vim'
+Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
@@ -69,8 +70,8 @@ syntax on
 " open man pages into vim
 runtime ftplugin/man.vim
 
-" some auto commands
-augroup vimrc
+" some customizations
+augroup MyCustoms
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
@@ -115,6 +116,7 @@ let g:ale_enabled=1
 let g:ale_disable_lsp=1
 let g:ale_linters_explicit=1
 let g:ale_set_highlights=1
+let g:ale_fix_on_save=0
 let g:ale_sign_error='>>'
 let g:ale_sign_warning='--'
 let g:ale_sign_info='~~'
@@ -125,7 +127,6 @@ let g:ale_echo_msg_format='[%linter%][%severity%] %s (%code%)'
 let g:ale_echo_msg_error_str='Error'
 let g:ale_echo_msg_warning_str='Warning'
 let g:ale_echo_msg_info_str='Info'
-let g:ale_fix_on_save=0
 let g:ale_linters = {
   \ 'javascript': [ 'eslint' ],
   \ 'json': [ 'eslint' ],
@@ -152,18 +153,22 @@ hi! link ALEStyleWarningSign WarningSign
 
 " YouCompleteMe settings
 let g:ycm_auto_hover=''
+let g:ycm_key_detailed_diagnostics=''
 let g:ycm_max_num_candidates=50
 let g:ycm_max_num_identifier_candidates=20
 let g:ycm_max_diagnostics_to_display=50
 let g:ycm_disable_for_files_larger_than_kb=1000
 let g:ycm_always_populate_location_list=0
+let g:ycm_use_ultisnips_completer=0
+let g:ycm_enable_diagnostic_signs=1
 let g:ycm_error_symbol='>>'
 let g:ycm_warning_symbol='--'
-let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
-let g:ycm_key_list_stop_completion=['<CR>']
-let g:ycm_key_detailed_diagnostics=''
+let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
+let g:ycm_key_list_stop_completion=['<C-y>']
 let g:ycm_tsserver_binary_path='$HOME/.vim/plugged/YouCompleteMe/third_party/ycmd/third_party/tsserver/bin/tsserver'
+let g:ycm_server_python_interpreter='/usr/bin/python'
+let g:ycm_use_clangd=1
 let g:ycm_clangd_binary_path='/usr/bin/clangd'
 let g:ycm_clangd_uses_ycmd_caching=1
 let g:ycm_clangd_args = ['--clang-tidy', '--clang-tidy-checks='
@@ -204,6 +209,59 @@ let g:lightline.tabline = {
 let g:lightline.tab = {
   \ 'active': ['filename', 'modified'],
   \ 'inactive': ['filename', 'modified']
+  \ }
+
+" expose funcs for error summary from ALE and YCM
+function ErrorCount()
+  let s:buf = bufnr('%')
+  let s:ycmerr = youcompleteme#GetErrorCount()
+  let s:ale = ale#statusline#Count(s:buf)
+  let s:err = s:ycmerr + s:ale->get('error') + s:ale->get('style_error')
+  if s:err > 0 | return s:err . 'e' | else | return ''
+endfunction
+
+function WarningCount()
+  let s:buf = bufnr('%')
+  let s:ycmwarn = youcompleteme#GetWarningCount()
+  let s:ale = ale#statusline#Count(s:buf)
+  let s:warn = s:ycmwarn + s:ale->get('warning') + s:ale->get('style_warning')
+  if s:warn > 0 | return s:warn . 'w' | else | return ''
+endfunction
+
+function InfoCount()
+  let s:buf = bufnr('%')
+  let s:ale = ale#statusline#Count(s:buf)
+  let s:info = s:ale->get('info')
+  if s:info > 0 | return s:info . 'i' | else | return ''
+endfunction
+
+augroup ErrorSummary
+  autocmd!
+  autocmd User ALELintPost call barow#update()
+  autocmd User ALEFixPost call barow#update()
+augroup END
+
+" barow settings
+let g:barow = {
+  \ 'modes': {
+  \   'normal': [ ' ', 'BarowNormal' ],
+  \   'insert': [ 'i', 'BarowInsert' ],
+  \   'replace': [ 'r', 'BarowReplace' ],
+  \   'visual': [ 'v', 'BarowVisual' ],
+  \   'v-line': [ 'l', 'BarowVisual' ],
+  \   'v-block': [ 'b', 'BarowVisual' ],
+  \   'select': [ 's', 'BarowVisual' ],
+  \   'command': [ 'c', 'BarowCommand' ],
+  \   'shell-ex': [ '!', 'BarowCommand' ],
+  \   'terminal': [ 't', 'BarowTerminal' ],
+  \   'prompt': [ 'p', 'BarowNormal' ],
+  \   'inactive': [ ' ', 'BarowModeNC' ]
+  \ },
+  \ 'modules': [
+  \   [ 'InfoCount', 'BarowInfo' ],
+  \   [ 'WarningCount', 'BarowWarn' ],
+  \   [ 'ErrorCount', 'BarowError' ]
+  \ ]
   \ }
 
 " global keybinds
