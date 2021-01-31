@@ -5,6 +5,7 @@ Plug 'doums/darcula'
 Plug 'doums/gitBranch'
 Plug 'itchyny/lightline.vim'
 Plug 'ycm-core/YouCompleteMe'
+Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
@@ -73,22 +74,20 @@ augroup vimrc
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
-" use specific indent width for specific filetypes
-autocmd FileType vim setlocal shiftwidth=2 tabstop=2
-autocmd FileType json setlocal shiftwidth=2 tabstop=2
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
-autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
+" override indent width for specific filetypes
+autocmd FileType vim,json,yaml,typescript setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
-" use C/C++ syntax highlighting in the YCM doc. popup
-autocmd FileType c,cpp let b:ycm_hover = {
+" use C/C++/typescript syntax highlighting in YCM doc popup
+autocmd FileType c,cpp,typescript let b:ycm_hover = {
   \ 'command': 'GetDoc',
   \ 'syntax': &filetype
   \ }
 augroup END
 
-" max text width column highlighting
+" override some highlighting groups
 hi! ColorColumn ctermbg=236 guibg=NONE
+hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
 
 " netrw settings
 let g:netrw_banner=0
@@ -111,18 +110,60 @@ hi! link GitGutterAdd GitAddStripe
 hi! link GitGutterChange GitChangeStripe
 hi! link GitGutterDelete GitDeleteStripe
 
+" ALE settings
+let g:ale_enabled=1
+let g:ale_disable_lsp=1
+let g:ale_linters_explicit=1
+let g:ale_set_highlights=1
+let g:ale_sign_error='>>'
+let g:ale_sign_warning='--'
+let g:ale_sign_info='~~'
+let g:ale_sign_style_error='>>'
+let g:ale_sign_style_warning='--'
+let g:ale_echo_cursor=1
+let g:ale_echo_msg_format='[%linter%][%severity%] %s (%code%)'
+let g:ale_echo_msg_error_str='Error'
+let g:ale_echo_msg_warning_str='Warning'
+let g:ale_echo_msg_info_str='Info'
+let g:ale_fix_on_save=0
+let g:ale_linters = {
+  \ 'javascript': [ 'eslint' ],
+  \ 'json': [ 'eslint' ],
+  \ 'typescript': [ 'eslint', 'tsserver' ],
+  \ 'graphql': [ 'eslint '],
+  \ 'sh': [ 'shellcheck' ]
+  \ }
+let g:ale_fixers = {
+  \ 'javascript': [ 'prettier', 'eslint' ],
+  \ 'json': [ 'eslint' ],
+  \ 'typescript': [ 'eslint' ],
+  \ 'graphql': [ 'eslint' ],
+  \ }
+hi! link ALEError Error
+hi! link ALEWarning CodeWarning
+hi! link ALEInfo CodeInfo
+hi! link ALEStyleError Error
+hi! link ALEStyleWarning CodeWarning
+hi! link ALEErrorSign ErrorSign
+hi! link ALEWarningSign WarningSign
+hi! link ALEInfoSign InfoSign
+hi! link ALEStyleErrorSign ErrorSign
+hi! link ALEStyleWarningSign WarningSign
+
 " YouCompleteMe settings
 let g:ycm_auto_hover=''
 let g:ycm_max_num_candidates=50
 let g:ycm_max_num_identifier_candidates=20
 let g:ycm_max_diagnostics_to_display=50
 let g:ycm_disable_for_files_larger_than_kb=1000
+let g:ycm_always_populate_location_list=0
+let g:ycm_error_symbol='>>'
 let g:ycm_warning_symbol='--'
-let g:ycm_always_populate_location_list=1
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
 let g:ycm_key_list_stop_completion=['<CR>']
 let g:ycm_key_detailed_diagnostics=''
+let g:ycm_tsserver_binary_path='$HOME/.vim/plugged/YouCompleteMe/third_party/ycmd/third_party/tsserver/bin/tsserver'
 let g:ycm_clangd_binary_path='/usr/bin/clangd'
 let g:ycm_clangd_uses_ycmd_caching=1
 let g:ycm_clangd_args = ['--clang-tidy', '--clang-tidy-checks='
@@ -177,8 +218,8 @@ nnoremap <Leader>bc :%s/\s\+$//g<CR>
 " open / close location list window
 nnoremap <Leader>lo :lopen<CR>
 nnoremap <Leader>lc :lclose<CR>
-nnoremap <Leader>co :copen<CR>
-nnoremap <Leader>cc :cclose<CR>
+nnoremap <Leader>ko :copen<CR>
+nnoremap <Leader>kc :cclose<CR>
 
 " window keybinds
 nnoremap <Leader>ws :new<CR>
@@ -196,13 +237,23 @@ nnoremap <Leader>t<left> :tabm -<CR>
 nnoremap <Leader>t<right> :tabm +<CR>
 
 " GitGutter keybinds
-nnoremap <Leader>ge :GitGutterBufferToggle<cr>
-nnoremap <Leader>gE :GitGutterToggle<cr>
+nnoremap <Leader>gt :GitGutterBufferToggle<cr>
+nnoremap <Leader>gT :GitGutterToggle<cr>
 nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
 nmap <Leader>gs <Plug>(GitGutterStageHunk)
 nmap <Leader>gu <Plug>(GitGutterUndoHunk)
 nmap <Leader>gp <Plug>(GitGutterPrevHunk)
 nmap <Leader>gn <Plug>(GitGutterNextHunk)
+
+" ALE keybinds
+nmap <Leader>zf <Plug>(ale_fix)
+nmap <Leader>zl <Plug>(ale_lint)
+nmap <Leader>zp <Plug>(ale_previous_wrap)
+nmap <Leader>zn <Plug>(ale_next_wrap)
+nmap <Leader>zF <Plug>(ale_first)
+nmap <Leader>zL <Plug>(ale_last)
+nmap <Leader>zT <Plug>(ale_toggle)
+nmap <Leader>zt <Plug>(ale_toggle_buffer)
 
 " YouCompleteMe keybinds
 nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
@@ -213,9 +264,12 @@ nnoremap <Leader>ah :YcmCompleter GoToInclude<CR>
 nnoremap <Leader>ad :YcmCompleter GoToDeclaration<CR>
 nnoremap <Leader>aD :YcmCompleter GoToDefinition<CR>
 nnoremap <Leader>ar :YcmCompleter GoToReferences<CR>
-nnoremap <Leader>at :YcmCompleter GetType<CR>
+nnoremap <Leader>aI :YcmCompleter GoToImplementation<CR>
+nnoremap <Leader>at :YcmCompleter GoToType<CR>
+nnoremap <Leader>aT :YcmCompleter GetType<CR>
 nnoremap <Leader>ap :YcmCompleter GetParent<CR>
 nnoremap <Leader>ai :YcmCompleter GetDoc<CR>
 nnoremap <Leader>af :YcmCompleter FixIt<CR>
-nnoremap <Leader>an :YcmCompleter RefactorRename 
+nnoremap <Leader>as :YcmCompleter GoToSymbol
+nnoremap <Leader>an :YcmCompleter RefactorRename
 nmap <Leader>d <Plug>(YCMHover)
