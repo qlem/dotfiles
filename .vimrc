@@ -1,16 +1,22 @@
-" load plugins
+" plugins
 call plug#begin('~/.vim/plugged')
 Plug 'doums/coBra'
 Plug 'doums/barow'
 Plug 'doums/darcula'
-Plug 'doums/gitBranch'
-Plug 'dense-analysis/ale'
+Plug 'doums/barowGit'
 " Plug 'itchyny/lightline.vim'
+Plug 'dense-analysis/ale'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdcommenter'
+
+"web development
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
-Plug 'scrooloose/nerdcommenter'
+" Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'jparise/vim-graphql'
+Plug 'styled-components/vim-styled-components'
 call plug#end()
 
 " global settings
@@ -76,7 +82,7 @@ autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
 " override indent width for specific filetypes
-autocmd FileType vim,json,yaml,typescript setlocal shiftwidth=2 tabstop=2
+autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
 " use C/C++/typescript syntax highlighting in YCM doc popup
@@ -90,12 +96,46 @@ augroup END
 hi! ColorColumn ctermbg=236 guibg=NONE
 hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
 
+" expose funcs to display error summary from ALE and YCM in status line
+function ErrorCount()
+  let buf = bufnr('%')
+  let ale = ale#statusline#Count(buf)
+  let ycmerr = youcompleteme#GetErrorCount()
+  let err = ycmerr + ale->get('error') + ale->get('style_error')
+  if err > 0 | return err . 'e' | else | return ''
+endfunction
+
+function WarningCount()
+  let buf = bufnr('%')
+  let ale = ale#statusline#Count(buf)
+  let ycmwarn = youcompleteme#GetWarningCount()
+  let warn = ycmwarn + ale->get('warning') + ale->get('style_warning')
+  if warn > 0 | return warn . 'w' | else | return ''
+endfunction
+
+function InfoCount()
+  let buf = bufnr('%')
+  let ale = ale#statusline#Count(buf)
+  let info = ale->get('info')
+  if info > 0 | return info . 'i' | else | return ''
+endfunction
+
+augroup ErrorSummary
+  autocmd!
+  autocmd User ALELintPost call barow#update()
+  autocmd User ALEFixPost call barow#update()
+augroup END
+
 " netrw settings
 let g:netrw_banner=0
-let g:netrw_winsize=30
+let g:netrw_winsize=22
+let g:netrw_liststyle=3
 
 " typescript-vim settings
 let g:typescript_indent_disable=1
+
+" vim-jsx-pretty settings
+let g:vim_jsx_pretty_disable_js=1
 
 " NERDCommenter settings
 let g:NERDSpaceDelims=1
@@ -128,16 +168,18 @@ let g:ale_echo_msg_error_str='Error'
 let g:ale_echo_msg_warning_str='Warning'
 let g:ale_echo_msg_info_str='Info'
 let g:ale_linters = {
-  \ 'javascript': [ 'eslint' ],
   \ 'json': [ 'eslint' ],
+  \ 'javascript': [ 'eslint' ],
   \ 'typescript': [ 'eslint', 'tsserver' ],
+  \ 'typescriptreact': [ 'eslint', 'tsserver' ],
   \ 'graphql': [ 'eslint '],
   \ 'sh': [ 'shellcheck' ]
   \ }
 let g:ale_fixers = {
-  \ 'javascript': [ 'prettier', 'eslint' ],
   \ 'json': [ 'eslint' ],
-  \ 'typescript': [ 'eslint' ],
+  \ 'javascript': [ 'prettier', 'eslint' ],
+  \ 'typescript': [ 'prettier', 'eslint' ],
+  \ 'typescriptreact': [ 'prettier', 'eslint' ],
   \ 'graphql': [ 'eslint' ],
   \ }
 hi! link ALEError Error
@@ -188,6 +230,30 @@ hi! link YcmWarningSection CodeWarning
 hi! link YcmErrorSign ErrorSign
 hi! link YcmWarningSign WarningSign
 
+" barow settings
+let g:barow = {
+  \ 'modes': {
+  \   'normal': [ ' ', 'BarowNormal' ],
+  \   'insert': [ 'i', 'BarowInsert' ],
+  \   'replace': [ 'r', 'BarowReplace' ],
+  \   'visual': [ 'v', 'BarowVisual' ],
+  \   'v-line': [ 'l', 'BarowVisual' ],
+  \   'v-block': [ 'b', 'BarowVisual' ],
+  \   'select': [ 's', 'BarowVisual' ],
+  \   'command': [ 'c', 'BarowCommand' ],
+  \   'shell-ex': [ '!', 'BarowCommand' ],
+  \   'terminal': [ 't', 'BarowTerminal' ],
+  \   'prompt': [ 'p', 'BarowNormal' ],
+  \   'inactive': [ ' ', 'BarowModeNC' ]
+  \ },
+  \ 'modules': [
+  \   [ 'barowGit#branch', 'StatusLineNC' ],
+  \   [ 'InfoCount', 'BarowInfo' ],
+  \   [ 'WarningCount', 'BarowWarn' ],
+  \   [ 'ErrorCount', 'BarowError' ]
+  \ ]
+  \ }
+
 " lightline settings
 let g:lightline = {
   \ 'colorscheme': 'darculaOriginal',
@@ -211,63 +277,10 @@ let g:lightline.tab = {
   \ 'inactive': ['filename', 'modified']
   \ }
 
-" expose funcs for error summary from ALE and YCM
-function ErrorCount()
-  let s:buf = bufnr('%')
-  let s:ycmerr = youcompleteme#GetErrorCount()
-  let s:ale = ale#statusline#Count(s:buf)
-  let s:err = s:ycmerr + s:ale->get('error') + s:ale->get('style_error')
-  if s:err > 0 | return s:err . 'e' | else | return ''
-endfunction
-
-function WarningCount()
-  let s:buf = bufnr('%')
-  let s:ycmwarn = youcompleteme#GetWarningCount()
-  let s:ale = ale#statusline#Count(s:buf)
-  let s:warn = s:ycmwarn + s:ale->get('warning') + s:ale->get('style_warning')
-  if s:warn > 0 | return s:warn . 'w' | else | return ''
-endfunction
-
-function InfoCount()
-  let s:buf = bufnr('%')
-  let s:ale = ale#statusline#Count(s:buf)
-  let s:info = s:ale->get('info')
-  if s:info > 0 | return s:info . 'i' | else | return ''
-endfunction
-
-augroup ErrorSummary
-  autocmd!
-  autocmd User ALELintPost call barow#update()
-  autocmd User ALEFixPost call barow#update()
-augroup END
-
-" barow settings
-let g:barow = {
-  \ 'modes': {
-  \   'normal': [ ' ', 'BarowNormal' ],
-  \   'insert': [ 'i', 'BarowInsert' ],
-  \   'replace': [ 'r', 'BarowReplace' ],
-  \   'visual': [ 'v', 'BarowVisual' ],
-  \   'v-line': [ 'l', 'BarowVisual' ],
-  \   'v-block': [ 'b', 'BarowVisual' ],
-  \   'select': [ 's', 'BarowVisual' ],
-  \   'command': [ 'c', 'BarowCommand' ],
-  \   'shell-ex': [ '!', 'BarowCommand' ],
-  \   'terminal': [ 't', 'BarowTerminal' ],
-  \   'prompt': [ 'p', 'BarowNormal' ],
-  \   'inactive': [ ' ', 'BarowModeNC' ]
-  \ },
-  \ 'modules': [
-  \   [ 'InfoCount', 'BarowInfo' ],
-  \   [ 'WarningCount', 'BarowWarn' ],
-  \   [ 'ErrorCount', 'BarowError' ]
-  \ ]
-  \ }
-
 " global keybinds
 let mapleader=","
 nnoremap <Leader>h :noh<CR>
-nnoremap <Leader>e :lex .<CR>
+nnoremap <Leader>e :Lex<CR>
 
 " trailing space keybinds
 nnoremap <Leader>bs /\s\+$<CR>
