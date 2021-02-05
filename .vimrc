@@ -96,35 +96,60 @@ augroup END
 hi! ColorColumn ctermbg=236 guibg=NONE
 hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
 
-" expose funcs to display error summary from ALE and YCM in status line
-function ErrorCount()
-  let buf = bufnr('%')
+" funcs to display error summary from ALE and YCM in status line
+function! ErrorCount()
+  let buf = bufnr()
   let ale = ale#statusline#Count(buf)
   let ycmerr = youcompleteme#GetErrorCount()
   let err = ycmerr + ale->get('error') + ale->get('style_error')
   if err > 0 | return err . 'e' | else | return ''
 endfunction
 
-function WarningCount()
-  let buf = bufnr('%')
+function! WarningCount()
+  let buf = bufnr()
   let ale = ale#statusline#Count(buf)
   let ycmwarn = youcompleteme#GetWarningCount()
   let warn = ycmwarn + ale->get('warning') + ale->get('style_warning')
   if warn > 0 | return warn . 'w' | else | return ''
 endfunction
 
-function InfoCount()
-  let buf = bufnr('%')
+function! InfoCount()
+  let buf = bufnr()
   let ale = ale#statusline#Count(buf)
   let info = ale->get('info')
   if info > 0 | return info . 'i' | else | return ''
 endfunction
 
+let s:ale_running_lint = 0
+let s:ale_running_fix = 0
+function! ALEStatus()
+  if s:ale_running_fix == 1 | return 'ALE Fix..' | endif
+  if s:ale_running_lint == 1 | return 'ALE Lint..' | endif
+  return ''
+endfunction
+
 augroup ErrorSummary
   autocmd!
-  autocmd User ALELintPost call barow#update()
-  autocmd User ALEFixPost call barow#update()
+  autocmd User ALELintPre let s:ale_running_lint = 1 | call barow#update()
+  autocmd User ALELintPost let s:ale_running_lint = 0 | call barow#update()
+  autocmd User ALEFixPre let s:ale_running_fix = 1 | call barow#update()
+  autocmd User ALEFixPost let s:ale_running_fix = 0 | call barow#update()
 augroup END
+
+" func to toggle location list
+function! ToogleLocList()
+  let winid = getloclist(2, {'winid': 1})
+  if winid != {}
+    lclose
+  else
+    let list = getloclist(0)
+    if list->len() > 0
+      lopen
+    else
+      echo 'Loclist is empty'
+    endif
+  endif
+endfunction
 
 " netrw settings
 let g:netrw_banner=0
@@ -170,8 +195,8 @@ let g:ale_echo_msg_info_str='Info'
 let g:ale_linters = {
   \ 'json': [ 'eslint' ],
   \ 'javascript': [ 'eslint' ],
-  \ 'typescript': [ 'eslint', 'tsserver' ],
-  \ 'typescriptreact': [ 'eslint', 'tsserver' ],
+  \ 'typescript': [ 'eslint' ],
+  \ 'typescriptreact': [ 'eslint' ],
   \ 'graphql': [ 'eslint '],
   \ 'sh': [ 'shellcheck' ]
   \ }
@@ -249,8 +274,9 @@ let g:barow = {
   \ 'modules': [
   \   [ 'barowGit#branch', 'StatusLineNC' ],
   \   [ 'InfoCount', 'BarowInfo' ],
-  \   [ 'WarningCount', 'BarowWarn' ],
-  \   [ 'ErrorCount', 'BarowError' ]
+  \   [ 'WarningCount', 'BarowWarning' ],
+  \   [ 'ErrorCount', 'BarowError' ],
+  \   [ 'ALEStatus', 'StatusLine' ]
   \ ]
   \ }
 
@@ -281,14 +307,14 @@ let g:lightline.tab = {
 let mapleader=","
 nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :Lex<CR>
+nnoremap <Leader>p :cd %:p:h<CR>
 
 " trailing space keybinds
 nnoremap <Leader>bs /\s\+$<CR>
 nnoremap <Leader>bc :%s/\s\+$//g<CR>
 
 " open / close location list window
-nnoremap <Leader>lo :lopen<CR>
-nnoremap <Leader>lc :lclose<CR>
+nnoremap <F11> <Esc>:call ToogleLocList()<CR>
 nnoremap <Leader>ko :copen<CR>
 nnoremap <Leader>kc :cclose<CR>
 
@@ -308,13 +334,13 @@ nnoremap <Leader>t<left> :tabm -<CR>
 nnoremap <Leader>t<right> :tabm +<CR>
 
 " GitGutter keybinds
-nnoremap <Leader>gt :GitGutterBufferToggle<cr>
-nnoremap <Leader>gT :GitGutterToggle<cr>
-nmap <Leader>gi <Plug>(GitGutterPreviewHunk)
-nmap <Leader>gs <Plug>(GitGutterStageHunk)
-nmap <Leader>gu <Plug>(GitGutterUndoHunk)
-nmap <Leader>gp <Plug>(GitGutterPrevHunk)
-nmap <Leader>gn <Plug>(GitGutterNextHunk)
+nnoremap <Leader>vt :GitGutterBufferToggle<CR>
+nnoremap <Leader>vT :GitGutterToggle<CR>
+nmap <Leader>vi <Plug>(GitGutterPreviewHunk)
+nmap <Leader>vs <Plug>(GitGutterStageHunk)
+nmap <Leader>vu <Plug>(GitGutterUndoHunk)
+nmap <Leader>vp <Plug>(GitGutterPrevHunk)
+nmap <Leader>vn <Plug>(GitGutterNextHunk)
 
 " ALE keybinds
 nmap <Leader>zf <Plug>(ale_fix)
@@ -330,7 +356,7 @@ nmap <Leader>zt <Plug>(ale_toggle_buffer)
 nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
 nnoremap <Leader>al :YcmDiags<CR>
 nnoremap <Leader>am :YcmShowDetailedDiagnostic<CR>
-nnoremap <Leader>ag :YcmCompleter GoTo<CR>
+nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>ah :YcmCompleter GoToInclude<CR>
 nnoremap <Leader>ad :YcmCompleter GoToDeclaration<CR>
 nnoremap <Leader>aD :YcmCompleter GoToDefinition<CR>
