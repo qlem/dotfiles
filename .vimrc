@@ -68,9 +68,8 @@ set completepopup=height:5,width:40,highlight:Pmenu,border:off
 set pumwidth=15
 set pumheight=10
 
-" enable filetype detection/plugin/indent
+" syntax highlighting
 filetype plugin indent on
-" enable syntax highlighting
 syntax on
 
 " open man pages into vim
@@ -81,7 +80,7 @@ augroup MyCustoms
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
-" override indent width for specific filetypes
+" override indent width of some filetypes
 autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
@@ -98,24 +97,21 @@ hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
 
 " funcs to display error summary from ALE and YCM in status line
 function! ErrorCount()
-  let buf = bufnr()
-  let ale = ale#statusline#Count(buf)
+  let ale = ale#statusline#Count(bufnr())
   let ycmerr = youcompleteme#GetErrorCount()
   let err = ycmerr + ale->get('error') + ale->get('style_error')
   if err > 0 | return err . 'e' | else | return ''
 endfunction
 
 function! WarningCount()
-  let buf = bufnr()
-  let ale = ale#statusline#Count(buf)
+  let ale = ale#statusline#Count(bufnr())
   let ycmwarn = youcompleteme#GetWarningCount()
   let warn = ycmwarn + ale->get('warning') + ale->get('style_warning')
   if warn > 0 | return warn . 'w' | else | return ''
 endfunction
 
 function! InfoCount()
-  let buf = bufnr()
-  let ale = ale#statusline#Count(buf)
+  let ale = ale#statusline#Count(bufnr())
   let info = ale->get('info')
   if info > 0 | return info . 'i' | else | return ''
 endfunction
@@ -146,7 +142,7 @@ function! ToogleLocList()
     if list->len() > 0
       lopen
     else
-      echo 'Loclist is empty'
+      echo 'Loclist is empty.'
     endif
   endif
 endfunction
@@ -171,10 +167,21 @@ let g:NERDTrimTrailingWhitespace=1
 " GitGutter settings
 let g:gitgutter_enabled=1
 let g:gitgutter_map_keys=0
-let g:gitgutter_sign_removed = '▶'
+let g:gitgutter_sign_removed='▶'
 hi! link GitGutterAdd GitAddStripe
 hi! link GitGutterChange GitChangeStripe
 hi! link GitGutterDelete GitDeleteStripe
+
+" barow settings
+let g:barow = {
+  \ 'modules': [
+  \   [ 'barowGit#branch', 'StatusLineNC' ],
+  \   [ 'InfoCount', 'BarowInfo' ],
+  \   [ 'WarningCount', 'BarowWarning' ],
+  \   [ 'ErrorCount', 'BarowError' ],
+  \   [ 'ALEStatus', 'StatusLine' ]
+  \ ]
+  \ }
 
 " ALE settings
 let g:ale_enabled=1
@@ -255,31 +262,6 @@ hi! link YcmWarningSection CodeWarning
 hi! link YcmErrorSign ErrorSign
 hi! link YcmWarningSign WarningSign
 
-" barow settings
-let g:barow = {
-  \ 'modes': {
-  \   'normal': [ ' ', 'BarowNormal' ],
-  \   'insert': [ 'i', 'BarowInsert' ],
-  \   'replace': [ 'r', 'BarowReplace' ],
-  \   'visual': [ 'v', 'BarowVisual' ],
-  \   'v-line': [ 'l', 'BarowVisual' ],
-  \   'v-block': [ 'b', 'BarowVisual' ],
-  \   'select': [ 's', 'BarowVisual' ],
-  \   'command': [ 'c', 'BarowCommand' ],
-  \   'shell-ex': [ '!', 'BarowCommand' ],
-  \   'terminal': [ 't', 'BarowTerminal' ],
-  \   'prompt': [ 'p', 'BarowNormal' ],
-  \   'inactive': [ ' ', 'BarowModeNC' ]
-  \ },
-  \ 'modules': [
-  \   [ 'barowGit#branch', 'StatusLineNC' ],
-  \   [ 'InfoCount', 'BarowInfo' ],
-  \   [ 'WarningCount', 'BarowWarning' ],
-  \   [ 'ErrorCount', 'BarowError' ],
-  \   [ 'ALEStatus', 'StatusLine' ]
-  \ ]
-  \ }
-
 " lightline settings
 let g:lightline = {
   \ 'colorscheme': 'darculaOriginal',
@@ -308,6 +290,7 @@ let mapleader=","
 nnoremap <Leader>h :noh<CR>
 nnoremap <Leader>e :Lex<CR>
 nnoremap <Leader>p :cd %:p:h<CR>
+cmap w!! w !sudo tee > /dev/null %
 
 " trailing space keybinds
 nnoremap <Leader>bs /\s\+$<CR>
@@ -343,8 +326,9 @@ nmap <Leader>vp <Plug>(GitGutterPrevHunk)
 nmap <Leader>vn <Plug>(GitGutterNextHunk)
 
 " ALE keybinds
+nmap <F3> <Plug>(ale_lint)
 nmap <Leader>zf <Plug>(ale_fix)
-nmap <Leader>zl <Plug>(ale_lint)
+nmap <Leader>zd <Plug>(ale_detail)
 nmap <Leader>zp <Plug>(ale_previous_wrap)
 nmap <Leader>zn <Plug>(ale_next_wrap)
 nmap <Leader>zF <Plug>(ale_first)
@@ -353,8 +337,8 @@ nmap <Leader>zT <Plug>(ale_toggle)
 nmap <Leader>zt <Plug>(ale_toggle_buffer)
 
 " YouCompleteMe keybinds
-nnoremap <Leader>aF :YcmForceCompileAndDiagnostics<CR>
-nnoremap <Leader>al :YcmDiags<CR>
+nnoremap <F4> :YcmDiags<CR>
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 nnoremap <Leader>am :YcmShowDetailedDiagnostic<CR>
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
 nnoremap <Leader>ah :YcmCompleter GoToInclude<CR>
