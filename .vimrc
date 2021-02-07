@@ -10,7 +10,7 @@ Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdcommenter'
 
-"web development
+" web development
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 " Plug 'peitalin/vim-jsx-typescript'
@@ -84,7 +84,7 @@ autocmd FileType man set nonumber
 autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
 autocmd FileType c setlocal textwidth=80 colorcolumn=+1
-" use C/C++/typescript syntax highlighting in YCM doc popup
+" enable syntax highlighting in YCM doc popup
 autocmd FileType c,cpp,typescript let b:ycm_hover = {
   \ 'command': 'GetDoc',
   \ 'syntax': &filetype
@@ -147,11 +147,6 @@ function! ToogleLocList()
   endif
 endfunction
 
-" netrw settings
-let g:netrw_banner=0
-let g:netrw_winsize=22
-let g:netrw_liststyle=3
-
 " typescript-vim settings
 let g:typescript_indent_disable=1
 
@@ -163,6 +158,14 @@ let g:NERDSpaceDelims=1
 let g:NERDCompactSexyComs=1
 let g:NERDCommentEmptyLines=1
 let g:NERDTrimTrailingWhitespace=1
+
+" netrw settings
+let g:netrw_banner=0
+let g:netrw_winsize=22
+let g:netrw_liststyle=3
+let g:netrw_localrmdir='rm'
+let g:netrw_localrmdiropt=' -r'
+let g:netrw_sizestyle='H'
 
 " GitGutter settings
 let g:gitgutter_enabled=1
@@ -240,7 +243,7 @@ let g:ycm_warning_symbol='--'
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_stop_completion=['<C-y>']
-let g:ycm_tsserver_binary_path='$HOME/.vim/plugged/YouCompleteMe/third_party/ycmd/third_party/tsserver/bin/tsserver'
+let g:ycm_tsserver_binary_path='/usr/bin/tsserver'
 let g:ycm_server_python_interpreter='/usr/bin/python'
 let g:ycm_use_clangd=1
 let g:ycm_clangd_binary_path='/usr/bin/clangd'
