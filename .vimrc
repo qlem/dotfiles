@@ -2,9 +2,11 @@
 call plug#begin('~/.vim/plugged')
 Plug 'doums/coBra'
 Plug 'doums/barow'
+Plug 'doums/oterm'
+Plug 'doums/nnnvi'
 Plug 'doums/darcula'
+Plug 'doums/fzfTools'
 Plug 'doums/barowGit'
-" Plug 'itchyny/lightline.vim'
 Plug 'dense-analysis/ale'
 Plug 'ycm-core/YouCompleteMe'
 Plug 'airblade/vim-gitgutter'
@@ -80,6 +82,8 @@ augroup MyCustoms
 autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
+" remove trailing whitespace before write
+autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//ge
 " override indent width of some filetypes
 autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
@@ -175,16 +179,37 @@ hi! link GitGutterAdd GitAddStripe
 hi! link GitGutterChange GitChangeStripe
 hi! link GitGutterDelete GitDeleteStripe
 
+" OTerm settings
+let g:oterm = {
+  \ 'no_hide_status': 1
+  \ }
+
+" nnnvi settings
+let g:nnnvi = {
+  \ 'layout': {
+  \   'left': 30,
+  \   'min': 25,
+  \   'no_hide_status': 1
+  \ },
+  \ 'maps': {
+  \   '<C-s>': 'split',
+  \   '<C-v>': 'vsplit',
+  \   '<C-t>': 'tabedit'
+  \ }
+  \ }
+
 " barow settings
 let g:barow = {
   \ 'modules': [
-  \   [ 'barowGit#branch', 'StatusLineNC' ],
+  \   [ 'barowGit#branch', 'BarowNC' ],
   \   [ 'InfoCount', 'BarowInfo' ],
   \   [ 'WarningCount', 'BarowWarning' ],
   \   [ 'ErrorCount', 'BarowError' ],
-  \   [ 'ALEStatus', 'StatusLine' ]
+  \   [ 'ALEStatus', 'Barow' ]
   \ ]
   \ }
+hi! link StatusLine Barow
+hi! link StatusLineNC BarowNC
 
 " ALE settings
 let g:ale_enabled=1
@@ -291,18 +316,23 @@ let g:lightline.tab = {
 " global keybinds
 let mapleader=","
 nnoremap <Leader>h :noh<CR>
-nnoremap <Leader>e :Lex<CR>
 nnoremap <Leader>p :cd %:p:h<CR>
 cmap w!! w !sudo tee > /dev/null %
 
-" trailing space keybinds
-nnoremap <Leader>bs /\s\+$<CR>
-nnoremap <Leader>bc :%s/\s\+$//g<CR>
+" nnnvi keybinds
+nmap <Leader>e <Plug>NNNnos
+nmap <Leader>E <Plug>NNNs
 
 " open / close location list window
 nnoremap <F11> <Esc>:call ToogleLocList()<CR>
 nnoremap <Leader>ko :copen<CR>
 nnoremap <Leader>kc :cclose<CR>
+
+" fzfTools keybinds
+nmap <Leader>s <Plug>Ls
+nmap <Leader>b <Plug>Buf
+nmap <Leader>fd <Plug>FGitLog
+vmap <Leader>fd <Plug>GitLogSel
 
 " window keybinds
 nnoremap <Leader>ws :new<CR>
