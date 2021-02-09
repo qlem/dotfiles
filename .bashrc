@@ -19,26 +19,14 @@ export NNN_COLORS="4123"
 export NNN_FCOLORS='0a03040200050608090b0d01'
 
 # fzf
-color00='#2d2d2d'
-color01='#393939'
-color02='#515151'
-color03='#999999'
-color04='#b4b7b4'
-color05='#cccccc'
-color06='#e0e0e0'
-color07='#ffffff'
-color08='#f2777a'
-color09='#f99157'
-color0A='#ffcc66'
-color0B='#99cc99'
-color0C='#66cccc'
-color0D='#6699cc'
-color0E='#cc99cc'
-color0F='#a3685a'
-colors="--color=fg:$color04,fg+:$color06,bg:$color00,bg+:$color01\
-,hl:$color0D,hl+:$color0D,info:$color0A,prompt:$color0A,pointer:$color0C\
-,marker:$color0C,spinner:$color0C,header:$color0D"
-alias fzf="fzf --color=$colors"
+export FZF_DEFAULT_COMMAND="find . -not -name '*.vdi' -type f"
+export FZF_DEFAULT_OPTS="--color=fg:#cccccc,fg+:#ffffff,bg:#2d2d2d,bg+:#2d2d2d\
+,hl:#99cc99,hl+:#99cc99,preview-fg:#999999,preview-bg:#2d2d2d,gutter:#2d2d2d\
+,query:#ffffff,disabled:#999999,info:#ffcc66,border:#999999,prompt:#6699cc\
+,pointer:#f2777a,marker:#cc99cc,spinner:#99cc99,header:#ffcc66 \
+--preview='cat {}' \
+--preview-window=right:60%:sharp:nohidden \
+--multi"
 
 # Fix Java applications in dwm
 export AWT_TOOLKIT="MToolkit"

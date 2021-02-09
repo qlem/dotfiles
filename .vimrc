@@ -83,7 +83,7 @@ autocmd!
 " remove line numbers in man pages
 autocmd FileType man set nonumber
 " remove trailing whitespace before write
-autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//ge
+autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//e
 " override indent width of some filetypes
 autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
@@ -182,6 +182,28 @@ hi! link GitGutterDelete GitDeleteStripe
 " OTerm settings
 let g:oterm = {
   \ 'no_hide_status': 1
+  \ }
+
+" fzfTools settings
+let g:fzfTools = {
+  \ 'ls': {
+  \   'down': 40,
+  \   'min': 10,
+  \   'no_hide_status': 1
+  \ },
+  \ 'buf': {
+  \   'down': 40,
+  \   'min': 10,
+  \   'no_hide_status': 1
+  \ },
+  \ 'gitlog': {
+  \   'tab': 1,
+  \   'no_hide_status': 1
+  \ },
+  \ 'gitlogsel': {
+  \   'tab': 1,
+  \   'no_hide_status': 1
+  \ },
   \ }
 
 " nnnvi settings
