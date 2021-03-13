@@ -41,7 +41,7 @@ set backspace=indent,eol,start
 set cindent
 set hidden
 set fillchars=vert:│
-set previewheight=5
+set previewheight=10
 
 " color settings
 set termguicolors
@@ -97,7 +97,7 @@ augroup END
 
 " override some highlighting groups
 hi! ColorColumn ctermbg=236 guibg=NONE
-hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
+" hi! Error term=reverse cterm=underline ctermfg=131 guifg=#BC3F3C
 
 " funcs to display error summary from ALE and YCM in status line
 function! ErrorCount()
@@ -264,7 +264,7 @@ let g:ale_fixers = {
   \ 'typescriptreact': [ 'prettier', 'eslint' ],
   \ 'graphql': [ 'eslint' ],
   \ }
-hi! link ALEError Error
+hi! link ALEError CodeError
 hi! link ALEWarning CodeWarning
 hi! link ALEInfo CodeInfo
 hi! link ALEStyleError Error
@@ -290,7 +290,7 @@ let g:ycm_warning_symbol='--'
 let g:ycm_key_list_select_completion=['<TAB>', '<Down>']
 let g:ycm_key_list_previous_completion=['<S-TAB>', '<Up>']
 let g:ycm_key_list_stop_completion=['<C-y>']
-let g:ycm_tsserver_binary_path='/usr/bin/tsserver'
+let g:ycm_tsserver_binary_path='/opt/node/bin/tsserver'
 let g:ycm_server_python_interpreter='/usr/bin/python'
 let g:ycm_use_clangd=1
 let g:ycm_clangd_binary_path='/usr/bin/clangd'
@@ -307,33 +307,10 @@ let g:ycm_clangd_args = ['--clang-tidy', '--clang-tidy-checks='
   \ . '-readability-magic-numbers,'
   \ . 'cert-*-c'
   \ ]
-hi! link YcmErrorSection Error
+hi! link YcmErrorSection CodeError
 hi! link YcmWarningSection CodeWarning
 hi! link YcmErrorSign ErrorSign
 hi! link YcmWarningSign WarningSign
-
-" lightline settings
-let g:lightline = {
-  \ 'colorscheme': 'darculaOriginal',
-  \ 'component_function': {
-  \   'gitBranch': 'gitBranch#Get'
-  \ }
-  \ }
-let g:lightline.active = {
-  \ 'right': [
-  \   ['lineinfo'],
-  \   ['percent'],
-  \   ['gitBranch','fileformat', 'fileencoding', 'filetype']
-  \ ]
-  \ }
-let g:lightline.tabline = {
-  \ 'left': [ ['tabs'] ],
-  \ 'right': []
-  \ }
-let g:lightline.tab = {
-  \ 'active': ['filename', 'modified'],
-  \ 'inactive': ['filename', 'modified']
-  \ }
 
 " global keybinds
 let mapleader=","
