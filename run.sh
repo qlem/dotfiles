@@ -32,8 +32,7 @@ cp ~/.config/alacritty/alacritty.yml "$dir_config/alacritty/"
 cp ~/.config/conky/conky.conf "$dir_config/conky/"
 
 # fish
-[[ ! -d "$dir_config/fish" ]] && mkdir "$dir_config/fish"
-cp ~/.config/fish/* "$dir_config/fish/"
+cp -r ~/.config/fish "$dir_config/"
 
 # spectrwm
 [[ ! -d "$dir_config/spectrwm" ]] && mkdir "$dir_config/spectrwm"
