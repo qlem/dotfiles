@@ -33,9 +33,7 @@ cp ~/.config/conky/conky.conf "$dir_config/conky/"
 
 # fish
 [[ ! -d "$dir_config/fish" ]] && mkdir "$dir_config/fish"
-[[ ! -d "$dir_config/fish/functions" ]] && mkdir "$dir_config/fish/functions"
-cp ~/.config/fish/config.fish "$dir_config/fish/"
-cp ~/.config/fish/functions/* "$dir_config/fish/functions/"
+cp ~/.config/fish/* "$dir_config/fish/"
 
 # spectrwm
 [[ ! -d "$dir_config/spectrwm" ]] && mkdir "$dir_config/spectrwm"
