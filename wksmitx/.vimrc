@@ -191,7 +191,12 @@ let g:fzfTools = {
   \   'min': 10,
   \   'no_hide_status': 1
   \ },
-  \ 'buf': {
+  \ 'buffers': {
+  \   'down': 40,
+  \   'min': 10,
+  \   'no_hide_status': 1
+  \ },
+  \ 'registers': {
   \   'down': 40,
   \   'min': 10,
   \   'no_hide_status': 1
@@ -329,9 +334,10 @@ nnoremap <Leader>kc :cclose<CR>
 
 " fzfTools keybinds
 nmap <Leader>s <Plug>Ls
-nmap <Leader>b <Plug>Buf
-nmap <Leader>fd <Plug>FGitLog
-vmap <Leader>fd <Plug>GitLogSel
+nmap <Leader>b <Plug>Buffers
+nmap <Leader>r <Plug>Registers
+nmap <Leader>l <Plug>GitLog
+vmap <Leader>l <Plug>SGitLog
 
 " window keybinds
 nnoremap <Leader>ws :new<CR>

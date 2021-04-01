@@ -3,7 +3,7 @@ configuration {
     show-icons: true;
     icon-theme: "Flat-Remix-Blue-Dark";
     theme: "theme.rasi";
-    dpi: 144;
+    dpi: 96;
     display-drun: "app";
     display-window: "win";
     display-run: "$";

@@ -43,7 +43,7 @@ eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 
 # set keyboard layout
-setxkbmap -layout fr -model pc
+hhkb.sh &
 
 # start dwm
 wallpaper.sh &
