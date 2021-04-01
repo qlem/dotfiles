@@ -117,13 +117,13 @@ static Key keys[] = {
     {MODKEY,                       XK_Return, spawn,          {.v = term}},
 
     // open application launcher
-    {MODKEY,                       XK_slash,  spawn,          {.v = menu}},
+    {MODKEY,                       XK_exclam, spawn,          {.v = menu}},
 
     // manage external screens
     {MODKEY,                       XK_n,      spawn,          {.v = display}},
 
     // session actions
-    {MODKEY,                       XK_grave,  spawn,          {.v = session}},
+    {MODKEY,                       XK_Delete, spawn,          {.v = session}},
     {MODKEY|ControlMask,           XK_l,      spawn,          {.v = lock}},
     {MODKEY|ControlMask,           XK_q,      quit,           {0}},
 
@@ -188,15 +188,15 @@ static Key keys[] = {
     {MODKEY|ShiftMask,             XK_g,      tag,            {.ui = ~0}},
 
     // see -- key definitions --
-    TAGKEYS(                       XK_exclam,                 0)
+    TAGKEYS(                       XK_ampersand,              0)
     TAGKEYS(                       XK_eacute,                 1)
-    TAGKEYS(                       XK_numbersign,             2)
-    TAGKEYS(                       XK_dollar,                 3)
-    TAGKEYS(                       XK_percent,                4)
-    TAGKEYS(                       XK_dead_circumflex,        5)
+    TAGKEYS(                       XK_quotedbl,               2)
+    TAGKEYS(                       XK_apostrophe,             3)
+    TAGKEYS(                       XK_parenleft,              4)
+    TAGKEYS(                       XK_minus,                  5)
     TAGKEYS(                       XK_egrave,                 6)
-    TAGKEYS(                       XK_asterisk,               7)
-    TAGKEYS(                       XK_parenleft,              8)
+    TAGKEYS(                       XK_underscore,             7)
+    TAGKEYS(                       XK_ccedilla,               8)
 };
 
 /* button definitions */
