@@ -87,7 +87,7 @@ autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//e
 " override indent width of some filetypes
 autocmd FileType vim,json,yaml,typescript,typescriptreact setlocal shiftwidth=2 tabstop=2
 " enable max text width column in C files
-autocmd FileType c setlocal textwidth=80 colorcolumn=+1
+autocmd FileType c setlocal textwidth=98 colorcolumn=+1
 " enable syntax highlighting in YCM doc popup
 autocmd FileType c,cpp,typescript let b:ycm_hover = {
   \ 'command': 'GetDoc',
@@ -335,9 +335,9 @@ nnoremap <Leader>kc :cclose<CR>
 " fzfTools keybinds
 nmap <Leader>s <Plug>Ls
 nmap <Leader>b <Plug>Buffers
-nmap <Leader>r <Plug>Registers
 nmap <Leader>l <Plug>GitLog
-vmap <Leader>l <Plug>SGitLog
+nmap <Leader>l <Plug>GitLog
+vmap <Leader>l <Plug>GitLogSel
 
 " window keybinds
 nnoremap <Leader>ws :new<CR>
