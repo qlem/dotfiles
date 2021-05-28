@@ -94,6 +94,9 @@ static const char *screenshot_up[] = {"screenshot.sh", "--upload", "-fn", dmenuf
 /* external screens */
 static const char *display[] = {"display.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
 
+/* kill process */
+static const char *kill_pid[] = {"killpid.sh", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL};
+
 /* -- BINDINGS -- */
 
 // MODKEY                       + TAG N = switch view to tag n
@@ -122,6 +125,9 @@ static Key keys[] = {
     // manage external screens
     {MODKEY,                       XK_n,      spawn,          {.v = display}},
 
+    // kill process
+    {MODKEY,                       XK_p,      spawn,          {.v = kill_pid}},
+
     // session actions
     {MODKEY,                       XK_grave,  spawn,          {.v = session}},
     {MODKEY|ControlMask,           XK_l,      spawn,          {.v = lock}},
@@ -136,7 +142,6 @@ static Key keys[] = {
     {0,                            XF86XK_AudioLowerVolume,   spawn, {.v = pa_vlm_down}},
     {0,                            XF86XK_AudioMute,          spawn, {.v = pa_mute}},
     {0,                            XF86XK_AudioMicMute,       spawn, {.v = pa_mic_mute}},
-    {MODKEY,                       XK_p,                      spawn, {.v = pavucontrol}},
 
     // screen capture
     {MODKEY,                       XK_Print,  spawn,          {.v = screenshot}},
