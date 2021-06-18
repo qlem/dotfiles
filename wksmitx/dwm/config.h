@@ -34,7 +34,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+static const char *tags[] = {"", "", "", "4", "5", "6", "", "", ""};
 
 /* layout(s) */
 static const float mfact     = 0.5;  /* factor of master area size [0.05..0.95] */
