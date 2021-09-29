@@ -69,6 +69,9 @@ colors:
 background_opacity: 1.0
 window:
   dynamic_title: true
+  padding:
+    x: 4
+    y: 4
 cursor:
   style: Block
   unfocused_hollow: true
@@ -77,7 +80,7 @@ mouse:
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
   hide_when_typing: false
-  url:
+  hints:
     launcher:
       program: xdg-open
       args: []
