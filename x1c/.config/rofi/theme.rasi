@@ -1,10 +1,11 @@
 * {
     background-color: #212121;
-    text-color: #9E9E9E;
+    text-color: #9e9e9e;
     /* font: "Inconsolata 13"; */
     font: "SourceCodePro Regular 12";
     border: 0px;
 }
+
 window {
     anchor: north;
     location: north;
@@ -13,12 +14,19 @@ window {
     width: 700px;
     children: [ mode-switcher, inputbox, message, listview ];
 }
+
 mode-switcher {
     padding: 10px 0 20px 0;
 }
+
+button {
+    horizontal-align: 0.5;
+}
+
 button selected {
     text-color: #ddcf35;
 }
+
 inputbox {
     expand: false;
     orientation: horizontal;
@@ -28,6 +36,7 @@ inputbox {
     margin: 0 0 20px 0;
     children: [ textbox-prompt, entry ];
 }
+
 textbox-prompt {
     expand: false;
     padding: 10px;
@@ -35,32 +44,37 @@ textbox-prompt {
     border: 0 1px 0 0;
     border-color: #ffffff;
 }
+
 entry {
     padding: 10px 20px;
     placeholder: "Search";
     placeholder-color: #545454;
 }
+
 listview {
     fixed-height: true;
     scrollbar: false;
     cycle: true;
     lines: 5;
 }
+
 element {
     padding: 10px 20px;
-    highlight: bold;
 }
+
 element-icon {
     size: 32px;
     margin: 0px 15px 0px 0px;
 }
-element selected {
-    text-color: #357EDD;
-    highlight: bold;
+
+element-text selected {
+    text-color: #357edd;
+    highlight: bold underline;
 }
+
 scrollbar {
     handle-width: 10px;
     handle-color: #ffffff;
-    border: 1px solid;
+    /* border: 1px solid; */
     border-color: #ffffff;
 }
