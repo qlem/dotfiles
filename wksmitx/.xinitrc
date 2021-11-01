@@ -50,5 +50,7 @@ wallpaper.sh &
 picom --config $HOME/.config/picom/picom.conf &
 redshift -c $HOME/.config/redshift/redshift.conf &
 dunst &
-(qlstatus | dwm-setstatus) &
-exec dwm
+# (qlstatus | dwm-setstatus) &
+# exec dwm
+
+exec xmonad

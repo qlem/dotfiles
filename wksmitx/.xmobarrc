@@ -1,0 +1,27 @@
+Config { font = "xft:SourceCodePro:style=Regular:size=12:antialias=true,
+                 Font Awesome 5 Free:style=Regular:size=9:antialias=true,
+                 Font Awesome 5 Free:style=Solid:size=9:antialias=true,
+                 Font Awesome 5 Brands:style=Regular:size=9:antialias=true"
+       , additionalFonts = []
+       , borderColor = "black"
+       , border = NoBorder
+       , bgColor = "black"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = Top
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = False
+       , commands = [ Run CommandReader "qlstatus" "status"
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ %status% "
+       }

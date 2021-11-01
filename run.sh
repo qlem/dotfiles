@@ -15,6 +15,7 @@ cp ~/.tmux.conf "$dir/"
 cp ~/.vimrc "$dir/"
 cp ~/.xinitrc "$dir/"
 cp ~/.Xresources "$dir/"
+cp ~/.xmobarrc "$dir/"
 
 # script files
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
@@ -46,6 +47,10 @@ cp ~/.config/i3/config "$dir_config/i3/"
 [[ ! -d "$dir_config/i3status" ]] && mkdir "$dir_config/i3status"
 cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
+
+# xmonad
+[[ ! -d "$dir/.xmonad" ]] && mkdir "$dir/.xmonad"
+cp ~/.xmonad/xmonad.hs "$dir/.xmonad/"
 
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-feh --no-fehbg --bg-scale "$HOME/Pictures/sea_01.jpg"
+feh --no-fehbg --bg-fill "$HOME/Pictures/corse.jpg"
