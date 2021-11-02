@@ -30,7 +30,6 @@ import XMonad.Hooks.InsertPosition
 -- Utils
 import XMonad.Util.EZConfig
 import XMonad.Util.Cursor
-import XMonad.Util.Loggers
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -349,7 +348,7 @@ myXmobarPP = def
     white    = xmobarColor "#f8f8f2" ""
     yellow   = xmobarColor "#f1fa8c" ""
     red      = xmobarColor "#ff5555" ""
-    lowWhite = xmobarColor "#bbbbbb" ""
+    lowWhite = xmobarColor "#7f7f7f" ""
 
     -- make workspaces clickable
     -- clickable ws = "<action=xdotool key super+" ++ show i ++ ">" ++ ws ++ "</action>"
