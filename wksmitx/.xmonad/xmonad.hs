@@ -7,13 +7,13 @@
 -- Normally, you'd only override those defaults you care about.
 --
 
+-- Base
 import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W
 
 -- Data
 import Data.Monoid
--- import Data.Maybe (fromJust)
 import qualified Data.Map as M
 
 -- Actions
@@ -28,8 +28,10 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.InsertPosition
 
 -- Utils
-import XMonad.Util.EZConfig
 import XMonad.Util.Cursor
+
+-- XF86 keys
+import Graphics.X11.ExtraTypes.XF86
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -75,7 +77,6 @@ xK_deadcircumflex = 0xfe52
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 myWorkspaces       = [" \61728 ", " \62057 ", " \61729 ", " \61888 ", " 5 ", " 6 ", " \61848 ", " \62409 ", " 9 "]
--- myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..]
 myWorkspaceKeys    = [ xK_exclam
                      , xK_eacute
                      , xK_numbersign
@@ -124,11 +125,25 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. controlMask,   xK_q        ), io (exitWith ExitSuccess))
     , ((modm .|. shiftMask  ,   xK_q        ), spawn "xmonad --recompile; xmonad --restart")
 
+    -- kill pid
+    , ((modm,               xK_p     ), spawn ("killpid.sh" ++ dmenuArgs))
+
     -- display management
     , ((modm,               xK_n     ), spawn ("display.sh" ++ dmenuArgs))
 
-    -- kill pid
-    , ((modm,               xK_p     ), spawn ("killpid.sh" ++ dmenuArgs))
+    -- brightness
+    , ((0, xF86XK_MonBrightnessUp    ), spawn "light -A 5")
+    , ((0, xF86XK_MonBrightnessDown  ), spawn "light -U 5")
+
+    -- screen capture
+    , ((0,                  xK_Print ), spawn ("screenshot.sh" ++ dmenuArgs))
+    , ((shiftMask,          xK_Print ), spawn ("screenshot.sh --upload" ++ dmenuArgs))
+
+    -- audio
+    , ((0, xF86XK_AudioRaiseVolume   ), spawn "audio.sh --volume-up")
+    , ((0, xF86XK_AudioLowerVolume   ), spawn "audio.sh --volume-down")
+    , ((0, xF86XK_AudioMute          ), spawn "audio.sh --mute")
+    , ((0, xF86XK_AudioMicMute       ), spawn "audio.sh --source-mute")
 
     -- killing clients
     , ((modm,               xK_x     ), kill)
@@ -144,15 +159,15 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_r     ), refresh)
 
     -- move focus up or down the window stack
-    , ((modm,               xK_Tab   ), windows W.focusDown  )
-    , ((modm,               xK_j     ), windows W.focusDown  )
-    , ((modm,               xK_k     ), windows W.focusUp    )
+    , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm,               xK_j     ), windows W.focusDown)
+    , ((modm,               xK_k     ), windows W.focusUp)
     , ((modm,               xK_m     ), windows W.focusMaster)
 
     -- modifying the window order
     , ((modm,               xK_z     ), windows W.swapMaster)
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown)
+    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp)
 
     -- cycle/shift through workspaces
     , ((modm              , xK_Left  ), prevWS)
@@ -198,27 +213,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         -- | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         -- , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
-
-------------------------------------------------------------------------
--- Additional keys
---
-myAdditionalKeys :: [(String, X ())]
-myAdditionalKeys =
-    -- brightness
-    [ ("<XF86MonBrightnessUp>",         spawn "light -A 5")
-    , ("<XF86MonBrightnessDown>",       spawn "light -U 5")
-
-    -- screen capture
-    , ("<Print>",                       spawn ("screenshot.sh" ++ dmenuArgs))
-    , ("S-<Print>",                     spawn ("screenshot.sh --upload" ++ dmenuArgs))
-
-    -- audio
-    , ("<XF86AudioRaiseVolume>",        spawn "audio.sh --volume-up")
-    , ("<XF86AudioLowerVolume>",        spawn "audio.sh --volume-down")
-    , ("<XF86AudioMute>",               spawn "audio.sh --mute")
-    , ("<XF86AudioMicMute>",            spawn "audio.sh --source-mute")
-    ]
 
 
 ------------------------------------------------------------------------
@@ -317,7 +311,6 @@ myLogHook = return ()
 myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
 
-
 ------------------------------------------------------------------------
 -- xmobarPP
 --
@@ -349,10 +342,6 @@ myXmobarPP = def
     yellow   = xmobarColor "#f1fa8c" ""
     red      = xmobarColor "#ff5555" ""
     lowWhite = xmobarColor "#7f7f7f" ""
-
-    -- make workspaces clickable
-    -- clickable ws = "<action=xdotool key super+" ++ show i ++ ">" ++ ws ++ "</action>"
-      -- where i = fromJust $ M.lookup ws myWorkspaceIndices
 
 -- xmobar toggleStrutsKey
 --
@@ -395,4 +384,4 @@ myConfig = def {
         handleEventHook    = myEventHook,
         logHook            = myLogHook,
         startupHook        = myStartupHook
-    } `additionalKeysP` myAdditionalKeys
+    }
