@@ -49,8 +49,8 @@ cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
 
 # xmonad
-[[ ! -d "$dir/.xmonad" ]] && mkdir "$dir/.xmonad"
-cp ~/.xmonad/xmonad.hs "$dir/.xmonad/"
+[[ ! -d "$dir_config/xmonad" ]] && mkdir "$dir_config/xmonad"
+cp ~/.config/xmonad/xmonad.hs "$dir_config/xmonad/"
 
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"

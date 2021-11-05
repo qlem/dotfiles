@@ -19,9 +19,9 @@ Config { font = "xft:SourceCodePro:style=Regular:size=12:antialias=true,
        , allDesktops = True
        , overrideRedirect = False
        , commands = [ Run CommandReader "qlstatus" "status"
-                    , Run StdinReader
+                    , Run XMonadLog
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %status% "
+       , template = "%XMonadLog% }{ %status% "
        }

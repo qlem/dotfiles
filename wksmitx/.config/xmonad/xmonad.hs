@@ -24,7 +24,9 @@ import XMonad.Actions.WithAll (killAll)
 import XMonad.Layout.Spacing
 
 -- Hooks
-import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 
 -- Utils
@@ -76,16 +78,16 @@ xK_deadcircumflex = 0xfe52
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces       = [" \61728 ", " \62057 ", " \61729 ", " \61888 ", " 5 ", " 6 ", " \61848 ", " \62409 ", " 9 "]
-myWorkspaceKeys    = [ xK_exclam
-                     , xK_eacute
-                     , xK_numbersign
-                     , xK_dollar
-                     , xK_percent
-                     , xK_deadcircumflex
-                     , xK_egrave
-                     , xK_asterisk
-                     , xK_parenleft ]
+myWorkspaces    = [" \61728 ", " \62057 ", " \61729 ", " \61888 ", " 5 ", " 6 ", " \61848 ", " \62409 ", " 9 "]
+myWorkspaceKeys = [ xK_exclam
+                  , xK_eacute
+                  , xK_numbersign
+                  , xK_dollar
+                  , xK_percent
+                  , xK_deadcircumflex
+                  , xK_egrave
+                  , xK_asterisk
+                  , xK_parenleft ]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -103,10 +105,10 @@ dmenuSf = "\\#eeeeee"
 dmenuArgs :: String
 dmenuArgs = " -fn " ++ dmenuFn ++ " -nb  " ++ dmenuNb ++ " -nf " ++ dmenuNf ++ " -sb " ++ dmenuSb ++ " -sf " ++ dmenuSf
 
--- xmobar toggle command
+-- toggle xmobar command
 --
-xmobarToggle :: String
-xmobarToggle = "dbus-send --session --dest=org.Xmobar.Control --type=method_call '/org/Xmobar/Control' org.Xmobar.Control.SendSignal 'string:Toggle 0'"
+toggleXmobar :: String
+toggleXmobar = "dbus-send --session --dest=org.Xmobar.Control --type=method_call '/org/Xmobar/Control' org.Xmobar.Control.SendSignal 'string:Toggle 0'"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -149,11 +151,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_x     ), kill)
     , ((modm .|. shiftMask, xK_x     ), killAll)
 
-     -- Rotate through the available layout algorithms
+    -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
 
-    --  Reset the layouts on the current workspace to default
+    -- Reset the layouts on the current workspace to default
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+
+    -- Toggle spacing if there is only one window displayed in the current workspace
+    , ((modm,               xK_s     ), toggleSmartSpacing)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_r     ), refresh)
@@ -190,7 +195,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    , ((modm              , xK_b     ), spawn xmobarToggle)
+    , ((modm              , xK_b     ), spawn toggleXmobar)
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     -- , ((modm .|. shiftMask,   xK_slash ), xmessage help)
@@ -274,9 +279,8 @@ myLayout = spacingWithEdge mySpacing $ tiled ||| Mirror tiled ||| Full
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
-    [ insertPosition End Newer
-    , className =? "MPlayer"        --> doFloat
+myManageHook = insertPosition End Newer <+> composeAll
+    [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore ]
@@ -345,8 +349,8 @@ myXmobarPP = def
 
 -- xmobar toggleStrutsKey
 --
-toggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
-toggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
+myToggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
+myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 
 
 ------------------------------------------------------------------------
@@ -355,7 +359,11 @@ toggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main :: IO ()
-main = xmonad =<< statusBar "xmobar" myXmobarPP toggleStrutsKey myConfig
+main = xmonad
+     . ewmhFullscreen
+     . ewmh
+     . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) myToggleStrutsKey
+     $ myConfig
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
