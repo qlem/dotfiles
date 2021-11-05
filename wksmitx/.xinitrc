@@ -45,12 +45,15 @@ export SSH_AUTH_SOCK
 # set keyboard layout
 hhkb.sh &
 
-# start dwm
+# default programs
 wallpaper.sh &
 picom --config $HOME/.config/picom/picom.conf &
 redshift -c $HOME/.config/redshift/redshift.conf &
 dunst &
+
+# dwm
 # (qlstatus | dwm-setstatus) &
 # exec dwm
 
+# xmonad
 exec xmonad

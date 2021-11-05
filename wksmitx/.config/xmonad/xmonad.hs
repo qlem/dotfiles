@@ -24,6 +24,7 @@ import XMonad.Actions.WithAll (killAll)
 import XMonad.Layout.Spacing
 
 -- Hooks
+import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
 import XMonad.Hooks.EwmhDesktops
@@ -219,7 +220,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         -- | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         -- , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
@@ -250,7 +250,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = spacingWithEdge mySpacing $ tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts . spacingWithEdge mySpacing $ tiled ||| Mirror tiled ||| Full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -352,7 +352,6 @@ myXmobarPP = def
 myToggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
 myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 
-
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
@@ -360,9 +359,10 @@ myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 --
 main :: IO ()
 main = xmonad
+     . docks
      . ewmhFullscreen
      . ewmh
-     . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) myToggleStrutsKey
+     . withSB (statusBarProp "xmobar" (pure myXmobarPP))
      $ myConfig
 
 -- A structure containing your configuration settings, overriding
