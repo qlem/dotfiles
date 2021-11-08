@@ -22,6 +22,7 @@ import XMonad.Actions.WithAll (killAll)
 
 -- Layouts
 import XMonad.Layout.Spacing
+import XMonad.Layout.Renamed
 
 -- Hooks
 import XMonad.Hooks.ManageDocks
@@ -250,10 +251,15 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts . spacingWithEdge mySpacing $ tiled ||| Mirror tiled ||| Full
+myLayout = renamed [CutWordsLeft 1]
+         $ avoidStruts
+         $ spacingWithEdge mySpacing
+         $ tiled ||| mirror ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
+     tiled   = renamed [Replace "Tall"] $ Tall nmaster delta ratio
+     mirror  = renamed [Replace "Mirror"] $ Mirror tiled
+     full    = renamed [Replace "Full"] Full
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -327,18 +333,11 @@ myXmobarPP = def
     , ppHidden           = lowWhite . wrap (white "[") (white "]")
     , ppHiddenNoWindows  = lowWhite . wrap "[" "]"
     , ppUrgent           = red . wrap (yellow "!") (yellow "!")
-    , ppOrder            = \[ws, l, w] -> [ws, l, w] -- \[ws, l, _, wins] -> [ws, l, wins]
-    , ppExtras           = [] -- [logTitles formatFocused formatUnfocused]
+    , ppOrder            = \[ws, l, w] -> [ws, l, w]
+    , ppExtras           = []
     }
   where
-    -- formatFocused   = wrap (white    "[") (white    "]") . magenta . ppWindow
-    -- formatUnfocused = wrap (lowWhite "[") (lowWhite "]") . blue    . ppWindow
-
-    -- | Windows should have *some* title, which should not not exceed a
-    -- sane length.
-    -- ppWindow :: String -> String
-    -- ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
-
+    -- colors
     blue, lowWhite, magenta, red, white, yellow :: String -> String
     magenta  = xmobarColor "#ff79c6" ""
     blue     = xmobarColor "#bd93f9" ""
@@ -359,9 +358,9 @@ myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 --
 main :: IO ()
 main = xmonad
-     . docks
      . ewmhFullscreen
      . ewmh
+     . docks
      . withSB (statusBarProp "xmobar" (pure myXmobarPP))
      $ myConfig
 
