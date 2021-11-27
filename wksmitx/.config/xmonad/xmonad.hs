@@ -257,9 +257,9 @@ myLayout = renamed [CutWordsLeft 1]
          $ tiled ||| mirror ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
-     tiled   = renamed [Replace "Tall"] $ Tall nmaster delta ratio
-     mirror  = renamed [Replace "Mirror"] $ Mirror tiled
-     full    = renamed [Replace "Full"] Full
+     tiled   = renamed [Replace "▸"] $ Tall nmaster delta ratio
+     mirror  = renamed [Replace "▾"] $ Mirror tiled
+     full    = renamed [Replace "▪"] Full
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -322,17 +322,20 @@ myStartupHook = do
     setDefaultCursor xC_left_ptr -- set default cursor
 
 ------------------------------------------------------------------------
+-- xmobar
+
 -- xmobarPP
 --
 myXmobarPP :: PP
 myXmobarPP = def
-    { ppSep              = magenta " • "
+    { ppSep              = magenta " ❯ "
     , ppWsSep            = ""
     , ppTitleSanitize    = xmobarStrip
     , ppCurrent          = white . wrap (magenta "<") (magenta ">")
     , ppHidden           = lowWhite . wrap (white "[") (white "]")
     , ppHiddenNoWindows  = lowWhite . wrap "[" "]"
     , ppUrgent           = red . wrap (yellow "!") (yellow "!")
+    , ppLayout           = white . wrap (white "⌈") (white "⌋")
     , ppOrder            = \[ws, l, w] -> [ws, l, w]
     , ppExtras           = []
     }
@@ -351,6 +354,10 @@ myXmobarPP = def
 myToggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
 myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 
+-- status bar
+--
+mySB = statusBarProp "xmobar" $ pure myXmobarPP
+
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 
@@ -358,10 +365,10 @@ myToggleStrutsKey XConfig { modMask = modm } = (modm .|. shiftMask, xK_b)
 --
 main :: IO ()
 main = xmonad
+     . withSB mySB
      . ewmhFullscreen
      . ewmh
      . docks
-     . withSB (statusBarProp "xmobar" (pure myXmobarPP))
      $ myConfig
 
 -- A structure containing your configuration settings, overriding
