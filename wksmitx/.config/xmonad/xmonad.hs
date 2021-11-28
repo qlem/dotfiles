@@ -23,6 +23,7 @@ import XMonad.Actions.WithAll (killAll)
 -- Layouts
 import XMonad.Layout.Spacing
 import XMonad.Layout.Renamed
+import XMonad.Layout.ThreeColumns
 
 -- Hooks
 import XMonad.Hooks.ManageDocks
@@ -254,11 +255,12 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 myLayout = renamed [CutWordsLeft 1]
          $ avoidStruts
          $ spacingWithEdge mySpacing
-         $ tiled ||| mirror ||| full
+         $ tiled ||| mirror ||| columns ||| full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = renamed [Replace "▸"] $ Tall nmaster delta ratio
      mirror  = renamed [Replace "▾"] $ Mirror tiled
+     columns = renamed [Replace "⌄"] $ ThreeColMid nmaster delta ratio
      full    = renamed [Replace "▪"] Full
 
      -- The default number of windows in the master pane
