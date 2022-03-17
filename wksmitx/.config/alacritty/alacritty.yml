@@ -66,9 +66,9 @@ colors:
     - { index: 19, color: '0x515151' }
     - { index: 20, color: '0xb4b7b4' }
     - { index: 21, color: '0xe0e0e0' }
-background_opacity: 1.0
 window:
   dynamic_title: true
+  opacity: 1.0
   padding:
     x: 4
     y: 4
@@ -86,7 +86,7 @@ mouse:
       args: []
     modifiers: None
 mouse_bindings:
-  - { mouse: Left, action: Copy }
+  - { mouse: Left,  action: Copy  }
   - { mouse: Right, action: Paste }
 key_bindings:
   - { key: V,         mods: Control|Shift, action: Paste            }
