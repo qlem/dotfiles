@@ -8,7 +8,7 @@ Config { font = "xft:SauceCodePro Nerd Font:style=Regular:size=12:antialias=true
        , bgColor = "black"
        , fgColor = "grey"
        , alpha = 255
-       , position = Top
+       , position = TopP 0 134
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True

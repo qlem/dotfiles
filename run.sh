@@ -7,7 +7,8 @@ dir_local="$dir/.local"
 dir_dwm="$dir/dwm"
 dir_xorg="$dir/xorg"
 
-[[ ! -d $dir ]] && mkdir $dir
+rm -r $dir
+mkdir $dir
 
 # files in home
 cp ~/.bashrc "$dir/"
@@ -16,6 +17,7 @@ cp ~/.vimrc "$dir/"
 cp ~/.xinitrc "$dir/"
 cp ~/.Xresources "$dir/"
 cp ~/.xmobarrc "$dir/"
+cp ~/.stalonetrayrc "$dir/"
 
 # script files
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
