@@ -73,9 +73,11 @@ window:
     x: 4
     y: 4
 cursor:
-  style: Underline
-  blinking: Always
+  style:
+    shape: Underline
+    blinking: Always
   blink_interval: 750
+  blink_timeout: 0
   unfocused_hollow: true
 live_config_reload: true
 mouse:
