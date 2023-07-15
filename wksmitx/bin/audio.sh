@@ -17,14 +17,14 @@ volume=$(pactl list sinks | grep "Name: $sink" -A 7 | tail -n 1 | awk '{print $5
 case "$1" in
     '--volume-up')
         if (( volume + inc <= limit )) && pactl set-sink-volume "$sink" "+$inc%"; then
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume increased: $(( volume + inc ))%"
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_up" "$app" "Volume   UP:  $(( volume + inc ))%"
         fi
         ;;
 
     '--volume-down')
         if (( volume > 0 )) && pactl set-sink-volume "$sink" "-$inc%"; then
             (( volume - inc < 0 )) && volume=0 || volume=$(( volume - inc ))
-            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume decreased: $volume%"
+            dunstify -a "$app" -u low -r "$notifID" -i "$icon_down" "$app" "Volume DOWN:  $volume%"
         fi
         ;;
 
@@ -32,9 +32,9 @@ case "$1" in
         if pactl set-sink-mute "$sink" toggle; then
             muted=$(pactl list sinks | grep "Name: $sink" -A 6 | tail -n 1 | awk '{print $2}')
             if [[ "$muted" == 'yes' ]]; then
-                dunstify -a "$app" -u normal -r "$notifID" -i "$icon_mute" "$app" "Audio muted"
+                dunstify -a "$app" -u normal -r "$notifID" -i "$icon_mute" "$app" "Audio OFF"
             else
-                dunstify -a "$app" -u normal -r "$notifID" -i "$icon_unmute"  "$app" "Audio activated: $volume%"
+                dunstify -a "$app" -u normal -r "$notifID" -i "$icon_unmute"  "$app" "Audio ON:  $volume%"
             fi
         fi
         ;;
