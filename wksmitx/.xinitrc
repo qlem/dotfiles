@@ -49,8 +49,8 @@ hhkb.sh &
 wallpaper.sh &
 picom --config $HOME/.config/picom/picom.conf &
 redshift -c $HOME/.config/redshift/redshift.conf &
+solaar --window hide &
 stalonetray &
-sollar &
 
 # dwm
 # (qlstatus | dwm-setstatus) &

@@ -291,7 +291,10 @@ myManageHook = insertPosition End Newer <+> composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , className =? "Solaar"         --> doFloat
+    , className =? "Pavucontrol"    --> doFloat
+    , className =? "Thunar"         --> doFloat ]
 
 ------------------------------------------------------------------------
 -- Event handling
