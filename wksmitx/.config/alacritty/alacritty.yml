@@ -66,14 +66,18 @@ colors:
     - { index: 19, color: '0x515151' }
     - { index: 20, color: '0xb4b7b4' }
     - { index: 21, color: '0xe0e0e0' }
-background_opacity: 1.0
 window:
   dynamic_title: true
+  opacity: 1.0
   padding:
     x: 4
     y: 4
 cursor:
-  style: Block
+  style:
+    shape: Underline
+    blinking: Always
+  blink_interval: 750
+  blink_timeout: 0
   unfocused_hollow: true
 live_config_reload: true
 mouse:
@@ -86,12 +90,12 @@ mouse:
       args: []
     modifiers: None
 mouse_bindings:
-  - { mouse: Left, action: Copy }
+  - { mouse: Left,  action: Copy  }
   - { mouse: Right, action: Paste }
 key_bindings:
-  - { key: V,        mods: Control|Shift, action: Paste            }
-  - { key: C,        mods: Control|Shift, action: Copy             }
-  - { key: Insert,   mods: Shift,         action: PasteSelection   }
-  - { key: Key0,     mods: Control,       action: ResetFontSize    }
-  - { key: Plus,     mods: Control,       action: IncreaseFontSize }
-  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - { key: V,         mods: Control|Shift, action: Paste            }
+  - { key: C,         mods: Control|Shift, action: Copy             }
+  - { key: Insert,    mods: Shift,         action: PasteSelection   }
+  - { key: Backslash, mods: Control,       action: ResetFontSize    }
+  - { key: Plus,      mods: Control,       action: IncreaseFontSize }
+  - { key: Minus,     mods: Control,       action: DecreaseFontSize }

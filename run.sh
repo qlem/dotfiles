@@ -7,7 +7,8 @@ dir_local="$dir/.local"
 dir_dwm="$dir/dwm"
 dir_xorg="$dir/xorg"
 
-[[ ! -d $dir ]] && mkdir $dir
+rm -r $dir
+mkdir $dir
 
 # files in home
 cp ~/.bashrc "$dir/"
@@ -15,6 +16,8 @@ cp ~/.tmux.conf "$dir/"
 cp ~/.vimrc "$dir/"
 cp ~/.xinitrc "$dir/"
 cp ~/.Xresources "$dir/"
+cp ~/.xmobarrc "$dir/"
+cp ~/.stalonetrayrc "$dir/"
 
 # script files
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
@@ -46,6 +49,10 @@ cp ~/.config/i3/config "$dir_config/i3/"
 [[ ! -d "$dir_config/i3status" ]] && mkdir "$dir_config/i3status"
 cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
+
+# xmonad
+[[ ! -d "$dir_config/xmonad" ]] && mkdir "$dir_config/xmonad"
+cp ~/.config/xmonad/xmonad.hs "$dir_config/xmonad/"
 
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"

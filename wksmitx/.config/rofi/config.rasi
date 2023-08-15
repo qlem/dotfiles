@@ -2,7 +2,6 @@ configuration {
     modi: "drun,window";
     show-icons: true;
     icon-theme: "Flat-Remix-Blue-Dark";
-    theme: "theme.rasi";
     dpi: 96;
     display-drun: "app";
     display-window: "win";
@@ -16,3 +15,4 @@ configuration {
     run-shell-command: "{terminal} -e {cmd}";
     ssh-command: "{terminal} -e {ssh-client} {host}";
 }
+@theme "theme.rasi"

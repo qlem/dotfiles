@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sel=$(ps --no-headers -eo "%c" | dmenu -p 'Kill process' -i "$@")
+sel=$(ps --no-headers -eo "%c" | dmenu -p 'Kill process' -i "$@" | sed -e 's/[[:space:]]*$//')
 [[ -z "$sel" ]] && exit
 process=$(pgrep -x -d ',' "$sel")
 [[ -z "$process" ]] && exit
