@@ -108,7 +108,7 @@ Section "InputClass"
 EndSection
 ```
 
-Create `/etc/X11/xorg.conf.d/10-monitor.conf
+Create `/etc/X11/xorg.conf.d/10-monitor.conf`
 ```
 Section "Monitor"
     Identifier "eDP-1"
@@ -160,13 +160,43 @@ Start and enable `pipewire-pulse.service`
 
 ## Xmonad
 
-## Enable FSTRIM for SSD
+Install [GHCup](https://www.haskell.org/ghcup/install/) to get `stack`
 
+Clone `xmonad` and `xmonad-contrib` repositories in  `~/.config/xmonad`
 ```
-sudo systemctl enable fstrim.timer
+git clone --branch <tagged release> https://github.com/xmonad/xmonad
+git clone --branch <tagged release> https://github.com/xmonad/xmonad-contrib
 ```
+
+Install xmonad
+```
+stack init
+stack install
+```
+
+## Xmobar
+
+Clone `xmobar` repository
+```
+git clone --branch <tagged release> https://codeberg.org/xmobar/xmobar.git
+```
+
+Edit compilation flags in `stack.yaml`. See xmobar [documentation](https://codeberg.org/xmobar/xmobar)
+```
+stack install
+```
+
+## TRIM
+
+Make sure SSD supports TRIM through:
+```
+lsblk --discard
+```
+Non-zero values from DISC-GRAN and DISC-MAX columns indicate TRIM support.
+
+Enable `fstrim.service` for enable periodic TRIM.
 
 ## Theme
 
 - theme [Adapta](https://github.com/adapta-project/adapta-gtk-theme)  
-- icon theme [Flat Remix](https://github.com/daniruiz/flat-remix)
+- icons [Flat Remix](https://github.com/daniruiz/flat-remix)
