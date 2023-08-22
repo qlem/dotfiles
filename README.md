@@ -1,68 +1,172 @@
-# Archlinux Installation Tips
+# Archlinux install
 
-## Dual boot partitioning - Windows UEFI 
-```
-mkdir /mnt/boot & mkdir /mnt/boot/efi
-mount esp_partition /mnt/boot/efi
-```
+## Partitioning
 
-## GRUB + microcode
-```
-pacman -S grub efibootmgr intel-ucode
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
-grub-mkconfig -o /boot/grub/grub.cfg
-```
+## Enable microcode updates
 
-## Add Windows to GRUB
+Install `intel-ucode`
+
+## Boot loader
+
+With XBOOTLDR partition
 ```
-pacman -S os_prober
-grub-mkconfig -o /boot/grub/grub.cfg
+bootctl --esp-path=/efi --boot-path=/boot install
 ```
 
-## Create a new user
+Create `/efi/loader/loader.conf`
 ```
-useradd -m -g users -G wheel -s /bin/bash username
+default       arch-default.conf
+timeout       4
+console-mode  max
+editor        no
+```
+
+Create default loader `/boot/loader/entries/arch-default.conf`
+```
+title    Arch Linux
+linux    /vmlinuz-linux
+initrd   /intel-ucode.img
+initrd   /initramfs-linux.img
+options  root=... resume=... rw quiet splash
+```
+
+Create fallback loader `/boot/loader/entries/arch-fallback.conf`
+```
+title    Arch Linux (fallback initramfs)
+linux    /vmlinuz-linux
+initrd   /intel-ucode.img
+initrd   /initramfs-linux-fallback.img
+options  root=... rw quiet splash
+```
+
+## Add user
+
+```
+useradd -m -G wheel -s /bin/bash username
 passwd username
-pacman -S sudo
-```
-Edit `/etc/sudoers`
-```
-username ALL=(ALL) ALL
 ```
 
-## XORG
+## Sudo
+
+Install `sudo` package then uncomment this line in `/etc/sudoers`
 ```
-pacman -S xorg-server
+# %wheel ALL=(ALL:ALL) ALL
 ```
-Then create `/etc/X11/xorg.conf.d/00-keyboard.conf`
+
+## Network configuration
+
+Create the hostname file `/etc/hostname`
+```
+my_hostname
+```
+
+Edit `/etc/hosts` file
+```
+127.0.0.1	localhost
+::1		    localhost
+127.0.1.1	my_hostname.localdomain my_hostname
+```
+
+Start and enable `systemd-networkd.service` and `systemd-resolved.service`
+```
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+```
+
+Create `/etc/systemd/network/25-wireless.network`
+```
+[Match]
+Name=wlan0
+
+[Network]
+DHCP=yes
+IgnoreCarrierLoss=3s
+```
+
+Install `iwd` package then start and enable `iwd.service`.
+Authenticate to desired wireless network with `iwctl`.
+
+## Xorg configuration
+
+Install the following packages:
+- `xorg-server`
+- `xorg-xbacklight`
+- `xorg-xev`
+- `xorg-xinit`
+- `xorg-xrandr`
+
+For intel graphics:
+- `mesa`
+- `xf86-video-intel`
+
+Create `/etc/X11/xorg.conf.d/00-keyboard.conf`
 ```
 Section "InputClass"
-    Identifier "system-keyboard"
-    MatchIsKeyboard "on"
-    Option "XkbLayout" "fr"
-    Option "XkbModel" "pc"
+	Identifier "system-keyboard"
+	MatchIsKeyboard "on"
+	Option "XkbLayout" "fr"
+	Option "XkbModel" "pc"
+EndSection
+```
+
+Create `/etc/X11/xorg.conf.d/10-monitor.conf
+```
+Section "Monitor"
+    Identifier "eDP-1"
+    Option "Primary" "true"
+    Option "DPMS" "true"
+EndSection
+
+Section "ServerFlags"
+    Option "StandbyTime" "3"
+    Option "SuspendTime" "5"
+    Option "OffTime" "10"
+EndSection
+
+Section "ServerLayout"
+    Identifier "ServerLayout0"
+EndSection
+```
+
+Create `/etc/X11/xorg.conf.d/30-touchpad.conf`
+```
+Section "InputClass"
+    Identifier "system-touchpad"
+    Driver "libinput"
+    MatchIsTouchpad "on"
+    Option "Tapping" "on"
+    Option "ClickMethod" "clickfinger"
+    Option "NaturalScrolling" "true"
+    Option "ScrollMethod" "twofinger"
 EndSection
 ```
 
 ## User's directories
+
+Install `xdg-user-dirs` package
 ```
-pacman -S xdg-user-dirs
-xdg-user-dirs-update
+LC_ALL=C xdg-user-dirs-update --force
 ```
 
-## Dev tools
-```
-pacman -S terminator emacs gcc make cmake valgrind git openssh python unzip
-```
+## Sound system
+
+Install the following packages:
+- `pipewire`
+- `pipewire-alsa`
+- `pipewire-audio`
+- `pipewire-jack`
+- `pipewire-pulse`
+
+Start and enable `pipewire-pulse.service`
+
+## Xmonad
 
 ## Enable FSTRIM for SSD
+
 ```
 sudo systemctl enable fstrim.timer
 ```
 
 ## Theme
+
 - theme [Adapta](https://github.com/adapta-project/adapta-gtk-theme)  
 - icon theme [Flat Remix](https://github.com/daniruiz/flat-remix)
-```
-pacman -S plank
-```
