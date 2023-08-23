@@ -36,7 +36,7 @@ title    Arch Linux (fallback initramfs)
 linux    /vmlinuz-linux
 initrd   /intel-ucode.img
 initrd   /initramfs-linux-fallback.img
-options  root=... rw quiet splash
+options  root=... rw
 ```
 
 ## Add user
@@ -83,7 +83,7 @@ IgnoreCarrierLoss=3s
 ```
 
 Install `iwd` package then start and enable `iwd.service`.
-Authenticate to desired wireless network with `iwctl`.
+Authenticate to desired wireless network with `iwctl`
 
 ## Xorg configuration
 
@@ -181,7 +181,7 @@ Clone `xmobar` repository
 git clone --branch <tagged release> https://codeberg.org/xmobar/xmobar.git
 ```
 
-Edit compilation flags in `stack.yaml`. See xmobar [documentation](https://codeberg.org/xmobar/xmobar).
+Edit compilation flags in `stack.yaml`. See xmobar [documentation](https://codeberg.org/xmobar/xmobar)
 ```
 stack install
 ```
@@ -198,5 +198,4 @@ Enable `fstrim.timer` to activate periodic TRIM.
 
 ## Theme
 
-- theme [Adapta](https://github.com/adapta-project/adapta-gtk-theme)  
 - icons [Flat Remix](https://github.com/daniruiz/flat-remix)

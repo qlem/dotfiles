@@ -62,7 +62,7 @@ wallpaper.sh &
 picom &
 redshift -c ~/.config/redshift/redshift.conf &
 solaar --window hide &
-stalonetray &
+stalonetray --config ~/.config/stalonetray/stalonetrayrc &
 
 # xmonad
 exec xmonad

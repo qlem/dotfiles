@@ -5,9 +5,6 @@ dir_bin="$dir/bin"
 dir_config="$dir/config"
 dir_xorg="$dir/xorg"
 
-# rm -r $dir
-# mkdir $dir
-
 [[ ! -d $dir ]] && mkdir $dir
 
 # -- home files --
