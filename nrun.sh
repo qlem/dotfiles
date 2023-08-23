@@ -41,7 +41,7 @@ cp ~/.config/fish/config.fish "$dir_config/fish/"
 cp ~/.config/fish/fish_variables "$dir_config/fish/"
 cp -r ~/.config/fish/functions "$dir_config/fish/"
 
-# getk-3
+# gtk-3
 [[ ! -d "$dir_config/gtk-3.0" ]] && mkdir "$dir_config/gtk-3.0"
 cp ~/.config/gtk-3.0/settings.ini "$dir_config/gtk-3.0/"
 
