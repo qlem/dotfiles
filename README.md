@@ -8,7 +8,7 @@ Install `intel-ucode`
 
 ## Boot loader
 
-With XBOOTLDR partition
+To install `systemd-boot` with XBOOTLDR partition
 ```
 bootctl --esp-path=/efi --boot-path=/boot install
 ```
@@ -181,7 +181,7 @@ Clone `xmobar` repository
 git clone --branch <tagged release> https://codeberg.org/xmobar/xmobar.git
 ```
 
-Edit compilation flags in `stack.yaml`. See xmobar [documentation](https://codeberg.org/xmobar/xmobar)
+Edit compilation flags in `stack.yaml`. See xmobar [documentation](https://codeberg.org/xmobar/xmobar).
 ```
 stack install
 ```
@@ -194,7 +194,7 @@ lsblk --discard
 ```
 Non-zero values from DISC-GRAN and DISC-MAX columns indicate TRIM support.
 
-Enable `fstrim.service` for enable periodic TRIM.
+Enable `fstrim.timer` to activate periodic TRIM.
 
 ## Theme
 
