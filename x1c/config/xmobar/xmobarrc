@@ -1,0 +1,25 @@
+Config { font = "Source Code Pro Regular 12"
+       , additionalFonts = []
+       , dpi = 144
+       , borderColor = "black"
+       , border = NoBorder
+       , bgColor = "black"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = Static { xpos = 0, ypos = 0, width = 2408, height = 34 }
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "."
+       , allDesktops = True
+       , overrideRedirect = False
+       , commands = [ Run CommandReader "qlstatus" "status"
+                    , Run XMonadLog
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%XMonadLog% }{ %status% "
+       }

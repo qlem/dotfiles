@@ -1,0 +1,18 @@
+configuration {
+    modi: "drun,window";
+    show-icons: true;
+    icon-theme: "Flat-Remix-Magenta-Dark";
+    dpi: 144;
+    display-drun: "app";
+    display-window: "win";
+    display-run: "$";
+    display-ssh: "ssh";
+    drun-match-fields: "name,exec,categories";
+    drun-display-format: "{name}";
+    window-format: "{c} - {t}";
+    ssh-client: "ssh";
+    terminal: "alacritty";
+    run-shell-command: "{terminal} -e {cmd}";
+    ssh-command: "{terminal} -e {ssh-client} {host}";
+}
+@theme "theme.rasi"
