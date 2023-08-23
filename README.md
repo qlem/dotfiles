@@ -62,9 +62,9 @@ my_hostname
 
 Edit `/etc/hosts` file
 ```
-127.0.0.1	localhost
-::1		    localhost
-127.0.1.1	my_hostname.localdomain my_hostname
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   my_hostname.localdomain my_hostname
 ```
 
 Start and enable `systemd-networkd.service` and `systemd-resolved.service`
