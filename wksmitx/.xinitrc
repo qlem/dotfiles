@@ -42,15 +42,18 @@ fi
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 
+# lock screen on systemd and DPMS events
+xss-lock --transfer-sleep-lock -- lock.sh &
+
 # set keyboard layout
 hhkb.sh &
 
 # default programs
 wallpaper.sh &
-picom --config $HOME/.config/picom/picom.conf &
-redshift -c $HOME/.config/redshift/redshift.conf &
+picom &
+redshift -c ~/.config/redshift/redshift.conf &
 solaar --window hide &
-stalonetray &
+stalonetray --config ~/.config/stalonetray/stalonetrayrc &
 
 # dwm
 # (qlstatus | dwm-setstatus) &

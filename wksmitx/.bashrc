@@ -8,6 +8,21 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
+# ghcup-env
+[ -f "/home/qlem/.ghcup/env" ] && source "/home/qlem/.ghcup/env"
+
+# local bin
+export PATH=$PATH:~/.local/bin
+
+# github cli
+export PATH=$PATH:~/.local/github-cli/bin
+
+# Added by Toolbox App
+export PATH="$PATH:/home/qlem/.local/share/JetBrains/Toolbox/scripts"
+
+# node
+export PATH=$PATH:/opt/node/bin
+
 # Open man pages in vim
 export MANPAGER="vim -M +MANPAGER -"
 
@@ -29,8 +44,12 @@ export FZF_DEFAULT_OPTS="--color=fg:#cccccc,fg+:#ffffff,bg:#2d2d2d,bg+:#2d2d2d\
 --multi"
 
 # Fix Java applications in dwm
-export AWT_TOOLKIT="MToolkit"
-wmname LG3D
+# export AWT_TOOLKIT="MToolkit"
+# wmname LG3D
 
 # Exec fish as interactive shell
-exec fish
+if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
+then
+    shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+    exec fish $LOGIN_OPTION
+fi

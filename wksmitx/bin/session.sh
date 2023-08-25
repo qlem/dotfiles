@@ -11,7 +11,7 @@ wmpid=$(pgrep --exact "xmonad-x86_64-l|dwm")
 
 sel=$(echo -e "$item1\n$item2\n$item3\n$item4\n$item5\n$item6" | dmenu -p 'Session' -i "$@")
 if [[ $sel == "$item1" ]]; then
-    lock.sh
+    loginctl lock-session
 elif [[ $sel == "$item2" ]]; then
     kill -SIGTERM $wmpid
 elif [[ $sel == "$item3" ]]; then

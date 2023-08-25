@@ -2,26 +2,28 @@
 
 dir=$HOSTNAME
 dir_bin="$dir/bin"
-dir_config="$dir/.config"
-dir_local="$dir/.local"
-dir_dwm="$dir/dwm"
+dir_config="$dir/config"
 dir_xorg="$dir/xorg"
 
-rm -r $dir
-mkdir $dir
+[[ ! -d $dir ]] && mkdir $dir
 
-# files in home
+# -- home files --
 cp ~/.bashrc "$dir/"
-cp ~/.tmux.conf "$dir/"
 cp ~/.vimrc "$dir/"
 cp ~/.xinitrc "$dir/"
 cp ~/.Xresources "$dir/"
-cp ~/.xmobarrc "$dir/"
-cp ~/.stalonetrayrc "$dir/"
 
-# script files
+# -- script files --
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
-cp ~/bin/*.sh "$dir_bin/"
+cp ~/.local/bin/*.sh "$dir_bin/"
+
+# custom hhkb keyboard layout
+cp ~/.local/share/xkb/hhkb-custom-layout.xkb "$dir/"
+cp /etc/udev/rules.d/99-keyboard.rules "$dir/"
+
+# -- xorg files --
+[[ ! -d $dir_xorg ]] && mkdir $dir_xorg
+cp /etc/X11/xorg.conf.d/*.conf "$dir_xorg/"
 
 # -- config files --
 [[ ! -d $dir_config ]] && mkdir $dir_config
@@ -34,12 +36,19 @@ cp ~/.config/alacritty/alacritty.yml "$dir_config/alacritty/"
 [[ ! -d "$dir_config/conky" ]] && mkdir "$dir_config/conky"
 cp ~/.config/conky/conky.conf "$dir_config/conky/"
 
-# fish
-cp -r ~/.config/fish "$dir_config/"
+# dunst
+[[ ! -d "$dir_config/dunst" ]] && mkdir "$dir_config/dunst"
+cp ~/.config/dunst/dunstrc "$dir_config/dunst/"
 
-# spectrwm
-[[ ! -d "$dir_config/spectrwm" ]] && mkdir "$dir_config/spectrwm"
-cp ~/.config/spectrwm/spectrwm.conf "$dir_config/spectrwm/"
+# fish
+[[ ! -d "$dir_config/fish" ]] && mkdir "$dir_config/fish"
+cp ~/.config/fish/config.fish "$dir_config/fish/"
+cp ~/.config/fish/fish_variables "$dir_config/fish/"
+cp -r ~/.config/fish/functions "$dir_config/fish/"
+
+# gtk-3
+[[ ! -d "$dir_config/gtk-3.0" ]] && mkdir "$dir_config/gtk-3.0"
+cp ~/.config/gtk-3.0/settings.ini "$dir_config/gtk-3.0/"
 
 # i3
 [[ ! -d "$dir_config/i3" ]] && mkdir "$dir_config/i3"
@@ -50,17 +59,9 @@ cp ~/.config/i3/config "$dir_config/i3/"
 cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
 
-# xmonad
-[[ ! -d "$dir_config/xmonad" ]] && mkdir "$dir_config/xmonad"
-cp ~/.config/xmonad/xmonad.hs "$dir_config/xmonad/"
-
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"
 cp ~/.config/picom/picom.conf "$dir_config/picom/"
-
-# rofi
-[[ ! -d "$dir_config/rofi" ]] && mkdir "$dir_config/rofi"
-cp ~/.config/rofi/*.rasi "$dir_config/rofi/"
 
 # qlstatus
 [[ ! -d "$dir_config/qlstatus" ]] && mkdir "$dir_config/qlstatus"
@@ -70,26 +71,26 @@ cp ~/.config/qlstatus/qlstatus.conf "$dir_config/qlstatus/"
 [[ ! -d "$dir_config/redshift" ]] && mkdir "$dir_config/redshift"
 cp ~/.config/redshift/redshift.conf "$dir_config/redshift/"
 
+# rofi
+[[ ! -d "$dir_config/rofi" ]] && mkdir "$dir_config/rofi"
+cp ~/.config/rofi/*.rasi "$dir_config/rofi/"
+
+# spectrwm
+[[ ! -d "$dir_config/spectrwm" ]] && mkdir "$dir_config/spectrwm"
+cp ~/.config/spectrwm/spectrwm.conf "$dir_config/spectrwm/"
+
+# stalonetray
+[[ ! -d "$dir_config/stalonetray" ]] && mkdir "$dir_config/stalonetray"
+cp ~/.config/stalonetray/stalonetrayrc "$dir_config/stalonetray/"
+
 # terminator
 [[ ! -d "$dir_config/terminator" ]] && mkdir "$dir_config/terminator"
 cp ~/.config/terminator/config "$dir_config/terminator/"
 
-# dunst
-[[ ! -d "$dir_config/dunst" ]] && mkdir "$dir_config/dunst"
-cp ~/.config/dunst/dunstrc "$dir_config/dunst/"
+# xmobar
+[[ ! -d "$dir_config/xmobar" ]] && mkdir "$dir_config/xmobar"
+cp ~/.config/xmobar/xmobarrc "$dir_config/xmobar/"
 
-# xorg conf files
-[[ ! -d $dir_xorg ]] && mkdir $dir_xorg
-cp /etc/X11/xorg.conf.d/*.conf "$dir_xorg/"
-
-# dwm files
-[[ ! -d $dir_dwm ]] && mkdir $dir_dwm
-cp ~/projects/dwm-6.2/config.h "$dir_dwm/"
-cp ~/projects/dwm-6.2/config.mk "$dir_dwm/"
-cp ~/projects/dwm-6.2/dwm-setstatus.c "$dir_dwm/"
-cp ~/projects/dwm-6.2/dwm.patch "$dir_dwm/"
-
-# custom hhkb keyboard layout
-[[ ! -d "$dir_local/share/xkb" ]] && mkdir -p "$dir_local/share/xkb"
-cp ~/.local/share/xkb/hhkb-custom-layout.xkb "$dir_local/share/xkb/"
-cp /etc/udev/rules.d/99-keyboard.rules "$dir/"
+# xmonad
+[[ ! -d "$dir_config/xmonad" ]] && mkdir "$dir_config/xmonad"
+cp ~/.config/xmonad/xmonad.hs "$dir_config/xmonad/"
