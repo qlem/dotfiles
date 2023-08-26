@@ -1,12 +1,11 @@
-Config { font = "Source Code Pro Regular 12"
+Config { font = "xft:Source Code Pro:style=Regular:antialias=true"
        , additionalFonts = []
-       , dpi = 144
        , borderColor = "black"
        , border = NoBorder
        , bgColor = "black"
        , fgColor = "grey"
        , alpha = 255
-       , position = Static { xpos = 0, ypos = 0, width = 2408, height = 34 }
+       , position = TopP 0 156
        , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True

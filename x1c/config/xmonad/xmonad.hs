@@ -122,7 +122,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                   xK_exclam   ), spawn "rofi -show drun")
 
     -- session
-    , ((modm .|. controlMask,   xK_l        ), spawn "lock.sh")
+    , ((modm .|. controlMask,   xK_l        ), spawn "loginctl lock-session")
     , ((modm,                   xK_Delete   ), spawn ("session.sh" ++ dmenuArgs))
 
     -- quit, or restart
@@ -332,7 +332,7 @@ myStartupHook = do
 --
 myXmobarPP :: PP
 myXmobarPP = def
-    { ppSep              = magenta " ❯ "
+    { ppSep              = magenta " • "
     , ppWsSep            = "|"
     , ppTitleSanitize    = xmobarStrip
     , ppCurrent          = magenta . wrap ">" ""
