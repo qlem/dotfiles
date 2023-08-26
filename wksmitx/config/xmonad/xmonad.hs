@@ -123,7 +123,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,                   xK_slash    ), spawn "rofi -show drun")
 
     -- session
-    , ((modm .|. controlMask,   xK_l        ), spawn "lock.sh")
+    , ((modm .|. controlMask,   xK_l        ), spawn "loginctl lock-session")
     , ((modm,                   xK_grave    ), spawn ("session.sh" ++ dmenuArgs))
 
     -- quit, or restart
