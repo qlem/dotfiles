@@ -1,4 +1,7 @@
-Config { font = "xft:Source Code Pro:style=Regular:antialias=true"
+Config { font = "xft:Source Code Pro:style=Regular:size=12:antialias=true,
+                 Font Awesome 6 Free:style=Regular:size=9:antialias=true,
+                 Font Awesome 6 Free:style=Solid:size=9:antialias=true,
+                 Font Awesome 6 Brands:style=Regular:size=9:antialias=true"
        , additionalFonts = []
        , borderColor = "black"
        , border = NoBorder
