@@ -16,7 +16,7 @@ font:
   bold_italic:
     family: Inconsolata
     style: Bold
-  size: 13.0
+  size: 15.0
 draw_bold_text_with_bright_colors: true
 # Base16 Tomorrow Night Eighties 256
 # https://github.com/chriskempson/base16
