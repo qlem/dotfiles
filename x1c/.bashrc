@@ -27,6 +27,9 @@ export PATH="$PATH:/home/qlem/.local/share/JetBrains/Toolbox/scripts"
 # node
 export PATH=$PATH:/opt/node/bin
 
+# mongodb-database-tools
+export PATH=$PATH:~/.local/mongodb-database-tools/bin
+
 # open man pages in vim
 export MANPAGER="nvim +Man!"
 export MANWIDTH=999
