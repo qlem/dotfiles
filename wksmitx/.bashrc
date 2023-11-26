@@ -14,6 +14,9 @@ PS1='[\u@\h \W]\$ '
 # local bin
 export PATH=$PATH:~/.local/bin
 
+# nvim
+export PATH=$PATH:~/.local/neovim/bin
+
 # github cli
 export PATH=$PATH:~/.local/github-cli/bin
 
@@ -23,8 +26,12 @@ export PATH="$PATH:/home/qlem/.local/share/JetBrains/Toolbox/scripts"
 # node
 export PATH=$PATH:/opt/node/bin
 
+# mongo db tools
+export PATH=$PATH:~/.local/mongodb-database-tools/bin
+
 # Open man pages in vim
-export MANPAGER="vim -M +MANPAGER -"
+export MANPAGER="nvim +Man!"
+export MANWIDTH=999
 
 # nnn settings
 export EDITOR="vim"
