@@ -287,6 +287,8 @@ myLayout = renamed [CutWordsLeft 1]
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
+-- myWorkspaces    = [" \61728 ", " \62057 ", " \61729 ", " \61888 ", " 5 ", " 6 ", " \61848 ", " \62409 ", " 9 "]
+--
 myManageHook = insertPosition End Newer <+> composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
@@ -294,7 +296,12 @@ myManageHook = insertPosition End Newer <+> composeAll
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "Solaar"         --> doFloat
     , className =? "Pavucontrol"    --> doFloat
-    , className =? "Thunar"         --> doFloat ]
+    , className =? "Thunar"         --> doFloat 
+    , className =? "jetbrains-webstorm"	--> doShift " \61729 "
+    , className =? "MongoDB Compass"	--> doShift " \61888 "
+    , className =? "Slack"	    	--> doShift " \61848 "
+    , className =? "discord"	    	--> doShift " \62409 "
+    , className =? "teams-for-linux"	--> doShift " \62409 " ]
 
 ------------------------------------------------------------------------
 -- Event handling
