@@ -31,6 +31,7 @@ cp /etc/X11/xorg.conf.d/*.conf "$dir_xorg/"
 # alacritty
 [[ ! -d "$dir_config/alacritty" ]] && mkdir "$dir_config/alacritty"
 cp ~/.config/alacritty/alacritty.yml "$dir_config/alacritty/"
+cp ~/.config/alacritty/alacritty.toml "$dir_config/alacritty/"
 
 # conky
 [[ ! -d "$dir_config/conky" ]] && mkdir "$dir_config/conky"
