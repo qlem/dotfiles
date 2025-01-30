@@ -71,6 +71,7 @@ cp ~/.config/qlstatus/qlstatus.conf "$dir_config/qlstatus/"
 # redshift
 [[ ! -d "$dir_config/redshift" ]] && mkdir "$dir_config/redshift"
 cp ~/.config/redshift/redshift.conf "$dir_config/redshift/"
+cp -r ~/.config/redshift/hooks "$dir_config/redshift/."
 
 # rofi
 [[ ! -d "$dir_config/rofi" ]] && mkdir "$dir_config/rofi"
