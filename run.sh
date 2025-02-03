@@ -60,6 +60,10 @@ cp ~/.config/i3/config "$dir_config/i3/"
 cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
 
+# nvim
+[[ ! -d "$dir_config/nvim" ]] && mkdir "$dir_config/nvim"
+cp ~/.config/nvim/init.lua "$dir_config/nvim/"
+
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"
 cp ~/.config/picom/picom.conf "$dir_config/picom/"
