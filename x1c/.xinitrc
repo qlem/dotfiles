@@ -63,6 +63,7 @@ picom &
 redshift -c ~/.config/redshift/redshift.conf &
 solaar --window hide &
 stalonetray --config ~/.config/stalonetray/stalonetrayrc &
+TZ=Europe/Paris LC_ALL=C conky &
 
 # xmonad
 exec xmonad
