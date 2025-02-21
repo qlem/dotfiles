@@ -16,7 +16,7 @@ PS1='[\u@\h \W]\$ '
 export PATH=$PATH:~/.local/bin
 
 # nvim
-export PATH=$PATH:~/.local/neovim/bin
+export PATH=$PATH:~/.local/nvim/bin
 
 # github cli
 export PATH=$PATH:~/.local/github-cli/bin
