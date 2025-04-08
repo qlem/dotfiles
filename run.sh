@@ -63,6 +63,7 @@ cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
 # nvim
 [[ ! -d "$dir_config/nvim" ]] && mkdir "$dir_config/nvim"
 cp ~/.config/nvim/init.lua "$dir_config/nvim/"
+cp -r ~/.config/nvim/lsp "$dir_config/nvim/"
 
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"
