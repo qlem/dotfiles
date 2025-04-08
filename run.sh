@@ -12,6 +12,7 @@ cp ~/.bashrc "$dir/"
 cp ~/.vimrc "$dir/"
 cp ~/.xinitrc "$dir/"
 cp ~/.Xresources "$dir/"
+cp ~/.Xkeymap "$dir/"
 
 # -- script files --
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
