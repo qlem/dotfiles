@@ -31,6 +31,7 @@ cp /etc/X11/xorg.conf.d/*.conf "$dir_xorg/"
 # alacritty
 [[ ! -d "$dir_config/alacritty" ]] && mkdir "$dir_config/alacritty"
 cp ~/.config/alacritty/alacritty.yml "$dir_config/alacritty/"
+cp ~/.config/alacritty/alacritty.toml "$dir_config/alacritty/"
 
 # conky
 [[ ! -d "$dir_config/conky" ]] && mkdir "$dir_config/conky"
@@ -59,6 +60,10 @@ cp ~/.config/i3/config "$dir_config/i3/"
 cp ~/.config/i3status/config "$dir_config/i3status/"
 cp ~/.config/i3status/wrapper.py "$dir_config/i3status/"
 
+# nvim
+[[ ! -d "$dir_config/nvim" ]] && mkdir "$dir_config/nvim"
+cp ~/.config/nvim/init.lua "$dir_config/nvim/"
+
 # picom
 [[ ! -d "$dir_config/picom" ]] && mkdir "$dir_config/picom"
 cp ~/.config/picom/picom.conf "$dir_config/picom/"
@@ -70,6 +75,7 @@ cp ~/.config/qlstatus/qlstatus.conf "$dir_config/qlstatus/"
 # redshift
 [[ ! -d "$dir_config/redshift" ]] && mkdir "$dir_config/redshift"
 cp ~/.config/redshift/redshift.conf "$dir_config/redshift/"
+cp -r ~/.config/redshift/hooks "$dir_config/redshift/."
 
 # rofi
 [[ ! -d "$dir_config/rofi" ]] && mkdir "$dir_config/rofi"
