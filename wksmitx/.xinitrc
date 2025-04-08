@@ -46,7 +46,7 @@ export SSH_AUTH_SOCK
 xss-lock --transfer-sleep-lock -- lock.sh &
 
 # set keyboard layout
-hhkb.sh &
+test -f ~/.Xkeymap && xkbcomp ~/.Xkeymap $DISPLAY
 
 # default programs
 wallpaper.sh &

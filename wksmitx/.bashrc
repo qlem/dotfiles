@@ -20,6 +20,9 @@ export PATH=$PATH:~/.local/neovim/bin
 # github cli
 export PATH=$PATH:~/.local/github-cli/bin
 
+# grafana k6
+export PATH=$PATH:~/.local/k6
+
 # Added by Toolbox App
 export PATH="$PATH:/home/qlem/.local/share/JetBrains/Toolbox/scripts"
 
