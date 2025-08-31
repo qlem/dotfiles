@@ -1,0 +1,9 @@
+Diagnostics:
+  ClangTidy:
+    Add: bugprone-*
+    Add: cert-*-c
+    Add: readability-*
+    Add: misc-include-cleaner
+    Add: misc-unused-parameters
+Completion:
+  ArgumentLists: Delimeters
