@@ -18,8 +18,7 @@ cp ~/.Xkeymap "$dir/"
 [[ ! -d $dir_bin ]] && mkdir $dir_bin
 cp ~/.local/bin/*.sh "$dir_bin/"
 
-# custom hhkb keyboard layout
-cp ~/.local/share/xkb/hhkb-custom-layout.xkb "$dir/"
+# -- udev rules --
 cp /etc/udev/rules.d/99-keyboard.rules "$dir/"
 
 # -- xorg files --
