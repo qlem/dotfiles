@@ -1,5 +1,5 @@
 xkb_keymap {
-	xkb_keycodes "hhkb_custom" {
+    xkb_keycodes "hhkb_custom" {
         minimum = 8;
         maximum = 255;
         <ESC> = 9;
@@ -103,7 +103,7 @@ xkb_keymap {
         indicator 1 = "Caps Lock";
     };
 
-	xkb_types "hhkb_custom" {
+    xkb_types "hhkb_custom" {
         include "complete"
         type "THREE_LEVEL_CUSTOM" {
             modifiers= Shift+Lock+LevelThree;
@@ -130,7 +130,7 @@ xkb_keymap {
         };
     };
 
-    xkb_compat { include "complete"	};
+    xkb_compat { include "complete" };
 
     xkb_symbols "hhkb_custom" {
 
