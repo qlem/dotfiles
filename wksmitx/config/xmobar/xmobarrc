@@ -1,7 +1,7 @@
 Config { font = "xft:SauceCodePro Nerd Font:style=Regular:size=12:antialias=true,
-                 Font Awesome 6 Free:style=Regular:size=9:antialias=true,
-                 Font Awesome 6 Free:style=Solid:size=9:antialias=true,
-                 Font Awesome 6 Brands:style=Regular:size=9:antialias=true"
+                 Font Awesome 7 Free:style=Regular:size=9:antialias=true,
+                 Font Awesome 7 Free:style=Solid:size=9:antialias=true,
+                 Font Awesome 7 Brands:style=Regular:size=9:antialias=true"
        , additionalFonts = []
        , borderColor = "black"
        , border = NoBorder
