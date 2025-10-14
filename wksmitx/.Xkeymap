@@ -194,8 +194,14 @@ xkb_keymap {
         key <TLDE> {[ grave, asciitilde ]};
         key <LFSH> {[ Shift_L ]};
         key <BKSL> {[ backslash, bar ]};
-        key <AB01> {[ w, W ]};
-        key <AB02> {[ x, X ]};
+        key <AB01> {
+            type= "THREE_LEVEL_CUSTOM",
+            [ w, W, guillemetleft ]
+        };
+        key <AB02> {
+            type= "THREE_LEVEL_CUSTOM",
+            [ x, X, guillemetright]
+        };
         key <AB03> {
             type= "THREE_LEVEL_CUSTOM",
             [ c, C, ccedilla ]
