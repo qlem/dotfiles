@@ -20,5 +20,5 @@ while [ -z "$id" ]; do
   sleep 1
   id=$(xinput list --id-only "PFU Limited HHKB-Classic")
 done
-xkbcomp -i "$id" "/home/qlem/.local/share/xkb/hhkb-custom-layout.xkb" "$DISPLAY"
+xkbcomp -i "$id" "/home/qlem/.Xkeymap" "$DISPLAY"
 ) &

@@ -11,6 +11,10 @@ PS1='[\u@\h \W]\$ '
 # ghcup-env
 [ -f "/home/qlem/.ghcup/env" ] && source "/home/qlem/.ghcup/env"
 
+# asdf
+export PATH=$PATH:~/.local/asdf/shims
+export ASDF_DATA_DIR="~/.local/asdf"
+
 # local bin
 export PATH=$PATH:~/.local/bin
 
@@ -27,10 +31,13 @@ export PATH=$PATH:~/.local/k6
 export PATH="$PATH:/home/qlem/.local/share/JetBrains/Toolbox/scripts"
 
 # node
-export PATH=$PATH:/opt/node/bin
+export PATH=$PATH:~/.local/node/bin
 
 # mongo db tools
 export PATH=$PATH:~/.local/mongodb-database-tools/bin
+
+# opencode
+export PATH=/home/qlem/.local/opencode/bin:$PATH
 
 # Open man pages in vim
 export MANPAGER="nvim +Man!"
